@@ -1,38 +1,74 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const archive = require('./archive.json');
 const credentials = require('./credentials.json');
 const express = require("express");
 const cors = require("cors");
 const tmi = require("tmi.js");
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, {
-    serveClient: true,
-    cors: {
-        methods: ["GET", "POST"],
-    }
-});
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
+const sheets = new Map();
 
-const getDoc = async () => {
-    const doc = new GoogleSpreadsheet(archive.id);
+const FULL_URL_SIZE = 7;
+const URL_WITHOUT_HTTP_SIZE = 5;
 
-    await doc.useServiceAccountAuth({
-        client_email: credentials.client_email,
-        private_key: credentials.private_key.replace(/\\n/g, '\n')
-    });
+app.post("/api/createArchive", async (req, res) => {
+    const { link, streamerName } = req.body;
+    let archive;
+    const parts = link.split('/');
+    if (parts.length == 1) {
+        archive = parts[0];
+    } else if (parts.length == FULL_URL_SIZE) {
+        archive = parts[5];
+    } else if (parts.length == URL_WITHOUT_HTTP_SIZE) {
+        archive = parts[3];
+    } else {
+        res.status(400).send({ error: "Link not valid" });
+        return
+    }
 
-    await doc.loadInfo();
-    return doc.sheetsByIndex[0];
-}
+    try {
+        const doc = new GoogleSpreadsheet(archive);
+        await doc.useServiceAccountAuth({
+            client_email: credentials.client_email,
+            private_key: credentials.private_key.replace(/\\n/g, '\n')
+        });
 
-const sheet = getDoc();
+        await doc.loadInfo();
+        const newSheet = await doc.addSheet({
+            headerValues: ['Card', 'Rating', 'User'],
+            title: "Chat"
+        });
+        sheets.set(streamerName, newSheet);
+
+        res.status(200).send({ success: true });
+    } catch (e) {
+        try {
+            const doc = new GoogleSpreadsheet(archive);
+            await doc.useServiceAccountAuth({
+                client_email: credentials.client_email,
+                private_key: credentials.private_key.replace(/\\n/g, '\n')
+            });
+
+            await doc.loadInfo();
+            const newSheet = await doc.addSheet({
+                headerValues: ['Card', 'Rating', 'User'],
+            });
+            sheets.set(streamerName, newSheet);
+
+            res.status(200).send({ success: true });
+        } catch (e) {
+            res.status(400).send({ error: "You need to give permission to edit the spreadsheet" });
+        }
+    }
+
+});
 
 let activeTMIs = new Map();
-//let shouldRecord = false;
 let currentCard = new Map();
 let currentUsers = new Map();
 let currentCheckpoint = new Map();
@@ -40,74 +76,71 @@ let currentSum = new Map();
 
 const botNames = ["streamelements", "nightbot"];
 
-io.on("connection", socket => {
-    socket.on('record chat', (data) => {
-        data = JSON.parse(data);
-        shouldRecord = true;
-        if (activeTMIs.has(data.roomName)) {
-            currentCard.set(data.roomName, data.cardName);
-            currentSum.set(data.roomName, 0);
-            currentCheckpoint.set(data.roomName, currentCheckpoint.get(data.roomName) + currentUsers.get(data.roomName).length + 1);
-            currentUsers.set(data.roomName, []);
-        } else {
-            currentCard.set(data.roomName, data.cardName);
-            currentSum.set(data.roomName, 0);
-            currentCheckpoint.set(data.roomName, - 1);
-            currentUsers.set(data.roomName, []);
+app.post("/api/record", (req, res) => {
+    const { streamerName, cardName } = req.body;
+    if (activeTMIs.has(streamerName)) {
+        currentCard.set(streamerName, cardName);
+        currentSum.set(streamerName, 0);
+        currentCheckpoint.set(streamerName, currentCheckpoint.get(streamerName) + currentUsers.get(streamerName).length + 1);
+        currentUsers.set(streamerName, []);
+    } else {
+        currentCard.set(streamerName, cardName);
+        currentSum.set(streamerName, 0);
+        currentCheckpoint.set(streamerName, - 1);
+        currentUsers.set(streamerName, []);
 
-            const tmiClient = new tmi.Client({
-                channels: [data.roomName]
-            });
-            tmiClient.connect();
-            tmiClient.on('message', (channel, tags, message, self) => {
-                if (!activeTMIs.get(data.roomName)) return;
-                const isBot = botNames.includes(tags.username.toLowerCase());
-                if (isBot) return;
-
-                let messageFirstChar = message.slice(0, 1);
-                let messageRating = parseInt(messageFirstChar);
-                if (isMessageRatingValid(messageRating)) {
-                    const haveRatedAlready = currentUsers.get(data.roomName).includes(tags.username);
-                    if (!haveRatedAlready) {
-                        sheet.then(s => {
-                            s.addRow({
-                                Card: currentCard.get(data.roomName),
-                                Rating: messageRating,
-                                User: tags.username
-                            });
-                        });
-                        currentUsers.get(data.roomName).push(tags.username);
-                        currentSum.set(data.roomName, currentSum.get(data.roomName) + messageRating);
-                    } else {
-                        sheet.then(async (s) => {
-                            rows = await s.getRows();
-                            rowToEdit = rows.find((row, index) =>
-                                index > currentCheckpoint.get(data.roomName) && row._rawData[2] == tags.username
-                            );
-                            currentSum.set(data.roomName, currentSum.get(data.roomName) + messageRating - rowToEdit.Rating);
-                            rowToEdit.Rating = messageRating;
-                            await rowToEdit.save();
-                        });
-                    }
-                }
-            });
-        }
-        activeTMIs.set(data.roomName, true);
-    });
-
-    socket.on('stop recording', (data) => {
-        //shouldRecord = false;
-        data = JSON.parse(data);
-        activeTMIs.set(data.roomName, false);
-        sheet.then(s => {
-            avg = currentSum.get(data.roomName) / currentUsers.get(data.roomName).length;
-            s.addRow({
-                Card: currentCard.get(data.roomName),
-                Rating: avg,
-                User: "CHAT AVERAGE"
-            });
+        const tmiClient = new tmi.Client({
+            channels: [streamerName]
         });
+        tmiClient.connect();
+        tmiClient.on('message', async (channel, tags, message, self) => {
+            if (!activeTMIs.get(streamerName)) return;
+            const isBot = botNames.includes(tags.username.toLowerCase());
+            if (isBot) return;
+
+            let messageFirstChar = message.slice(0, 1);
+            let messageRating = parseInt(messageFirstChar);
+            if (isMessageRatingValid(messageRating)) {
+                const haveRatedAlready = currentUsers.get(streamerName).includes(tags.username);
+                if (!haveRatedAlready) {
+                    let sheet = sheets.get(streamerName);
+                    sheet.addRow({
+                        Card: currentCard.get(streamerName),
+                        Rating: messageRating,
+                        User: tags.username
+                    });
+                    currentUsers.get(streamerName).push(tags.username);
+                    currentSum.set(streamerName, currentSum.get(streamerName) + messageRating);
+                } else {
+                    let sheet = sheets.get(streamerName);
+                    rows = await sheet.getRows();
+                    rowToEdit = rows.find((row, index) =>
+                        index > currentCheckpoint.get(streamerName) && row._rawData[2] == tags.username
+                    );
+                    currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - rowToEdit.Rating);
+                    rowToEdit.Rating = messageRating;
+                    await rowToEdit.save();
+                }
+            }
+        });
+    }
+    activeTMIs.set(streamerName, true);
+    res.status(200).send({ message: "recording chat" });
+
+});
+
+app.post("/api/stop", (req, res) => {
+    const { streamerName } = req.body;
+    activeTMIs.set(streamerName, false);
+    let avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
+    const sheet = sheets.get(streamerName);
+    sheet.addRow({
+        Card: currentCard.get(streamerName),
+        Rating: avg,
+        User: "CHAT AVERAGE"
     });
+
+    res.status(200).send({ success: true });
 });
 
 const isMessageRatingValid = (messageRating) => {
