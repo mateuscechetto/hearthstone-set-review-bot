@@ -5,6 +5,7 @@ const tmi = require("tmi.js");
 const app = express();
 const server = require('http').createServer(app);
 const path = require('path');
+require('dotenv').config();
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +32,8 @@ app.post("/api/createArchive", async (req, res) => {
         return
     }
 
+    console.log(process.env.CLIENT_EMAIL);
+
     try {
         const doc = new GoogleSpreadsheet(archive);
         await doc.useServiceAccountAuth({
@@ -50,8 +53,8 @@ app.post("/api/createArchive", async (req, res) => {
         try {
             const doc = new GoogleSpreadsheet(archive);
             await doc.useServiceAccountAuth({
-                client_email: credentials.client_email,
-                private_key: credentials.private_key.replace(/\\n/g, '\n')
+                client_email: process.env.CLIENT_EMAIL,
+                private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n')
             });
 
             await doc.loadInfo();

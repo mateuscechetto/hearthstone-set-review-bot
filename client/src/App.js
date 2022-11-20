@@ -10,18 +10,19 @@ function App() {
   const [isRecording, setIsRecording] = useState(false);
 
   const sendSheet = () => {
-    axios.post("/api/createArchive", {
+    axios.post("http://localhost:5000/api/createArchive", {
       link: spreadSheetLink,
       streamerName: room
     }).then(() => {
       setShowCard(true);
-    }).catch(() => {
+    }).catch((e) => {
+      alert(e)
       alert("Could not create sheet. Please make sure you gave permission to edit it");
     });
   }
 
   const recordChat = () => {
-    axios.post("/api/record", {
+    axios.post("http://localhost:5000/api/record", {
       streamerName: room,
       cardName: currentCard
     }).then(() => {
@@ -32,13 +33,13 @@ function App() {
   }
 
   const stopRecording = () => {
-    axios.post("/api/stop", {
+    axios.post("http://localhost:5000/api/stop", {
       streamerName: room,
     }).then(() => {
       setIsRecording(false);
       setCurrentCard('');
     }).catch(() => {
-      
+
     });
   }
 
@@ -46,14 +47,18 @@ function App() {
 
   return (
     <div className="App">
+      <h2>First of all, create a Google Spreadsheet and give editor permission to: <br />
+        hs-review@hs-review-bot.iam.gserviceaccount.com</h2>
       <div>
         <input
-          placeholder='Your twitch channel'
-          onChange={(event) => setRoom(event.target.value)} />
+          placeholder='Your twitch name'
+          onChange={(event) => setRoom(event.target.value)}
+          disabled={showCard} />
         <input
           placeholder='Spreadsheet code'
-          onChange={(event) => setSpreadSheetLink(event.target.value)} />
-        <button onClick={sendSheet}>Create bot</button>
+          onChange={(event) => setSpreadSheetLink(event.target.value)}
+          disabled={showCard} />
+        <button onClick={sendSheet} disabled={showCard}>Create bot</button>
       </div>
       {showCard && (
         <div>
@@ -61,8 +66,8 @@ function App() {
             placeholder='CardName'
             onChange={(event) => setCurrentCard(event.target.value)}
             value={currentCard} />
-            {!isRecording && <button onClick={recordChat}>Record chat</button>}
-            {isRecording && <button onClick={stopRecording}>Stop recording</button>} 
+          {!isRecording && <button onClick={recordChat}>Record chat</button>}
+          {isRecording && <button onClick={stopRecording}>Stop recording</button>}
         </div>
       )}
     </div>
