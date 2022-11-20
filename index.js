@@ -1,5 +1,4 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const credentials = require('./credentials.json');
 const express = require("express");
 const cors = require("cors");
 const tmi = require("tmi.js");
