@@ -10,30 +10,31 @@ function App() {
   const [isRecording, setIsRecording] = useState(false);
 
   const sendSheet = () => {
-    axios.post("http://localhost:5000/api/createArchive", {
+    axios.post("/api/createArchive", {
       link: spreadSheetLink,
       streamerName: room
     }).then(() => {
       setShowCard(true);
     }).catch((e) => {
-      alert(e)
+      //alert(e);
       alert("Could not create sheet. Please make sure you gave permission to edit it");
     });
   }
 
   const recordChat = () => {
-    axios.post("http://localhost:5000/api/record", {
+    axios.post("/api/record", {
       streamerName: room,
       cardName: currentCard
     }).then(() => {
       setIsRecording(true);
     }).catch(() => {
-
+      alert("Make sure you wrote your twitch name correctly");
+      
     });
   }
 
   const stopRecording = () => {
-    axios.post("http://localhost:5000/api/stop", {
+    axios.post("/api/stop", {
       streamerName: room,
     }).then(() => {
       setIsRecording(false);
@@ -61,14 +62,17 @@ function App() {
         <button onClick={sendSheet} disabled={showCard}>Create bot</button>
       </div>
       {showCard && (
-        <div>
-          <input
-            placeholder='CardName'
-            onChange={(event) => setCurrentCard(event.target.value)}
-            value={currentCard} />
-          {!isRecording && <button onClick={recordChat}>Record chat</button>}
-          {isRecording && <button onClick={stopRecording}>Stop recording</button>}
-        </div>
+        <>
+          <h3> A new sheet should be created at the bottom of your spreadsheet </h3>
+          <div>
+            <input
+              placeholder='CardName'
+              onChange={(event) => setCurrentCard(event.target.value)}
+              value={currentCard} />
+            {!isRecording && <button onClick={recordChat}>Record chat</button>}
+            {isRecording && <button onClick={stopRecording}>Stop recording</button>}
+          </div>
+        </>
       )}
     </div>
   );
