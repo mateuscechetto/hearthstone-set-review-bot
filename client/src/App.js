@@ -41,7 +41,7 @@ function App() {
       setIsRecording(false);
       setCurrentCard('');
       const newRating = res.data;
-      setRatings( prevArray => [...prevArray, newRating]);
+      setRatings(prevArray => [newRating, ...prevArray]);
     }).catch(() => {
 
     });
@@ -65,7 +65,6 @@ function App() {
       {showCard && (
         <>
           <h3> A new sheet should be created at the bottom of your spreadsheet </h3>
-          {ratings.map((rating) => <div key={rating.card}><div  className="cardListContainer"><h4 className='leftColumn'>{rating.card}</h4> <h4>Avg: {rating.avg}</h4></div></div>)}
           <div className='cardNameInput'>
             <input
               placeholder='CardName'
@@ -74,6 +73,7 @@ function App() {
             {!isRecording && <button onClick={recordChat}>Record chat</button>}
             {isRecording && <button onClick={stopRecording}>Stop recording</button>}
           </div>
+          {ratings.map((rating) => <div key={rating.card}><div className="cardListContainer"><h4 className='leftColumn'>{rating.card}</h4> <h4>Avg: {rating.avg}</h4></div></div>)}
         </>
       )}
     </div>
