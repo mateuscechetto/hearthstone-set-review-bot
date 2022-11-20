@@ -5,6 +5,7 @@ const cors = require("cors");
 const tmi = require("tmi.js");
 const app = express();
 const server = require('http').createServer(app);
+const path = require('path');
 
 
 app.use(express.urlencoded({ extended: true }));
