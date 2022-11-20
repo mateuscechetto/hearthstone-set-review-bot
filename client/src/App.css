@@ -11,3 +11,22 @@ input {
 button {
   font-size: 1.5rem;
 }
+
+.cardListContainer {
+  display: flex;
+  width: 50%;
+  margin: auto;
+}
+
+h4 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.leftColumn {
+  width: 66%;
+}
+
+.cardNameInput {
+  margin-top: 20px;
+}

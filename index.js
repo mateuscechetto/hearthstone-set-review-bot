@@ -143,7 +143,7 @@ app.post("/api/stop", (req, res) => {
         User: "CHAT AVERAGE"
     });
 
-    res.status(200).send({ success: true });
+    res.status(200).send({ card: currentCard.get(streamerName), avg });
 });
 
 const isMessageRatingValid = (messageRating) => {

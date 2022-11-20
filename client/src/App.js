@@ -8,6 +8,7 @@ function App() {
   const [showCard, setShowCard] = useState(false);
   const [currentCard, setCurrentCard] = useState('');
   const [isRecording, setIsRecording] = useState(false);
+  const [ratings, setRatings] = useState([]);
 
   const sendSheet = () => {
     axios.post("/api/createArchive", {
@@ -29,22 +30,22 @@ function App() {
       setIsRecording(true);
     }).catch(() => {
       alert("Make sure you wrote your twitch name correctly");
-      
+
     });
   }
 
   const stopRecording = () => {
     axios.post("/api/stop", {
       streamerName: room,
-    }).then(() => {
+    }).then((res) => {
       setIsRecording(false);
       setCurrentCard('');
+      const newRating = res.data;
+      setRatings( prevArray => [...prevArray, newRating]);
     }).catch(() => {
 
     });
   }
-
-
 
   return (
     <div className="App">
@@ -64,7 +65,8 @@ function App() {
       {showCard && (
         <>
           <h3> A new sheet should be created at the bottom of your spreadsheet </h3>
-          <div>
+          {ratings.map((rating) => <div key={rating.card}><div  className="cardListContainer"><h4 className='leftColumn'>{rating.card}</h4> <h4>Avg: {rating.avg}</h4></div></div>)}
+          <div className='cardNameInput'>
             <input
               placeholder='CardName'
               onChange={(event) => setCurrentCard(event.target.value)}
