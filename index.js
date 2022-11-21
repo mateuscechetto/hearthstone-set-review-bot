@@ -17,6 +17,12 @@ const sheets = new Map();
 const FULL_URL_SIZE = 7;
 const URL_WITHOUT_HTTP_SIZE = 5;
 
+let nArchives = 0;
+let nMessagesRead = 0;
+let nRatings = 0;
+let nCardsRated = 0;
+
+
 app.post("/api/createArchive", async (req, res) => {
     const { link, streamerName } = req.body;
     let archive;
@@ -48,6 +54,7 @@ app.post("/api/createArchive", async (req, res) => {
         });
         sheets.set(streamerName, newSheet);
 
+        nArchives++;
         res.status(200).send({ success: true });
     } catch (e) {
         try {
@@ -63,6 +70,7 @@ app.post("/api/createArchive", async (req, res) => {
             });
             sheets.set(streamerName, newSheet);
 
+            nArchives++;
             res.status(200).send({ success: true });
         } catch (e) {
             res.status(400).send({ error: "You need to give permission to edit the spreadsheet" });
@@ -98,6 +106,7 @@ app.post("/api/record", (req, res) => {
         tmiClient.connect();
         tmiClient.on('message', async (channel, tags, message, self) => {
             if (!activeTMIs.get(streamerName)) return;
+            nMessagesRead++;
             const isBot = botNames.includes(tags.username.toLowerCase());
             if (isBot) return;
 
@@ -114,6 +123,7 @@ app.post("/api/record", (req, res) => {
                     });
                     currentUsers.get(streamerName).push(tags.username);
                     currentSum.set(streamerName, currentSum.get(streamerName) + messageRating);
+                    nRatings++;
                 } else {
                     let sheet = sheets.get(streamerName);
                     rows = await sheet.getRows();
@@ -143,12 +153,23 @@ app.post("/api/stop", (req, res) => {
         User: "CHAT AVERAGE"
     });
 
+    nCardsRated++;
     res.status(200).send({ card: currentCard.get(streamerName), avg });
 });
 
 const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
+
+app.get("/api/botStats", (req, res) => {
+    const payload = {
+        messagesRead: nMessagesRead,
+        cardsRated: nCardsRated,
+        ratingsGiven: nRatings,
+        sheetsCreated: nArchives
+    };
+    res.status(200).send(payload);
+});
 
 
 
