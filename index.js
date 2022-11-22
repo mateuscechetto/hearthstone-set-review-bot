@@ -16,6 +16,8 @@ const sheets = new Map();
 
 const FULL_URL_SIZE = 7;
 const URL_WITHOUT_HTTP_SIZE = 5;
+const BATCH_SIZE = 30;
+
 
 let nArchives = 0;
 let nMessagesRead = 0;
@@ -38,7 +40,6 @@ app.post("/api/createArchive", async (req, res) => {
         return
     }
 
-    console.log(process.env.CLIENT_EMAIL);
 
     try {
         const doc = new GoogleSpreadsheet(archive);
@@ -84,6 +85,7 @@ let currentCard = new Map();
 let currentUsers = new Map();
 let currentCheckpoint = new Map();
 let currentSum = new Map();
+const batches = new Map();
 
 const botNames = ["streamelements", "nightbot"];
 
@@ -94,11 +96,13 @@ app.post("/api/record", (req, res) => {
         currentSum.set(streamerName, 0);
         currentCheckpoint.set(streamerName, currentCheckpoint.get(streamerName) + currentUsers.get(streamerName).length + 1);
         currentUsers.set(streamerName, []);
+        batches.set(streamerName, []);
     } else {
         currentCard.set(streamerName, cardName);
         currentSum.set(streamerName, 0);
         currentCheckpoint.set(streamerName, - 1);
         currentUsers.set(streamerName, []);
+        batches.set(streamerName, []);
 
         const tmiClient = new tmi.Client({
             channels: [streamerName]
@@ -112,11 +116,11 @@ app.post("/api/record", (req, res) => {
 
             let messageFirstChar = message.slice(0, 1);
             let messageRating = parseInt(messageFirstChar);
+            //messageRating = Math.floor(Math.random() * 4);
             if (isMessageRatingValid(messageRating)) {
                 const haveRatedAlready = currentUsers.get(streamerName).includes(tags.username);
                 if (!haveRatedAlready) {
-                    let sheet = sheets.get(streamerName);
-                    sheet.addRow({
+                    batches.get(streamerName).push({
                         Card: currentCard.get(streamerName),
                         Rating: messageRating,
                         User: tags.username
@@ -125,14 +129,28 @@ app.post("/api/record", (req, res) => {
                     currentSum.set(streamerName, currentSum.get(streamerName) + messageRating);
                     nRatings++;
                 } else {
+                    let batch = batches.get(streamerName);
+                    let index = batch.findIndex((row) => row.User == tags.username);
+                    if (index >= 0) {
+                        currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - batch[index].Rating);
+                        batch[index] = { ...batch[index], Rating: messageRating };
+                        batches.set(streamerName, batch);
+                    } else {
+                        let sheet = sheets.get(streamerName);
+                        rows = await sheet.getRows();
+                        rowToEdit = rows.find((row, index) =>
+                            index > currentCheckpoint.get(streamerName) && row._rawData[2] == tags.username
+                        );
+                        currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - rowToEdit.Rating);
+                        rowToEdit.Rating = messageRating;
+                        await rowToEdit.save();
+                    }
+
+                }
+                if (batches.get(streamerName).length == BATCH_SIZE) {
                     let sheet = sheets.get(streamerName);
-                    rows = await sheet.getRows();
-                    rowToEdit = rows.find((row, index) =>
-                        index > currentCheckpoint.get(streamerName) && row._rawData[2] == tags.username
-                    );
-                    currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - rowToEdit.Rating);
-                    rowToEdit.Rating = messageRating;
-                    await rowToEdit.save();
+                    await sheet.addRows(batches.get(streamerName));
+                    batches.set(streamerName, []);
                 }
             }
         });
@@ -142,12 +160,16 @@ app.post("/api/record", (req, res) => {
 
 });
 
-app.post("/api/stop", (req, res) => {
+app.post("/api/stop", async (req, res) => {
     const { streamerName } = req.body;
     activeTMIs.set(streamerName, false);
-    let avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
     const sheet = sheets.get(streamerName);
-    sheet.addRow({
+    if (batches.get(streamerName).length > 0) {
+        await sheet.addRows(batches.get(streamerName));
+        batches.set(streamerName, []);
+    }
+    let avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
+    await sheet.addRow({
         Card: currentCard.get(streamerName),
         Rating: avg,
         User: "CHAT AVERAGE"
