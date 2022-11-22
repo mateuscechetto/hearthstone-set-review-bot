@@ -16,7 +16,7 @@ const sheets = new Map();
 
 const FULL_URL_SIZE = 7;
 const URL_WITHOUT_HTTP_SIZE = 5;
-const BATCH_SIZE = 30;
+const BATCH_SIZE = 10;
 
 
 let nArchives = 0;
@@ -177,6 +177,124 @@ app.post("/api/stop", async (req, res) => {
 
     nCardsRated++;
     res.status(200).send({ card: currentCard.get(streamerName), avg });
+});
+
+app.post("/api/format", async (req, res) => {
+    const { link } = req.body;
+    let archive;
+    const parts = link.split('/');
+    if (parts.length == 1) {
+        archive = parts[0];
+    } else if (parts.length == FULL_URL_SIZE) {
+        archive = parts[5];
+    } else if (parts.length == URL_WITHOUT_HTTP_SIZE) {
+        archive = parts[3];
+    } else {
+        res.status(400).send({ error: "Link not valid" });
+        return
+    }
+
+    try {
+        const doc = new GoogleSpreadsheet(archive);
+        await doc.useServiceAccountAuth({
+            client_email: process.env.CLIENT_EMAIL,
+            private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n')
+        });
+
+        await doc.loadInfo();
+        const sheet = doc.sheetsByTitle["Chat"];
+        if (!sheet) {
+            return res.status(400).send({ error: 'You don\'t have a "Chat" sheet!' });
+        }
+        const rows = await sheet.getRows();
+        let map = new Map();
+        let users = new Set();
+        users.add("CHAT AVERAGE");
+        rows.forEach((row) => {
+            let [card, rating, user] = row._rawData;
+            users.add(user);
+            if (map.has(card)) {
+                map.get(card).set(user, rating);
+            } else {
+                let newMap = new Map();
+                newMap.set(user, rating);
+                map.set(card, newMap);
+            }
+        });
+
+        const newSheet = await doc.addSheet({
+            title: "Chat formatted",
+        });
+        await newSheet.resize({ rowCount: newSheet.rowCount, columnCount: users.size + 1 });
+        await newSheet.setHeaderRow(["Card", ...users]);
+
+        let newRows = [];
+        map.forEach(async (userRatingMap, card) => {
+            let obj = {};
+            userRatingMap.forEach((rating, user) => {
+                obj = { ...obj, [user]: rating }
+            });
+            newRows.push({
+                Card: card,
+                ...obj
+            })
+        });
+        await newSheet.addRows(newRows);
+
+        res.status(200).send({ success: true });
+    } catch (e) {
+        try {
+            const doc = new GoogleSpreadsheet(archive);
+            await doc.useServiceAccountAuth({
+                client_email: process.env.CLIENT_EMAIL,
+                private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n')
+            });
+
+            await doc.loadInfo();
+            const sheet = doc.sheetsByTitle["Chat"];
+            if (!sheet) {
+                return res.status(400).send({ error: 'You don\'t have a "Chat" sheet!' });
+            }
+            const rows = await sheet.getRows();
+            let map = new Map();
+            let users = new Set();
+            users.add("CHAT AVERAGE");
+            rows.forEach((row) => {
+                let [card, rating, user] = row._rawData;
+                users.add(user);
+                if (map.has(card)) {
+                    map.get(card).set(user, rating);
+                } else {
+                    let newMap = new Map();
+                    newMap.set(user, rating);
+                    map.set(card, newMap);
+                }
+            });
+
+            const newSheet = await doc.addSheet();
+            await newSheet.resize({ rowCount: newSheet.rowCount, columnCount: users.size + 1 });
+            await newSheet.setHeaderRow(["Card", ...users]);
+
+            let newRows = [];
+            map.forEach(async (userRatingMap, card) => {
+                let obj = {};
+                userRatingMap.forEach((rating, user) => {
+                    obj = { ...obj, [user]: rating }
+                });
+                newRows.push({
+                    Card: card,
+                    ...obj
+                })
+            });
+            await newSheet.addRows(newRows);
+
+            res.status(200).send({ success: true });
+        } catch (e) {
+            console.log(e);
+            res.status(400).send({ error: "Server error" });
+        }
+    }
+
 });
 
 const isMessageRatingValid = (messageRating) => {
