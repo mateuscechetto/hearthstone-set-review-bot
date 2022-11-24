@@ -3,9 +3,15 @@ import axios from 'axios';
 import { useState } from 'react';
 
 function App() {
-  const [streamerName, setStreamerName] = useState('');
-  const [spreadSheetLink, setSpreadSheetLink] = useState('');
-  const [showCard, setShowCard] = useState(false);
+  const [streamerName, setStreamerName] = useState(
+    () => localStorage.getItem('streamerName')
+  );
+  const [spreadSheetLink, setSpreadSheetLink] = useState(
+    () => localStorage.getItem('spreadSheetLink')
+  );
+  const [showCard, setShowCard] = useState(
+    () => !!localStorage.getItem('streamerName')
+  );
   const [currentCard, setCurrentCard] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [ratings, setRatings] = useState([]);
@@ -21,48 +27,60 @@ function App() {
     }).then(() => {
       setShowCard(true);
       setLoadingCreateBot(false);
+      localStorage.setItem('streamerName', streamerName);
+      localStorage.setItem('spreadSheetLink', spreadSheetLink);
     }).catch((e) => {
+      setLoadingCreateBot(false);
       //alert(e);
-      alert("Could not create sheet. Please make sure you gave permission to edit it");
+      alert("Could not create sheet. Please make sure you gave permission to edit it and there is no \"Chat\" sheet");
     });
   }
 
   const recordChat = () => {
-    axios.post("/api/record", {
-      streamerName: streamerName,
-      cardName: currentCard
-    }).then(() => {
-      setIsRecording(true);
-    }).catch(() => {
-      alert("Make sure you wrote your twitch name correctly");
+    if (streamerName !== "") {
+      axios.post("/api/record", {
+        streamerName: streamerName,
+        cardName: currentCard
+      }).then(() => {
+        setIsRecording(true);
+      }).catch((e) => {
+        alert(e.message);
 
-    });
+      });
+    }
+
   }
 
   const stopRecording = () => {
-    axios.post("/api/stop", {
-      streamerName: streamerName,
-    }).then((res) => {
-      setIsRecording(false);
-      setCurrentCard('');
-      const newRating = res.data;
-      setRatings(prevArray => [newRating, ...prevArray]);
-      setShowFormat(true);
-    }).catch(() => {
-
-    });
+    if (streamerName !== "") {
+      axios.post("/api/stop", {
+        streamerName: streamerName,
+      }).then((res) => {
+        setIsRecording(false);
+        setCurrentCard('');
+        const newRating = res.data;
+        setRatings(prevArray => [newRating, ...prevArray]);
+        //setShowFormat(true);
+      }).catch((e) => {
+        alert(e.message);
+      });
+    }
   }
 
   const formatSheet = () => {
     setLoadingFormat(true);
     axios.post("/api/format", {
-      link: spreadSheetLink,
+      streamerName: streamerName,
     }).then(() => {
       setLoadingFormat(false);
       alert("Formatted with success");
     }).catch((e) => {
       alert(e.message);
     })
+  }
+
+  const changeSheet = () => {
+    setShowCard(false);
   }
 
   return (
@@ -73,13 +91,16 @@ function App() {
         <input
           placeholder='Your twitch name'
           onChange={(event) => setStreamerName(event.target.value)}
+          value={streamerName}
           disabled={showCard} />
         <input
-          placeholder='Spreadsheet code'
+          placeholder='Spreadsheet link'
           onChange={(event) => setSpreadSheetLink(event.target.value)}
+          value={spreadSheetLink}
           disabled={showCard} />
         <button onClick={sendSheet} disabled={showCard}>Create bot</button>
       </div>
+      {showCard && <button onClick={changeSheet}>Change stream/sheet</button>}
       {loadingCreateBot && <h3>Creating bot...</h3>}
       {showFormat &&
         (

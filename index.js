@@ -5,6 +5,8 @@ const tmi = require("tmi.js");
 const app = express();
 const server = require('http').createServer(app);
 const path = require('path');
+const Stat = require('./models/stat');
+const User = require('./models/user');
 require('dotenv').config();
 
 
@@ -12,21 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-const sheets = new Map();
 
 const FULL_URL_SIZE = 7;
 const URL_WITHOUT_HTTP_SIZE = 5;
-const BATCH_SIZE = 10;
 
-
-let nArchives = 0;
-let nMessagesRead = 0;
-let nRatings = 0;
-let nCardsRated = 0;
-
-
-app.post("/api/createArchive", async (req, res) => {
-    const { link, streamerName } = req.body;
+const getDoc = async (link) => {
     let archive;
     const parts = link.split('/');
     if (parts.length == 1) {
@@ -36,10 +28,8 @@ app.post("/api/createArchive", async (req, res) => {
     } else if (parts.length == URL_WITHOUT_HTTP_SIZE) {
         archive = parts[3];
     } else {
-        res.status(400).send({ error: "Link not valid" });
-        return
+        throw { error: "Link not valid" };
     }
-
 
     try {
         const doc = new GoogleSpreadsheet(archive);
@@ -49,33 +39,29 @@ app.post("/api/createArchive", async (req, res) => {
         });
 
         await doc.loadInfo();
+        return doc;
+    } catch (e) {
+        throw e;
+    }
+};
+
+
+app.post("/api/createArchive", async (req, res) => {
+    const { link, streamerName } = req.body;
+    await User.findOneAndReplace({ name: streamerName }, { name: streamerName, sheetLink: link }, {
+        new: true,
+        upsert: true
+    });
+    try {
+        const doc = await getDoc(link);
         const newSheet = await doc.addSheet({
             headerValues: ['Card', 'Rating', 'User'],
             title: "Chat"
         });
-        sheets.set(streamerName, newSheet);
-
-        nArchives++;
+        await Stat.findOneAndUpdate({ name: "archives" }, { $inc: { value: 1 } });
         res.status(200).send({ success: true });
     } catch (e) {
-        try {
-            const doc = new GoogleSpreadsheet(archive);
-            await doc.useServiceAccountAuth({
-                client_email: process.env.CLIENT_EMAIL,
-                private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n')
-            });
-
-            await doc.loadInfo();
-            const newSheet = await doc.addSheet({
-                headerValues: ['Card', 'Rating', 'User'],
-            });
-            sheets.set(streamerName, newSheet);
-
-            nArchives++;
-            res.status(200).send({ success: true });
-        } catch (e) {
-            res.status(400).send({ error: "You need to give permission to edit the spreadsheet" });
-        }
+        res.status(400).send({ error: "You need to give permission to edit the spreadsheet and the spreadsheet must not have a Chat sheet" });
     }
 
 });
@@ -89,7 +75,7 @@ const batches = new Map();
 
 const botNames = ["streamelements", "nightbot"];
 
-app.post("/api/record", (req, res) => {
+app.post("/api/record", async (req, res) => {
     const { streamerName, cardName } = req.body;
     if (activeTMIs.has(streamerName)) {
         currentCard.set(streamerName, cardName);
@@ -100,7 +86,20 @@ app.post("/api/record", (req, res) => {
     } else {
         currentCard.set(streamerName, cardName);
         currentSum.set(streamerName, 0);
-        currentCheckpoint.set(streamerName, - 1);
+        const user = await User.findOne({ name: streamerName });
+        if (!user) {
+            return res.status(400).send({ error: "No sheet was found for that twitch channel" });
+        }
+        const link = user.sheetLink;
+        try {
+            const doc = await getDoc(link);
+            const sheet = doc.sheetsByTitle["Chat"];
+            const rows = await sheet.getRows();
+            currentCheckpoint.set(streamerName, rows.length - 1);
+        } catch (e) {
+            console.log(e);
+            return res.status(400).send({ error: "There was an error connecting to the sheet" });
+        }
         currentUsers.set(streamerName, []);
         batches.set(streamerName, []);
 
@@ -110,13 +109,14 @@ app.post("/api/record", (req, res) => {
         tmiClient.connect();
         tmiClient.on('message', async (channel, tags, message, self) => {
             if (!activeTMIs.get(streamerName)) return;
-            nMessagesRead++;
+            await Stat.findOneAndUpdate({ name: "messagesRead" }, { $inc: { value: 1 } });
+
             const isBot = botNames.includes(tags.username.toLowerCase());
             if (isBot) return;
 
             let messageFirstChar = message.slice(0, 1);
             let messageRating = parseInt(messageFirstChar);
-            //messageRating = Math.floor(Math.random() * 4);
+            messageRating = Math.floor(Math.random() * 5);
             if (isMessageRatingValid(messageRating)) {
                 const haveRatedAlready = currentUsers.get(streamerName).includes(tags.username);
                 if (!haveRatedAlready) {
@@ -127,32 +127,27 @@ app.post("/api/record", (req, res) => {
                     });
                     currentUsers.get(streamerName).push(tags.username);
                     currentSum.set(streamerName, currentSum.get(streamerName) + messageRating);
-                    nRatings++;
+                    await Stat.findOneAndUpdate({ name: "ratings" }, { $inc: { value: 1 } });
                 } else {
                     let batch = batches.get(streamerName);
-                    let index = batch.findIndex((row) => row.User == tags.username);
-                    if (index >= 0) {
-                        currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - batch[index].Rating);
-                        batch[index] = { ...batch[index], Rating: messageRating };
-                        batches.set(streamerName, batch);
-                    } else {
-                        let sheet = sheets.get(streamerName);
-                        rows = await sheet.getRows();
-                        rowToEdit = rows.find((row, index) =>
-                            index > currentCheckpoint.get(streamerName) && row._rawData[2] == tags.username
-                        );
-                        currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - rowToEdit.Rating);
-                        rowToEdit.Rating = messageRating;
-                        await rowToEdit.save();
-                    }
+                    batch.forEach((row) => {
+                        if (row.User === tags.username) {
+                            currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - row.Rating);
+                            row.Rating = messageRating;
+                        }
+                    });
+                    batches.set(streamerName, batch);
+                    // let index = batch.findIndex((row) => row.User == tags.username);
+                    // if (index >= 0) {
+                    //     currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - batch[index].Rating);
+                    //     batch[index] = { ...batch[index], Rating: messageRating };
+                    //     batches.set(streamerName, batch);
+                    // }
 
                 }
-                if (batches.get(streamerName).length == BATCH_SIZE) {
-                    let sheet = sheets.get(streamerName);
-                    await sheet.addRows(batches.get(streamerName));
-                    batches.set(streamerName, []);
-                }
+
             }
+
         });
     }
     activeTMIs.set(streamerName, true);
@@ -163,45 +158,43 @@ app.post("/api/record", (req, res) => {
 app.post("/api/stop", async (req, res) => {
     const { streamerName } = req.body;
     activeTMIs.set(streamerName, false);
-    const sheet = sheets.get(streamerName);
-    if (batches.get(streamerName).length > 0) {
+    const user = await User.findOne({ name: streamerName });
+    if (!user) {
+        return res.status(400).send({ error: "No sheet was found for that twitch channel" });
+    }
+    const link = user.sheetLink;
+    const doc = await getDoc(link);
+    const sheet = doc.sheetsByTitle["Chat"];
+
+    try {
         await sheet.addRows(batches.get(streamerName));
         batches.set(streamerName, []);
-    }
-    let avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
-    await sheet.addRow({
-        Card: currentCard.get(streamerName),
-        Rating: avg,
-        User: "CHAT AVERAGE"
-    });
+        let avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
+        await sheet.addRow({
+            Card: currentCard.get(streamerName),
+            Rating: avg,
+            User: "CHAT AVERAGE"
+        });
+        await Stat.findOneAndUpdate({ name: "cardsRated" }, { $inc: { value: 1 } });
+        res.status(200).send({ card: currentCard.get(streamerName), avg });
+    } catch (e) {
+        console.log(e);
+        res.status(400).send({ error: "Error in loading the sheet" });
 
-    nCardsRated++;
-    res.status(200).send({ card: currentCard.get(streamerName), avg });
+    }
+
 });
 
 app.post("/api/format", async (req, res) => {
-    const { link } = req.body;
-    let archive;
-    const parts = link.split('/');
-    if (parts.length == 1) {
-        archive = parts[0];
-    } else if (parts.length == FULL_URL_SIZE) {
-        archive = parts[5];
-    } else if (parts.length == URL_WITHOUT_HTTP_SIZE) {
-        archive = parts[3];
-    } else {
-        res.status(400).send({ error: "Link not valid" });
-        return
+    const { streamerName } = req.body;
+    const user = await User.findOne({ name: streamerName });
+    if (!user) {
+        res.status(400).send({ error: "No sheet was found for that twitch channel" });
+        return;
     }
-
+    const link = user.sheetLink;
     try {
-        const doc = new GoogleSpreadsheet(archive);
-        await doc.useServiceAccountAuth({
-            client_email: process.env.CLIENT_EMAIL,
-            private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n')
-        });
-
-        await doc.loadInfo();
+        const doc = await getDoc(link);
         const sheet = doc.sheetsByTitle["Chat"];
         if (!sheet) {
             return res.status(400).send({ error: 'You don\'t have a "Chat" sheet!' });
@@ -243,56 +236,8 @@ app.post("/api/format", async (req, res) => {
 
         res.status(200).send({ success: true });
     } catch (e) {
-        try {
-            const doc = new GoogleSpreadsheet(archive);
-            await doc.useServiceAccountAuth({
-                client_email: process.env.CLIENT_EMAIL,
-                private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n')
-            });
-
-            await doc.loadInfo();
-            const sheet = doc.sheetsByTitle["Chat"];
-            if (!sheet) {
-                return res.status(400).send({ error: 'You don\'t have a "Chat" sheet!' });
-            }
-            const rows = await sheet.getRows();
-            let map = new Map();
-            let users = new Set();
-            users.add("CHAT AVERAGE");
-            rows.forEach((row) => {
-                let [card, rating, user] = row._rawData;
-                users.add(user);
-                if (map.has(card)) {
-                    map.get(card).set(user, rating);
-                } else {
-                    let newMap = new Map();
-                    newMap.set(user, rating);
-                    map.set(card, newMap);
-                }
-            });
-
-            const newSheet = await doc.addSheet();
-            await newSheet.resize({ rowCount: newSheet.rowCount, columnCount: users.size + 1 });
-            await newSheet.setHeaderRow(["Card", ...users]);
-
-            let newRows = [];
-            map.forEach(async (userRatingMap, card) => {
-                let obj = {};
-                userRatingMap.forEach((rating, user) => {
-                    obj = { ...obj, [user]: rating }
-                });
-                newRows.push({
-                    Card: card,
-                    ...obj
-                })
-            });
-            await newSheet.addRows(newRows);
-
-            res.status(200).send({ success: true });
-        } catch (e) {
-            console.log(e);
-            res.status(400).send({ error: "Server error" });
-        }
+        console.log(e);
+        res.status(400).send({ error: "You must not have a Chat formatted sheet" });
     }
 
 });
@@ -301,13 +246,8 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-app.get("/api/botStats", (req, res) => {
-    const payload = {
-        messagesRead: nMessagesRead,
-        cardsRated: nCardsRated,
-        ratingsGiven: nRatings,
-        sheetsCreated: nArchives
-    };
+app.get("/api/botStats", async (req, res) => {
+    const payload = await Stat.find({});
     res.status(200).send(payload);
 });
 
