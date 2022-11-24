@@ -167,14 +167,50 @@ app.post("/api/stop", async (req, res) => {
     const sheet = doc.sheetsByTitle["Chat"];
 
     try {
-        await sheet.addRows(batches.get(streamerName));
-        batches.set(streamerName, []);
-        let avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
-        await sheet.addRow({
+        const avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
+        const map = new Map();
+        const users = new Set();
+        await sheet.loadHeaderRow();
+        const headers = sheet.headerValues;
+        const rows = batches.get(streamerName);
+        rows.push({
             Card: currentCard.get(streamerName),
             Rating: avg,
             User: "CHAT AVERAGE"
         });
+        users.add("CHAT AVERAGE");
+        headers.forEach((user) => {
+            users.add(user);
+        });
+        rows.forEach((row) => {
+            let { Card, Rating, User } = row;
+            users.add(User);
+            if (map.has(Card)) {
+                map.get(Card).set(User, Rating);
+            } else {
+                let newMap = new Map();
+                newMap.set(User, Rating);
+                map.set(Card, newMap);
+            }
+        });
+        users.delete("Card");
+
+        await sheet.resize({ rowCount: sheet.rowCount, columnCount: users.size + 1 });
+        await sheet.setHeaderRow(["Card", ...users]);
+
+        let newRows = [];
+        map.forEach((userRatingMap, card) => {
+            let obj = {};
+            userRatingMap.forEach((rating, user) => {
+                obj = { ...obj, [user]: rating }
+            });
+            newRows.push({
+                Card: card,
+                ...obj
+            })
+        });
+        await sheet.addRows(newRows);
+        batches.set(streamerName, []);
         await Stat.findOneAndUpdate({ name: "cardsRated" }, { $inc: { value: 1 } });
         res.status(200).send({ card: currentCard.get(streamerName), avg });
     } catch (e) {
