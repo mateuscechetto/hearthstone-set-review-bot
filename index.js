@@ -5,6 +5,8 @@ const tmi = require("tmi.js");
 const app = express();
 const server = require('http').createServer(app);
 const path = require('path');
+const session = require("express-session");
+const passport = require("passport");
 const Stat = require('./models/stat');
 const User = require('./models/user');
 require('dotenv').config();
@@ -13,6 +15,13 @@ require('dotenv').config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
+app.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false }));
+app.use(express.static('public'));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 const FULL_URL_SIZE = 7;
@@ -48,15 +57,16 @@ const getDoc = async (link) => {
 
 app.post("/api/createArchive", async (req, res) => {
     const { link, streamerName } = req.body;
-    await User.findOneAndReplace({ name: streamerName }, { name: streamerName, sheetLink: link }, {
-        new: true,
-        upsert: true
-    });
+
     try {
         const doc = await getDoc(link);
         const newSheet = await doc.addSheet({
-            headerValues: ['Card', 'Rating', 'User'],
+            headerValues: ['Card'],
             title: "Chat"
+        });
+        await User.findOneAndReplace({ name: streamerName }, { name: streamerName, sheetLink: link }, {
+            new: true,
+            upsert: true
         });
         await Stat.findOneAndUpdate({ name: "archives" }, { $inc: { value: 1 } });
         res.status(200).send({ success: true });
@@ -98,7 +108,7 @@ app.post("/api/record", async (req, res) => {
             currentCheckpoint.set(streamerName, rows.length - 1);
         } catch (e) {
             console.log(e);
-            return res.status(400).send({ error: "There was an error connecting to the sheet" });
+            return res.status(400).send({ error: "There was an error connecting to the \"Chat\" sheet" });
         }
         currentUsers.set(streamerName, []);
         batches.set(streamerName, []);
