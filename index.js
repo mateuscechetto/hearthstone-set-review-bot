@@ -116,7 +116,7 @@ app.post("/api/record", async (req, res) => {
 
             let messageFirstChar = message.slice(0, 1);
             let messageRating = parseInt(messageFirstChar);
-            messageRating = Math.floor(Math.random() * 5);
+            //messageRating = Math.floor(Math.random() * 5);
             if (isMessageRatingValid(messageRating)) {
                 const haveRatedAlready = currentUsers.get(streamerName).includes(tags.username);
                 if (!haveRatedAlready) {
