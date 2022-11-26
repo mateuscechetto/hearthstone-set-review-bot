@@ -7,6 +7,7 @@ const server = require('http').createServer(app);
 const path = require('path');
 const Stat = require('./models/stat');
 const User = require('./models/user');
+const hsClasses = require('./hsClasses');
 require('dotenv').config();
 
 
@@ -210,6 +211,11 @@ app.post("/api/stop", async (req, res) => {
             })
         });
         await sheet.addRows(newRows);
+        const rowCounter = (await sheet.getRows()).length + 1;
+        await sheet.loadCells(`A1:A${rowCounter}`);
+        const cell = sheet.getCellByA1(`A${rowCounter}`);
+        cell.backgroundColor = hsClasses.warlock;
+        await sheet.saveUpdatedCells();
         batches.set(streamerName, []);
         await Stat.findOneAndUpdate({ name: "cardsRated" }, { $inc: { value: 1 } });
         res.status(200).send({ card: currentCard.get(streamerName), avg });
