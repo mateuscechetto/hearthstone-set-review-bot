@@ -18,6 +18,7 @@ function App() {
   const [showFormat, setShowFormat] = useState(false);
   const [loadingFormat, setLoadingFormat] = useState(false);
   const [loadingCreateBot, setLoadingCreateBot] = useState(false);
+  const [loading, setLoading] = useState("");
 
   const sendSheet = () => {
     setLoadingCreateBot(true);
@@ -43,6 +44,7 @@ function App() {
         cardName: currentCard
       }).then(() => {
         setIsRecording(true);
+        setLoading("recording chat...");
       }).catch((e) => {
         alert(e.message);
 
@@ -53,6 +55,7 @@ function App() {
 
   const stopRecording = () => {
     if (streamerName !== "") {
+      setLoading("Saving the ratings on google sheet...");
       axios.post("/api/stop", {
         streamerName: streamerName,
       }).then((res) => {
@@ -60,6 +63,7 @@ function App() {
         setCurrentCard('');
         const newRating = res.data;
         setRatings(prevArray => [newRating, ...prevArray]);
+        setLoading("");
         //setShowFormat(true);
       }).catch((e) => {
         alert(e.message);
@@ -124,6 +128,7 @@ function App() {
               value={currentCard} />
             {!isRecording && <button onClick={recordChat}>Record chat</button>}
             {isRecording && <button onClick={stopRecording}>Stop recording</button>}
+            <h3>{loading}</h3>
           </div>
           {ratings.map((rating) => <div key={rating.card}><div className="cardListContainer"><h4 className='leftColumn'>{rating.card}</h4> <h4>Avg: {rating.avg}</h4></div></div>)}
         </>
