@@ -55,7 +55,7 @@ app.post("/api/createArchive", async (req, res) => {
     try {
         const doc = await getDoc(link);
         const newSheet = await doc.addSheet({
-            headerValues: ['Card', 'Rating', 'User'],
+            headerValues: ['Card'],
             title: "Chat"
         });
         await Stat.findOneAndUpdate({ name: "archives" }, { $inc: { value: 1 } });
@@ -116,7 +116,7 @@ app.post("/api/record", async (req, res) => {
 
             let messageFirstChar = message.slice(0, 1);
             let messageRating = parseInt(messageFirstChar);
-            //messageRating = Math.floor(Math.random() * 5);
+            messageRating = Math.floor(Math.random() * 5);
             if (isMessageRatingValid(messageRating)) {
                 const haveRatedAlready = currentUsers.get(streamerName).includes(tags.username);
                 if (!haveRatedAlready) {
@@ -195,7 +195,7 @@ app.post("/api/stop", async (req, res) => {
         });
         users.delete("Card");
 
-        await sheet.resize({ rowCount: sheet.rowCount, columnCount: users.size + 1 });
+        await sheet.resize({ rowCount: sheet.rowCount, columnCount: users.size + 1, frozenColumnCount: 2, frozenRowCount: 1 });
         await sheet.setHeaderRow(["Card", ...users]);
 
         let newRows = [];
