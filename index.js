@@ -205,7 +205,7 @@ app.post("/api/stop", async (req, res) => {
         });
         users.delete("Card");
 
-        await sheet.resize({ rowCount: sheet.rowCount, columnCount: users.size + 1 });
+        await sheet.resize({ rowCount: sheet.rowCount, columnCount: users.size + 1, frozenColumnCount: 2, frozenRowCount: 1 });
         await sheet.setHeaderRow(["Card", ...users]);
 
         let newRows = [];
