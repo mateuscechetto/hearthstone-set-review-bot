@@ -1,6 +1,9 @@
 require("dotenv").config();
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+const tmi = require("tmi.js");
 const express = require("express");
 const User = require("../models/user");
+const Stat = require('../models/stat');
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth");
 
@@ -62,6 +65,7 @@ router.post("/createArchive", async (req, res) => {
         await Stat.findOneAndUpdate({ name: "archives" }, { $inc: { value: 1 } });
         res.status(200).send({ success: true });
     } catch (e) {
+        console.log(e);
         res.status(400).send({ error: "You need to give permission to edit the spreadsheet and the spreadsheet must not have a Chat sheet" });
     }
 

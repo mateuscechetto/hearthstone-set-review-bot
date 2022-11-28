@@ -1,14 +1,11 @@
-const { GoogleSpreadsheet } = require('google-spreadsheet');
 const express = require("express");
 const cors = require("cors");
-const tmi = require("tmi.js");
 const app = express();
 const server = require('http').createServer(app);
 const path = require('path');
 const session = require("express-session");
 const passport = require("passport");
 const Stat = require('./models/stat');
-const User = require('./models/user');
 require('dotenv').config();
 
 

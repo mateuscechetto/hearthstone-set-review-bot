@@ -10,7 +10,7 @@ function App() {
     () => localStorage.getItem('spreadSheetLink')
   );
   const [showCard, setShowCard] = useState(
-    () => !!localStorage.getItem('streamerName')
+    () => !!localStorage.getItem('spreadSheetLink')
   );
   const [token, setToken] = useState(
     () => localStorage.getItem('userToken')
@@ -53,7 +53,6 @@ function App() {
     }).then(() => {
       setShowCard(true);
       setLoadingCreateBot(false);
-      localStorage.setItem('streamerName', streamerName);
       localStorage.setItem('spreadSheetLink', spreadSheetLink);
     }).catch((e) => {
       setLoadingCreateBot(false);
@@ -131,25 +130,27 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Hearthstone Set Review Bot</h1>
       {isLogged ? (
         <>
           <h2>First of all, create a Google Spreadsheet and give editor permission to: <br />
             hs-review@hs-review-bot.iam.gserviceaccount.com</h2>
+            <h3>{streamerName}</h3>
           <div>
             {/* <input
               placeholder='Your twitch name'
               onChange={(event) => setStreamerName(event.target.value)}
               value={streamerName}
               disabled={showCard} /> */}
-              <b>{streamerName}</b>
             <input
               placeholder='Spreadsheet URL'
               onChange={(event) => setSpreadSheetLink(event.target.value)}
               value={spreadSheetLink}
-              disabled={showCard} />
+              disabled={showCard} 
+              style={{width: '60%'}}/>
             <button onClick={sendSheet} disabled={showCard}>Create bot</button>
           </div>
-          {showCard && <button onClick={changeSheet}>Change stream/sheet</button>}
+          {showCard && <button onClick={changeSheet}>Change sheet URL</button>}
           {loadingCreateBot && <h3>Creating bot...</h3>}
           {showFormat &&
             (
@@ -180,7 +181,6 @@ function App() {
           )}
         </>) :
         <>
-          <h1>Hearthstone Set Review Bot</h1>
           <button onClick={login}>Login</button>
           <h3>If you already clicked login button, wait a few seconds</h3>
         </>
