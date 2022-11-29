@@ -74,7 +74,6 @@ router.post("/createArchive", async (req, res) => {
 let activeTMIs = new Map();
 let currentCard = new Map();
 let currentUsers = new Map();
-let currentCheckpoint = new Map();
 let currentSum = new Map();
 const batches = new Map();
 
@@ -87,7 +86,6 @@ router.post("/record", async (req, res) => {
     if (activeTMIs.has(streamerName)) {
         currentCard.set(streamerName, cardName);
         currentSum.set(streamerName, 0);
-        currentCheckpoint.set(streamerName, currentCheckpoint.get(streamerName) + currentUsers.get(streamerName).length + 1);
         currentUsers.set(streamerName, []);
         batches.set(streamerName, []);
     } else {
@@ -102,7 +100,6 @@ router.post("/record", async (req, res) => {
             const doc = await getDoc(link);
             const sheet = doc.sheetsByTitle["Chat"];
             const rows = await sheet.getRows();
-            currentCheckpoint.set(streamerName, rows.length - 1);
         } catch (e) {
             console.log(e);
             return res.status(400).send({ error: "There was an error connecting to the \"Chat\" sheet" });
