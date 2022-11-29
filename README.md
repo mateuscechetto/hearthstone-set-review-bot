@@ -1,6 +1,7 @@
 # Hearthstone set review bot
 
-A bot to help Twitch streamers to record their chats for Hearthstone Set Review. It lets users to participate and give their own ratings to a Google Spreadsheet
+A bot to help Twitch streamers to record their chats for Hearthstone Set Review. It lets users to participate and give their own ratings to a Google Spreadsheet.
+Live on: https://hs-set-review.herokuapp.com/
 
 ## Technologies
 
