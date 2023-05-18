@@ -76,6 +76,8 @@ let currentCard = new Map();
 let currentUsers = new Map();
 let currentSum = new Map();
 const batches = new Map();
+let sentStopRecordingMessage = false;
+let sentStartRecordingMessage = false;
 
 const botNames = ["streamelements", "nightbot"];
 
@@ -106,52 +108,72 @@ router.post("/record", async (req, res) => {
         }
         currentUsers.set(streamerName, []);
         batches.set(streamerName, []);
-
+        
+        
         const tmiClient = new tmi.Client({
+            identity: {
+                username: process.env.USERNAME,
+                password: process.env.PASSWORD,
+            },
             channels: [streamerName]
         });
         tmiClient.connect();
         tmiClient.on('message', async (channel, tags, message, self) => {
-            if (!activeTMIs.get(streamerName)) return;
-            await Stat.findOneAndUpdate({ name: "messagesRead" }, { $inc: { value: 1 } });
+            if(self) return;
+            if (!activeTMIs.get(streamerName)) {
+                if(!sentStopRecordingMessage) {
+                    const avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
+                    const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName)} ended! \n Chat average: ${avg} __________________________________________________`;
+                    tmiClient.say(channel, stopRecordingMessage);
+                    sentStopRecordingMessage = true;
+                }
+            } else {
+                if(!sentStartRecordingMessage) {
+                    const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName)} started! Give your rating by typing a number from 1 to 4 __________________________________________________`;
+                    tmiClient.say(channel, stopRecordingMessage);
+                    sentStartRecordingMessage = true;
+                }
+                await Stat.findOneAndUpdate({ name: "messagesRead" }, { $inc: { value: 1 } });
 
-            const isBot = botNames.includes(tags.username.toLowerCase());
-            if (isBot) return;
+                const isBot = botNames.includes(tags.username.toLowerCase());
+                if (isBot) return;
 
-            let messageFirstChar = message.slice(0, 1);
-            let messageRating = parseInt(messageFirstChar);
-            //messageRating = Math.floor(Math.random() * 5);
-            if (isMessageRatingValid(messageRating)) {
-                const haveRatedAlready = currentUsers.get(streamerName).includes(tags.username);
-                if (!haveRatedAlready) {
-                    batches.get(streamerName).push({
-                        Card: currentCard.get(streamerName),
-                        Rating: messageRating,
-                        User: tags.username
-                    });
-                    currentUsers.get(streamerName).push(tags.username);
-                    currentSum.set(streamerName, currentSum.get(streamerName) + messageRating);
-                    await Stat.findOneAndUpdate({ name: "ratings" }, { $inc: { value: 1 } });
-                } else {
-                    let batch = batches.get(streamerName);
-                    batch.forEach((row) => {
-                        if (row.User === tags.username) {
-                            currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - row.Rating);
-                            row.Rating = messageRating;
-                        }
-                    });
-                    batches.set(streamerName, batch);
-                    // let index = batch.findIndex((row) => row.User == tags.username);
-                    // if (index >= 0) {
-                    //     currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - batch[index].Rating);
-                    //     batch[index] = { ...batch[index], Rating: messageRating };
-                    //     batches.set(streamerName, batch);
-                    // }
+                let messageFirstChar = message.slice(0, 1);
+                let messageRating = parseInt(messageFirstChar);
+                //messageRating = Math.floor(Math.random() * 5);
+                if (isMessageRatingValid(messageRating)) {
+                    const haveRatedAlready = currentUsers.get(streamerName).includes(tags.username);
+                    if (!haveRatedAlready) {
+                        batches.get(streamerName).push({
+                            Card: currentCard.get(streamerName),
+                            Rating: messageRating,
+                            User: tags.username
+                        });
+                        currentUsers.get(streamerName).push(tags.username);
+                        currentSum.set(streamerName, currentSum.get(streamerName) + messageRating);
+                        await Stat.findOneAndUpdate({ name: "ratings" }, { $inc: { value: 1 } });
+                    } else {
+                        let batch = batches.get(streamerName);
+                        batch.forEach((row) => {
+                            if (row.User === tags.username) {
+                                currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - row.Rating);
+                                row.Rating = messageRating;
+                            }
+                        });
+                        batches.set(streamerName, batch);
+                        // let index = batch.findIndex((row) => row.User == tags.username);
+                        // if (index >= 0) {
+                        //     currentSum.set(streamerName, currentSum.get(streamerName) + messageRating - batch[index].Rating);
+                        //     batch[index] = { ...batch[index], Rating: messageRating };
+                        //     batches.set(streamerName, batch);
+                        // }
+
+                    }
 
                 }
 
             }
-
+            
         });
     }
     activeTMIs.set(streamerName, true);
