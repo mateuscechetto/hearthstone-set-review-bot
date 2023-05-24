@@ -1,0 +1,44 @@
+export enum HearthstonCardType {
+    MINION = "Minion",
+    SPELL = "Spell",
+    WEAPON = "Weapon",
+    HERO = "Hero",
+    LOCATION = "Location",
+    QUEST = "Quest",
+}
+
+export enum HearthstoneClass {
+    DEATH_KNIGHT = "Death Knight",
+    DEMON_HUNTER = "Demon Hunter",
+    DRUID = "Druid",
+    HUNTER = "Hunter",
+    MAGE = "Mage",
+    PALADIN = "Paladin",
+    PRIEST = "Priest",
+    ROGUE = "Rogue",
+    SHAMAN = "Shaman",
+    WARLOCK = "Warlock",
+    WARRIOR = "Warrior",
+    NEUTRAL = "Neutral",
+}
+
+export enum CardRarity {
+    BASIC = "Basic",
+    COMMON = "Common",
+    RARE = "Rare",
+    EPIC = "Epic",
+    LEGENDARY = "Legendary",
+}
+
+export interface HearthstoneCard {
+    name: string;
+    description: string;
+    imageURL: string;
+    expansion: string;
+    mana: number;
+    type: HearthstonCardType;
+    hsClass: HearthstoneClass; 
+    rarity: CardRarity;
+    atk?: number;
+    health?: number;
+}
