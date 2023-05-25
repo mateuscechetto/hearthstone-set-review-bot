@@ -1,0 +1,20 @@
+<p-dialog [(visible)]="shouldShowModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [dismissableMask]="true">
+    <ng-template pTemplate="header">
+    </ng-template>
+    <div class="grid">
+        <div class="col-7">
+            <img [alt]="card?.name" [src]="card?.imageURL" />
+        </div>
+        <div class="col-5 flex flex-column align-items-center gap-3 py-5">
+            <div class="text-2xl font-bold">{{ card?.name }}</div>
+            <form [formGroup]="ratingForm">
+                <div class="flex flex-column gap-3 py-5">
+                    <div class="text-2xl font-bold"> Your Rating</div>
+                    <p-rating formControlName="userRating" [stars]="4" [cancel]="false" (onRate)="changedRate($event)"></p-rating>
+                    <div class="text-2xl font-bold">Twitch Chat Rating</div>
+                    <p-rating formControlName="chatRating" [stars]="4" [cancel]="false" (onRate)="changedRate($event)"></p-rating>
+                </div>
+            </form>   
+        </div>
+    </div>
+</p-dialog>

@@ -42,3 +42,8 @@ export interface HearthstoneCard {
     atk?: number;
     health?: number;
 }
+
+export interface RatedCard extends HearthstoneCard{
+    rating: number;
+    chatRating?: number;
+}

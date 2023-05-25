@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +14,8 @@ import { CardGridItemComponent } from './card-grid-item/card-grid-item.component
 import { CardModule } from 'primeng/card';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { CardViewModalComponent } from './card-view-modal/card-view-modal.component';
 
 
 
@@ -21,9 +25,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CardViewComponent,
     CardListItemComponent,
     CardGridItemComponent,
+    CardViewModalComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -32,6 +38,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DataViewModule,
     CardModule,
     RatingModule,
+    DialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
