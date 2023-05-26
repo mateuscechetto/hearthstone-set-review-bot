@@ -17,6 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { CardViewModalComponent } from './card-view-modal/card-view-modal.component';
 import { CardService } from './services/card.service';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 
 
@@ -40,6 +42,7 @@ import { CardService } from './services/card.service';
     CardModule,
     RatingModule,
     DialogModule,
+    TooltipModule,
   ],
   providers: [CardService],
   bootstrap: [AppComponent]
