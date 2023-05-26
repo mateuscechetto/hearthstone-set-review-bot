@@ -3,7 +3,7 @@ import { RatedCard } from '../models/hs-card';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-card-view-modal',
+  selector: 'app-card-view-modal[card]',
   templateUrl: './card-view-modal.component.html',
   styleUrls: ['./card-view-modal.component.scss']
 })
@@ -22,7 +22,7 @@ export class CardViewModalComponent implements OnChanges {
   }
   @Output() shouldShowModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() card?: RatedCard;
+  @Input() card!: RatedCard;
   @Output() changedCard: EventEmitter<number> = new EventEmitter<number>();
   
   ratingForm = this.fb.group({
@@ -45,10 +45,10 @@ export class CardViewModalComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: any) {
-    if (changes.card?.currentValue) {
+    if (changes.card.currentValue) {
       this.ratingForm.patchValue({
-        userRating: this.card?.rating,
-        chatRating: this.card?.chatRating
+        userRating: this.card.rating,
+        chatRating: this.card.chatRating
       });
     }
   }

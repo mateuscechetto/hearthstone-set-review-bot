@@ -3,12 +3,12 @@ import { RatedCard } from '../models/hs-card';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-card-grid-item',
+  selector: 'app-card-grid-item[card]',
   templateUrl: './card-grid-item.component.html',
   styleUrls: ['./card-grid-item.component.scss']
 })
 export class CardGridItemComponent implements OnChanges {
-  @Input() card?: RatedCard;
+  @Input() card!: RatedCard;
   @Output() imageClick: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
 
   ratingForm = this.fb.group({
@@ -21,10 +21,10 @@ export class CardGridItemComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: any) {
-    if (changes.card?.currentValue) {
+    if (changes.card.currentValue) {
       this.ratingForm.patchValue({
-        userRating: this.card?.rating,
-        chatRating: this.card?.chatRating
+        userRating: this.card.rating,
+        chatRating: this.card.chatRating
       });
     }
   }

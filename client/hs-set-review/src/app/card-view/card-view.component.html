@@ -30,4 +30,6 @@
         <app-card-grid-item [card]="card" (imageClick)="showModal($event)"></app-card-grid-item>
     </ng-template>
 </p-dataView>
-<app-card-view-modal *ngIf="shouldShowModal" [(shouldShowModal)]="shouldShowModal" [card]="modalCard" (changedCard)="changeCard($event)"></app-card-view-modal>
+<div *ngIf="shouldShowModal && modalCard">
+    <app-card-view-modal  [(shouldShowModal)]="shouldShowModal" [card]="modalCard" (changedCard)="changeCard($event)"></app-card-view-modal>
+</div>
