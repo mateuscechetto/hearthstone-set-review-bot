@@ -16,6 +16,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { CardViewModalComponent } from './card-view-modal/card-view-modal.component';
+import { CardService } from './services/card.service';
 
 
 
@@ -40,7 +41,7 @@ import { CardViewModalComponent } from './card-view-modal/card-view-modal.compon
     RatingModule,
     DialogModule,
   ],
-  providers: [],
+  providers: [CardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
