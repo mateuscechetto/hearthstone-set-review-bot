@@ -1,0 +1,12 @@
+<p-button styleClass="line-height-2" iconPos="right"
+[icon]="!isRecording ? 'pi pi-play' : ''"
+[label]="recordChatButtonLabel"
+[disabled]="isRecording"
+(onClick)="recordChat()"
+></p-button>
+<p-button [label]="'Stop'" styleClass="line-height-2 p-button-danger" iconPos="right" *ngIf="isRecording"
+icon="pi pi-pause"
+(onClick)="stopRecording()"
+></p-button>
+
+{{counterString}}

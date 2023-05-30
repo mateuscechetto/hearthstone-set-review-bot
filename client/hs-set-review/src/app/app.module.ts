@@ -18,6 +18,7 @@ import { DialogModule } from 'primeng/dialog';
 import { CardViewModalComponent } from './card-view-modal/card-view-modal.component';
 import { CardService } from './services/card.service';
 import { TooltipModule } from 'primeng/tooltip';
+import { RecordChatComponent } from './record-chat/record-chat.component';
 
 
 
@@ -29,6 +30,7 @@ import { TooltipModule } from 'primeng/tooltip';
     CardListItemComponent,
     CardGridItemComponent,
     CardViewModalComponent,
+    RecordChatComponent,
   ],
   imports: [
     BrowserModule,

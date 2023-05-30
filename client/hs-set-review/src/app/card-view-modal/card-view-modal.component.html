@@ -14,7 +14,8 @@
                     <div class="text-2xl font-bold">Twitch Chat Rating</div>
                     <p-rating formControlName="chatRating" [stars]="4" [cancel]="false" (onRate)="changedRate($event)"></p-rating>
                 </div>
-            </form>   
+            </form>
+            <app-record-chat></app-record-chat>   
         </div>
     </div>
     <ng-template pTemplate="footer">
