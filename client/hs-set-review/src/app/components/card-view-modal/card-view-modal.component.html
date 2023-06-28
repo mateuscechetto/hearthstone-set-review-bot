@@ -1,24 +1,42 @@
-<p-dialog [(visible)]="shouldShowModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [dismissableMask]="true">
+<p-dialog [(visible)]="shouldShowModal" [modal]="true" [style]="{ width: '66vw', height: '90%' }" [draggable]="false"
+    [resizable]="false" [dismissableMask]="true">
     <ng-template pTemplate="header">
     </ng-template>
     <div class="grid">
         <div class="col-7">
             <img [alt]="card.name" [src]="card.imageURL" />
         </div>
-        <div class="col-5 flex flex-column align-items-center gap-3 py-5">
+        <div class="col-5 flex flex-column align-items-center gap-3">
             <div class="text-2xl font-bold">{{ card.name }}</div>
             <form [formGroup]="ratingForm">
-                <div class="flex flex-column gap-3 py-5">
-                    <div class="text-2xl font-bold"> Your Rating</div>
-                    <p-rating formControlName="userRating" [stars]="4" [cancel]="false" (onRate)="changedRate($event)"></p-rating>
-                    <div class="text-2xl font-bold">Twitch Chat Rating</div>
-                    <p-rating formControlName="chatRating" [stars]="4" [cancel]="false" (onRate)="changedRate($event)"></p-rating>
+                <div class="flex flex-column align-items-center gap-3">
+                    <div class="flex">
+                        <p-avatar
+                            image="https://static-cdn.jtvnw.net/jtv_user_pictures/f0282b46-1953-440a-ba78-d77b3078eca3-profile_image-70x70.png"
+                            styleClass="mr-2 avatar" shape="circle"></p-avatar>
+                        <p-rating formControlName="userRating" [stars]="4" [cancel]="false"
+                            (onRate)="changedRate($event)"></p-rating>
+                    </div>
+                    <div *ngIf="true" class="flex flex-column align-items-center gap-3">
+                        <div class="flex">
+                            <p-avatar image="https://cdn.pixabay.com/photo/2021/12/10/16/38/twitch-6860918_1280.png"
+                                styleClass="mr-2 avatar" shape="circle"></p-avatar>
+                            <p-rating formControlName="chatRating" [stars]="4" [cancel]="false"
+                                [readonly]="true"></p-rating>
+                        </div>
+                        <app-record-chat></app-record-chat>
+                    </div>
                 </div>
             </form>
-            <app-record-chat></app-record-chat>   
+            <div class="grid">
+                <div *ngFor="let extraCard of card.extraCards" class="col">
+                    <img [alt]="extraCard.name" [src]="extraCard.imageURL" width="150"/>
+                </div>
+            </div>
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <span class="pi pi-question-circle" pTooltip="Use keyboard arrows to navigate between cards" tooltipPosition="left" style="font-size: 1.5rem"></span>
+        <span class="pi pi-question-circle" pTooltip="Use keyboard arrows to navigate between cards"
+            tooltipPosition="left" style="font-size: 1.5rem"></span>
     </ng-template>
 </p-dialog>
