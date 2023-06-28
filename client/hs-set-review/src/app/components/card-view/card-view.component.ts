@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { RatedCard } from '../models/hs-card';
-import { CardService } from '../services/card.service';
+import { RatedCard } from '../../models/hs-card';
+import { CardService } from '../../services/card.service';
 
 @Component({
   selector: 'app-card-view',

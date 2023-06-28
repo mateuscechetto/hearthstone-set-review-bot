@@ -6,19 +6,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CardViewComponent } from './card-view/card-view.component';
+import { CardViewComponent } from './components/card-view/card-view.component';
 import { DataViewModule } from 'primeng/dataview';
 import { CommonModule } from '@angular/common';
-import { CardListItemComponent } from './card-list-item/card-list-item.component';
-import { CardGridItemComponent } from './card-grid-item/card-grid-item.component';
+import { CardListItemComponent } from './components/card-list-item/card-list-item.component';
+import { CardGridItemComponent } from './components/card-grid-item/card-grid-item.component';
 import { CardModule } from 'primeng/card';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
-import { CardViewModalComponent } from './card-view-modal/card-view-modal.component';
+import { CardViewModalComponent } from './components/card-view-modal/card-view-modal.component';
 import { CardService } from './services/card.service';
 import { TooltipModule } from 'primeng/tooltip';
-import { RecordChatComponent } from './record-chat/record-chat.component';
+import { RecordChatComponent } from './components/record-chat/record-chat.component';
 
 
 
