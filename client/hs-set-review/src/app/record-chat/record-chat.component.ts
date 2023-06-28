@@ -12,10 +12,10 @@ export class RecordChatComponent implements OnInit {
 
   recordChatButtonLabel: 'Record Chat' | 'Recording...' = 'Record Chat';
 
-  counter: number = 6;
-  counterString: string = '0:06';
+  // counter: number = 6;
+  // counterString: string = '0:06';
 
-  counterSubscription!: Subscription;
+  // counterSubscription!: Subscription;
 
   ngOnInit(): void {
   }
@@ -24,49 +24,49 @@ export class RecordChatComponent implements OnInit {
     this.isRecording = true;
     this.updateChatButtonLabel();
 
-    this.resetCounter();
+    // this.resetCounter();
   }
 
   stopRecording() {
     this.isRecording = false;
     this.updateChatButtonLabel();
 
-    if (this.counterSubscription) {
-      this.counterSubscription.unsubscribe();
-    }
+    // if (this.counterSubscription) {
+    //   this.counterSubscription.unsubscribe();
+    // }
   }
 
   private updateChatButtonLabel() {
     this.recordChatButtonLabel = this.isRecording ? 'Recording...' : 'Record Chat';
   }
 
-  private resetCounter() {
-    this.counter = 6;
-    this.updateCounter();
-    if (this.counterSubscription) {
-      this.counterSubscription.unsubscribe();
-    }
-    this.counterSubscription = interval(1000).subscribe(
-      () =>  this.updateCounter()
-    );
-  }
+  // private resetCounter() {
+  //   this.counter = 6;
+  //   this.updateCounter();
+  //   if (this.counterSubscription) {
+  //     this.counterSubscription.unsubscribe();
+  //   }
+  //   this.counterSubscription = interval(1000).subscribe(
+  //     () =>  this.updateCounter()
+  //   );
+  // }
 
-  private updateCounter() {
-    this.counterString = this.stringfyTime(this.counter);
-    if (this.counter > 0) {
-      this.counter--;
-    } else if (this.counter == 0) {
-      this.stopRecording();
-    }
-  }
+  // private updateCounter() {
+  //   this.counterString = this.stringfyTime(this.counter);
+  //   if (this.counter > 0) {
+  //     this.counter--;
+  //   } else if (this.counter == 0) {
+  //     this.stopRecording();
+  //   }
+  // }
 
-  private stringfyTime(seconds: number): string{
-    let remainder = seconds % 60;
-    return `${(seconds / 60) >> 0}:${remainder < 10 ? '0'+ remainder : remainder}`;
-  }
+  // private stringfyTime(seconds: number): string{
+  //   let remainder = seconds % 60;
+  //   return `${(seconds / 60) >> 0}:${remainder < 10 ? '0'+ remainder : remainder}`;
+  // }
 
-  ngOnDestroy(): void {
-    this.counterSubscription.unsubscribe();
-  }
+  // ngOnDestroy(): void {
+  //   this.counterSubscription.unsubscribe();
+  // }
 
 }
