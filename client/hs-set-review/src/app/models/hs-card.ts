@@ -23,6 +23,7 @@ export enum HearthstoneClass {
 }
 
 export enum CardRarity {
+    EXTRA = "Extra",
     BASIC = "Basic",
     COMMON = "Common",
     RARE = "Rare",
@@ -37,13 +38,14 @@ export interface HearthstoneCard {
     expansion: string;
     mana: number;
     type: HearthstonCardType;
-    hsClass: HearthstoneClass; 
+    hsClass: HearthstoneClass;
     rarity: CardRarity;
     atk?: number;
     health?: number;
+    extraCards?: HearthstoneCard[]
 }
 
-export interface RatedCard extends HearthstoneCard{
+export interface RatedCard extends HearthstoneCard {
     rating: number;
     chatRating?: number;
 }
