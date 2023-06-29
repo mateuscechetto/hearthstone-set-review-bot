@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
-import { RatedCard } from '../../models/hs-card';
+import { HearthstoneCard, RatedCard } from '../../models/hs-card';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -30,6 +30,8 @@ export class CardViewModalComponent implements OnChanges {
     chatRating: [0]
   });
 
+  cardToDisplay: HearthstoneCard = this.card;
+
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key == 'ArrowRight') {
@@ -50,7 +52,17 @@ export class CardViewModalComponent implements OnChanges {
         userRating: this.card.rating,
         chatRating: this.card.chatRating
       });
+
+      this.cardToDisplay = this.card;
     }
+  }
+
+  onExtraCardHover(extraCard: HearthstoneCard) {
+    this.cardToDisplay = extraCard;
+  }
+
+  onExtraCardLeave() {
+    this.cardToDisplay = this.card;
   }
 
 
