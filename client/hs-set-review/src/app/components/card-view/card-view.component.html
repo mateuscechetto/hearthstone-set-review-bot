@@ -1,10 +1,10 @@
 <p-dataView #dv [value]="cards" [layout]="layout">
-    <ng-template pTemplate="header">
+    <!-- <ng-template pTemplate="header">
         <div class="flex justify-content-end">
-            <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
         </div>
-    </ng-template>
-    <ng-template let-product pTemplate="listItem">
+    </ng-template> -->
+    <!-- <ng-template let-product pTemplate="listItem">
         <div class="col-12">
             <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
                 <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" />
@@ -25,11 +25,12 @@
                 </div>
             </div>
         </div>
-    </ng-template>
+    </ng-template> -->
     <ng-template let-card pTemplate="gridItem">
         <app-card-grid-item [card]="card" (imageClick)="showModal($event)"></app-card-grid-item>
     </ng-template>
 </p-dataView>
 <div *ngIf="shouldShowModal && modalCard">
-    <app-card-view-modal  [(shouldShowModal)]="shouldShowModal" [card]="modalCard" (changedCard)="changeCard($event)"></app-card-view-modal>
+    <app-card-view-modal [(shouldShowModal)]="shouldShowModal" [card]="modalCard"
+        (changedCard)="changeCard($event)" (changedCardRate)="changedCardRate($event)"></app-card-view-modal>
 </div>

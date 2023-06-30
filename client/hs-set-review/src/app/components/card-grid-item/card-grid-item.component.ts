@@ -29,7 +29,8 @@ export class CardGridItemComponent implements OnChanges {
     }
   }
 
-  changedRate(event: any) {    
+  changedRate(event: any) {
+    this.card.rating = event.value;      
   }
 
   onImageClicked() {

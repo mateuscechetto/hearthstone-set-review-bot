@@ -24,5 +24,14 @@ export class CardViewComponent {
     this.modalCard = this.cards[index + event] || this.modalCard;
   }
 
+  changedCardRate(event: number) {
+    const card = this.cards.find(c => c.name == this.modalCard?.name);
+    if ( card ) {
+      const copy = {...card};
+      copy.rating = event;
+      this.cards = this.cards.map(c => c.name == copy.name ? copy : c);    
+    }
+  }
+
   constructor(private service: CardService) {}
 }

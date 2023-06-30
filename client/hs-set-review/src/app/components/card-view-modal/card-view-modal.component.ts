@@ -24,6 +24,7 @@ export class CardViewModalComponent implements OnChanges {
 
   @Input() card!: RatedCard;
   @Output() changedCard: EventEmitter<number> = new EventEmitter<number>();
+  @Output() changedCardRate: EventEmitter<number> = new EventEmitter<number>();
   
   ratingForm = this.fb.group({
     userRating: [0],
@@ -67,6 +68,7 @@ export class CardViewModalComponent implements OnChanges {
 
 
   changedRate(event: any) {
+    this.changedCardRate.emit(event.value);      
   }
 
 }
