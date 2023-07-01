@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private cookieService: CookieService) { }
+  constructor(
+    private cookieService: CookieService,
+    private http: HttpClient
+  ) { }
 
   setUserToken(token: string): void {
     this.cookieService.set('userToken', token, 7); // Expires in 7 days
@@ -23,5 +29,9 @@ export class UserService {
   isLoggedIn(): boolean {
     return this.cookieService.check('userToken');
   }
-  
+
+  public test() {
+    return this.http.get(`${environment.apiUrl}/test`);
+  }
+
 }

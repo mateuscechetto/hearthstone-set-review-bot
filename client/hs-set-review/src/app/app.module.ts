@@ -19,6 +19,7 @@ import { CardViewModalComponent } from './components/card-view-modal/card-view-m
 import { RecordChatComponent } from './components/record-chat/record-chat.component';
 import { CardService } from './services/card/card.service';
 import { UserService } from './services/user/user.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -37,6 +38,7 @@ import { UserService } from './services/user/user.service';
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     // primeng imports

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RatedCard } from '../../models/hs-card';
 import { CardService } from '../../services/card/card.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-card-view',
@@ -13,6 +14,7 @@ export class CardViewComponent {
   modalCard?: RatedCard;
   cards = this.service.getCards();
 
+  constructor(private service: CardService, private userService: UserService) {}
 
   showModal(card: RatedCard) {
     this.modalCard = card;
@@ -33,5 +35,12 @@ export class CardViewComponent {
     }
   }
 
-  constructor(private service: CardService) {}
+  test() {
+    this.userService.test().subscribe(
+      res => {
+        console.log(res);
+      }
+    )
+  }
+
 }
