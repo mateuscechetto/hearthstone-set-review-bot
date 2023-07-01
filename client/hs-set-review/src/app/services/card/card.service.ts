@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RatedCard } from '../models/hs-card';
-import { cardsMock } from '../mockData/cards.mock';
+import { RatedCard } from '../../models/hs-card';
+import { cardsMock } from '../../mockData/cards.mock';
 
 @Injectable({
   providedIn: 'root'

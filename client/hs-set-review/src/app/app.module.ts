@@ -17,7 +17,8 @@ import { CardListItemComponent } from './components/card-list-item/card-list-ite
 import { CardViewComponent } from './components/card-view/card-view.component';
 import { CardViewModalComponent } from './components/card-view-modal/card-view-modal.component';
 import { RecordChatComponent } from './components/record-chat/record-chat.component';
-import { CardService } from './services/card.service';
+import { CardService } from './services/card/card.service';
+import { UserService } from './services/user/user.service';
 
 
 
@@ -49,7 +50,7 @@ import { CardService } from './services/card.service';
 
     AppRoutingModule,
   ],
-  providers: [CardService],
+  providers: [CardService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
