@@ -17,10 +17,6 @@ app.use(cors({
     ], credentials: true
 }));
 
-app.get('/test', (req, res) => {
-    res.status(200).send({ message: "it works" })
-})
-
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 app.use(express.static('public'));

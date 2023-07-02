@@ -83,15 +83,29 @@ router.get('/twitch/callback', passport.authenticate('twitch', { successRedirect
 
 router.get('/login/success', (req, res) => {
     if (req.user) {
-        res.status(200).send({
-            user: req.user
-        });
+        const user = {
+            name: req.user.data[0].display_name,
+            image: req.user.data[0].profile_image_url,
+            view_count: req.user.data[0].view_count,
+            userToken: req.user.userToken
+        }
+        res.status(200).send(
+            user
+        );
     }
 });
 
 router.get('/logout', (req, res) => {
     req.logout();
     res.redirect(FRONTEND_URL);
+});
+
+router.get('/hasUser', async (req, res) => {
+    const regex = new RegExp(["^", req.query.username.toLowerCase(), "$"].join(""), "i");
+    const hasUser = !!await User.exists({ name: regex });
+    res.status(200).send(
+        hasUser
+    );
 });
 
 module.exports = app => app.use('/api/auth', router);

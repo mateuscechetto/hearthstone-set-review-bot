@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -45,5 +45,13 @@ export class UserService {
     });
   }
 
+  public hasUser(username: string): Observable<boolean> {
+    return this.http.get<any>(`${environment.apiUrl}/api/auth/hasUser`, {
+      withCredentials: true,
+      params: {
+        username
+      }
+    });
+  }
 
 }

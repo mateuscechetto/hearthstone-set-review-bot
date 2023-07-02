@@ -20,6 +20,7 @@ import { RecordChatComponent } from './components/record-chat/record-chat.compon
 import { CardService } from './services/card/card.service';
 import { UserService } from './services/user/user.service';
 import { HttpClientModule } from '@angular/common/http';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 
@@ -32,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
     CardGridItemComponent,
     CardViewModalComponent,
     RecordChatComponent,
+    NotFoundComponent,
   ],
   imports: [
     // angular imports
