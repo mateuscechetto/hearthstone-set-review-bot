@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
+import { CardViewComponent } from './components/card-view/card-view.component';
 
 const routes: Routes = [
-  { path: '', component: AppComponent },
-  { path: ':username', component: AppComponent },
+  { path: '', component: CardViewComponent },
+  { path: ':username', component: CardViewComponent },
 
 ];
 

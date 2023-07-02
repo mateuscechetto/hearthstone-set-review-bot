@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -33,5 +34,16 @@ export class UserService {
   public test() {
     return this.http.get(`${environment.apiUrl}/test`);
   }
+
+  public login() {
+    window.open(`${environment.apiUrl}/api/auth/twitch`, '_self');
+  }
+
+  public getUser() {
+    return this.http.get<any>(`${environment.apiUrl}/api/auth/login/success`, {
+      withCredentials: true
+    });
+  }
+
 
 }

@@ -43,4 +43,14 @@ export class CardViewComponent {
     )
   }
 
+  login() {
+    this.userService.login();
+  }
+
+  ngOnInit() {
+    this.userService.getUser().subscribe((resObject) => {
+      console.log(resObject);
+    });
+  }
+
 }
