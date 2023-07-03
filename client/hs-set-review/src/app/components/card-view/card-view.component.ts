@@ -26,12 +26,13 @@ export class CardViewComponent {
   ) { }
 
   ngOnInit() {
-    forkJoin({
-      loggedUser: this.userService.getUser(),
-      pageUser: this.userService.getUserByUsername(this.route.snapshot.params['username']),
-    }).subscribe(({ loggedUser, pageUser }) => {
-      this.loggedUser = loggedUser;
-      this.pageUser = pageUser;
+    this.userService.getUserByUsername(this.route.snapshot.params['username']).subscribe(
+      pageUser => this.pageUser = pageUser
+    );
+
+    this.userService.getUser().subscribe({
+      next: (loggedUser) => this.loggedUser = loggedUser,
+      error: (e) => this.loggedUser = undefined
     });
 
   }
