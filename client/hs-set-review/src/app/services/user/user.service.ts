@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { User } from 'src/app/models/user';
 
 
 @Injectable({
@@ -31,17 +32,22 @@ export class UserService {
     return this.cookieService.check('userToken');
   }
 
-  public test() {
-    return this.http.get(`${environment.apiUrl}/test`);
-  }
-
-  public login() {
+  public login(): void {
     window.open(`${environment.apiUrl}/api/auth/twitch`, '_self');
   }
 
-  public getUser() {
+  public getUser(): Observable<User> {
     return this.http.get<any>(`${environment.apiUrl}/api/auth/login/success`, {
       withCredentials: true
+    });
+  }
+
+  public getUserByUsername(username: string): Observable<User> {
+    return this.http.get<any>(`${environment.apiUrl}/api/auth/user`, {
+      withCredentials: true,
+      params: {
+        username
+      }
     });
   }
 

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { RatedCard } from '../../models/hs-card';
 import { CardService } from '../../services/card/card.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { User } from 'src/app/models/user';
+import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-card-view',
@@ -13,12 +16,33 @@ export class CardViewComponent {
   shouldShowModal = false;
   modalCard?: RatedCard;
   cards = this.service.getCards();
+  loggedUser: User | undefined;
+  pageUser: User | undefined;
 
-  constructor(private service: CardService, private userService: UserService) {}
+  constructor(
+    private service: CardService,
+    private userService: UserService,
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit() {
+    forkJoin({
+      loggedUser: this.userService.getUser(),
+      pageUser: this.userService.getUserByUsername(this.route.snapshot.params['username']),
+    }).subscribe(({ loggedUser, pageUser }) => {
+      this.loggedUser = loggedUser;
+      this.pageUser = pageUser;
+    });
+
+  }
+
+  login() {
+    this.userService.login();
+  }
 
   showModal(card: RatedCard) {
     this.modalCard = card;
-    this.shouldShowModal = true;  
+    this.shouldShowModal = true;
   }
 
   changeCard(event: number) {
@@ -28,29 +52,11 @@ export class CardViewComponent {
 
   changedCardRate(event: number) {
     const card = this.cards.find(c => c.name == this.modalCard?.name);
-    if ( card ) {
-      const copy = {...card};
+    if (card) {
+      const copy = { ...card };
       copy.rating = event;
-      this.cards = this.cards.map(c => c.name == copy.name ? copy : c);    
+      this.cards = this.cards.map(c => c.name == copy.name ? copy : c);
     }
-  }
-
-  test() {
-    this.userService.test().subscribe(
-      res => {
-        console.log(res);
-      }
-    )
-  }
-
-  login() {
-    this.userService.login();
-  }
-
-  ngOnInit() {
-    this.userService.getUser().subscribe((resObject) => {
-      console.log(resObject);
-    });
   }
 
 }

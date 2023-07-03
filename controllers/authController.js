@@ -53,13 +53,12 @@ passport.use('twitch', new OAuth2Strategy({
     profile.accessToken = accessToken;
     profile.refreshToken = refreshToken;
 
-    const { display_name, profile_image_url, email, view_count } = profile.data[0];
+    const { display_name, profile_image_url, view_count } = profile.data[0];
 
 
     const update = {
         name: display_name,
-        imageURL: profile_image_url,
-        email: email,
+        image: profile_image_url,
         view_count: view_count
     };
 
@@ -92,6 +91,8 @@ router.get('/login/success', (req, res) => {
         res.status(200).send(
             user
         );
+    } else {
+        res.status(404).send();
     }
 });
 
@@ -105,6 +106,14 @@ router.get('/hasUser', async (req, res) => {
     const hasUser = !!await User.exists({ name: regex });
     res.status(200).send(
         hasUser
+    );
+});
+
+router.get('/user', async (req, res) => {
+    const regex = new RegExp(["^", req.query.username.toLowerCase(), "$"].join(""), "i");
+    const user = await User.findOne({ name: regex });
+    res.status(200).send(
+        user
     );
 });
 

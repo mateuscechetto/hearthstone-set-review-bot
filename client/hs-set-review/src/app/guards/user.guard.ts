@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../services/user/user.service';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 export const userGuard: CanActivateFn = (route, state) => {
   const service = inject(UserService);
@@ -33,6 +33,9 @@ export const loginGuard: CanActivateFn = (route, state) => {
           return false;
         }
       }
-    )
+    ), catchError(() => {
+      router.navigate(['/view', route.params['username']]);
+      return of(false);
+    })
   )
 };

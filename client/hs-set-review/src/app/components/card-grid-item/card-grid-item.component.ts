@@ -9,6 +9,7 @@ import { FormBuilder } from '@angular/forms';
 })
 export class CardGridItemComponent implements OnChanges {
   @Input() card!: RatedCard;
+  @Input() userImg: string = '';
   @Output() imageClick: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
 
   ratingForm = this.fb.group({
@@ -18,10 +19,10 @@ export class CardGridItemComponent implements OnChanges {
 
   constructor(
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnChanges(changes: any) {
-    if (changes.card.currentValue) {
+    if (changes.card?.currentValue) {
       this.ratingForm.patchValue({
         userRating: this.card.rating,
         chatRating: this.card.chatRating
@@ -30,7 +31,7 @@ export class CardGridItemComponent implements OnChanges {
   }
 
   changedRate(event: any) {
-    this.card.rating = event.value;      
+    this.card.rating = event.value;
   }
 
   onImageClicked() {

@@ -28,10 +28,11 @@
         </div>
     </ng-template> -->
     <ng-template let-card pTemplate="gridItem">
-        <app-card-grid-item [card]="card" (imageClick)="showModal($event)"></app-card-grid-item>
+        <app-card-grid-item [card]="card" [userImg]="pageUser?.image ?? ''"
+            (imageClick)="showModal($event)"></app-card-grid-item>
     </ng-template>
 </p-dataView>
 <div *ngIf="shouldShowModal && modalCard">
-    <app-card-view-modal [(shouldShowModal)]="shouldShowModal" [card]="modalCard"
-        (changedCard)="changeCard($event)" (changedCardRate)="changedCardRate($event)"></app-card-view-modal>
+    <app-card-view-modal [(shouldShowModal)]="shouldShowModal" [card]="modalCard" (changedCard)="changeCard($event)"
+        (changedCardRate)="changedCardRate($event)"></app-card-view-modal>
 </div>
