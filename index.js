@@ -20,7 +20,9 @@ app.use(cors({
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 app.use(express.static('public'));
-app.use(session({ secret: SESSION_SECRET, resave: true, saveUninitialized: false, cookie: { secure: false } }));
+const sessionMiddleware = session({ secret: SESSION_SECRET, resave: true, saveUninitialized: false, cookie: { secure: false } });
+module.exports = { server, sessionMiddleware};
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 

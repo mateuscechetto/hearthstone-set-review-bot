@@ -4,7 +4,7 @@ import { CardService } from '../../services/card/card.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { RatingService } from 'src/app/services/rating/rating.service';
 
 @Component({
   selector: 'app-card-view',
@@ -22,7 +22,8 @@ export class CardViewComponent {
   constructor(
     private service: CardService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ratingService: RatingService,
   ) { }
 
   ngOnInit() {
@@ -58,6 +59,17 @@ export class CardViewComponent {
       copy.rating = event;
       this.cards = this.cards.map(c => c.name == copy.name ? copy : c);
     }
+  }
+
+  onChangedRate({ rating, card }: { rating: number, card: RatedCard }) {
+    if (!this.loggedUser) {
+      return
+    }
+    this.ratingService.rateCard(card.name, rating, this.loggedUser.userToken).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
   }
 
 }

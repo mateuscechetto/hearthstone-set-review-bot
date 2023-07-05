@@ -12,7 +12,7 @@
                 <div class="flex">
                     <p-avatar [image]="userImg" styleClass="mr-2 avatar" shape="circle"></p-avatar>
                     <p-rating formControlName="userRating" [stars]="4" [cancel]="false"
-                        (onRate)="changedRate($event)"></p-rating>
+                        (onRate)="onChangedRate($event)"></p-rating>
                 </div>
                 <div *ngIf="true" class="flex flex-column align-items-center gap-1">
                     <div class="flex">

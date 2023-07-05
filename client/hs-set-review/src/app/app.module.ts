@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,8 +20,8 @@ import { CardViewModalComponent } from './components/card-view-modal/card-view-m
 import { RecordChatComponent } from './components/record-chat/record-chat.component';
 import { CardService } from './services/card/card.service';
 import { UserService } from './services/user/user.service';
-import { HttpClientModule } from '@angular/common/http';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { RatingService } from './services/rating/rating.service';
 
 
 
@@ -54,7 +55,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 
     AppRoutingModule,
   ],
-  providers: [CardService, UserService],
+  providers: [CardService, UserService, RatingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -11,6 +11,7 @@ export class CardGridItemComponent implements OnChanges {
   @Input() card!: RatedCard;
   @Input() userImg: string = '';
   @Output() imageClick: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
+  @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
 
   ratingForm = this.fb.group({
     userRating: [0],
@@ -30,8 +31,12 @@ export class CardGridItemComponent implements OnChanges {
     }
   }
 
-  changedRate(event: any) {
+  onChangedRate(event: any) {
     this.card.rating = event.value;
+    this.changedRate.emit({
+      rating: event.value,
+      card: this.card
+    })
   }
 
   onImageClicked() {

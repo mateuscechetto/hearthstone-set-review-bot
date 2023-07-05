@@ -2,10 +2,14 @@ require("dotenv").config();
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const tmi = require("tmi.js");
 const express = require("express");
+const status = require('http-status');
 const User = require("../models/user");
 const Stat = require('../models/stat');
+const Card = require('../models/card');
+const Rating = require('../models/rating');
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth");
+
 
 
 const FULL_URL_SIZE = 7;
@@ -49,7 +53,7 @@ router.post("/createArchive", async (req, res) => {
     const linkUser = await User.findOne({ sheetLink: link });
     if (linkUser) {
         if (linkUser.name !== streamerName) {
-            return res.status(401).send({ message: "This spreadsheet is owned by other user"});
+            return res.status(401).send({ message: "This spreadsheet is owned by other user" });
         }
     }
     try {
@@ -81,6 +85,33 @@ let sentStartRecordingMessage = false;
 
 const botNames = ["streamelements", "nightbot"];
 
+router.post('/rateCard', async (req, res) => {
+    const { cardName, rating } = req.body;
+    const userName = req.userName;
+
+    const user = await User.findOne({ name: userName });
+    if (!user) {
+        return res.status(status.BAD_REQUEST).send({ error: "Invalid user" });
+    }
+    const card = await Card.findOne({ name: cardName });
+    if (!card) {
+        return res.status(status.BAD_REQUEST).send({ error: "Invalid card" });
+    }
+
+    const update = {
+        user: user._id,
+        card: card._id,
+        rating: rating,
+    };
+
+    const ratingObj = await Rating.findOneAndUpdate({ user: user._id, card: card._id }, update, {
+        new: true,
+        upsert: true
+    });
+
+    return res.status(status.CREATED).send(ratingObj);
+});
+
 router.post("/record", async (req, res) => {
     const { cardName } = req.body;
     const streamerName = req.userName;
@@ -108,8 +139,8 @@ router.post("/record", async (req, res) => {
         }
         currentUsers.set(streamerName, []);
         batches.set(streamerName, []);
-        
-        
+
+
         const tmiClient = new tmi.Client({
             identity: {
                 username: process.env.USERNAME,
@@ -119,16 +150,16 @@ router.post("/record", async (req, res) => {
         });
         tmiClient.connect();
         tmiClient.on('message', async (channel, tags, message, self) => {
-            if(self) return;
+            if (self) return;
             if (!activeTMIs.get(streamerName)) {
-                if(!sentStopRecordingMessage) {
+                if (!sentStopRecordingMessage) {
                     const avg = currentSum.get(streamerName) / currentUsers.get(streamerName).length;
                     const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName)} ended! \n Chat average: ${avg} __________________________________________________`;
                     tmiClient.say(channel, stopRecordingMessage);
                     sentStopRecordingMessage = true;
                 }
             } else {
-                if(!sentStartRecordingMessage) {
+                if (!sentStartRecordingMessage) {
                     const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName)} started! Give your rating by typing a number from 1 to 4 __________________________________________________`;
                     tmiClient.say(channel, stopRecordingMessage);
                     sentStartRecordingMessage = true;
@@ -173,7 +204,7 @@ router.post("/record", async (req, res) => {
                 }
 
             }
-            
+
         });
     }
     activeTMIs.set(streamerName, true);
