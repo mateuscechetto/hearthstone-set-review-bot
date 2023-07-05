@@ -22,6 +22,7 @@ import { CardService } from './services/card/card.service';
 import { UserService } from './services/user/user.service';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RatingService } from './services/rating/rating.service';
+import { HomeComponent } from './components/home/home.component';
 
 
 
@@ -35,6 +36,7 @@ import { RatingService } from './services/rating/rating.service';
     CardViewModalComponent,
     RecordChatComponent,
     NotFoundComponent,
+    HomeComponent,
   ],
   imports: [
     // angular imports

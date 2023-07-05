@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
-import { RatedCard } from '../../models/hs-card';
-import { cardsMock } from '../../mockData/cards.mock';
+import { RatedCardAPIReturn } from '../../models/hs-card';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CardService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getCards(): RatedCard[] {
-    return cardsMock;
+  getCards(userName: string): Observable<RatedCardAPIReturn[]> {
+    return this.http.get<any>(`${environment.apiUrl}/api/ratedCards`, {
+      withCredentials: true,
+      params: {
+        userName
+      }
+    });
   }
 }

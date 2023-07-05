@@ -3,9 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { CardViewComponent } from './components/card-view/card-view.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { loginGuard, userGuard } from './guards/user.guard';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: CardViewComponent },
+  { path: '', component: HomeComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'view/:username', component: CardViewComponent, canActivate: [userGuard] },
   { path: ':username', component: CardViewComponent, canActivate: [userGuard, loginGuard] },

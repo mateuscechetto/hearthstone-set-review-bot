@@ -5,6 +5,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/models/user';
 import { ActivatedRoute } from '@angular/router';
 import { RatingService } from 'src/app/services/rating/rating.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-card-view',
@@ -15,7 +16,7 @@ export class CardViewComponent {
   layout: 'list' | 'grid' = 'grid';
   shouldShowModal = false;
   modalCard?: RatedCard;
-  cards = this.service.getCards();
+  cards!: RatedCard[];
   loggedUser: User | undefined;
   pageUser: User | undefined;
 
@@ -27,8 +28,24 @@ export class CardViewComponent {
   ) { }
 
   ngOnInit() {
-    this.userService.getUserByUsername(this.route.snapshot.params['username']).subscribe(
-      pageUser => this.pageUser = pageUser
+    const username = this.route.snapshot.params['username'];
+
+    this.userService.getUserByUsername(username).pipe(
+      switchMap(pageUser => {
+        this.pageUser = pageUser;
+        return this.service.getCards(pageUser.name);
+      })
+    ).subscribe(
+      cards => {
+        
+        this.cards = cards.map(card => ({
+          ...card.card,
+          rating: card.rating,
+          chatRating: card.chatRating
+        }));
+        console.log(this.cards);
+        
+      }
     );
 
     this.userService.getUser().subscribe({

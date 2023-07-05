@@ -6,6 +6,8 @@ const OAuth2Strategy = require("passport-oauth").OAuth2Strategy;
 const request = require("request");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const Card = require('../models/card');
+const Rating = require('../models/rating');
 
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_SECRET = process.env.TWITCH_SECRET;
@@ -65,10 +67,22 @@ passport.use('twitch', new OAuth2Strategy({
     const userToken = jwt.sign({ name: update.name }, process.env.JWT_SECRET);
     profile.userToken = userToken;
 
-    let user = await User.findOneAndUpdate({ name: display_name }, update, {
-        new: true,
-        upsert: true
-    });
+    let user = await User.findOne({ name: display_name });
+    if (!user) {
+        const created = await User.create(update);
+        const cards = await Card.find({ rarity: { $ne: 'Extra' } });
+        const ratings = cards.map(card => ({
+            user: created._id,
+            card: card._id,
+            rating: 0
+        }));
+
+        await Rating.insertMany(ratings);
+
+    } else {
+        user = await User.findOneAndUpdate({ name: display_name }, update);
+    }
+
 
     done(null, profile);
 }

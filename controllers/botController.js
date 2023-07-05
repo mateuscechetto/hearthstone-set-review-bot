@@ -10,8 +10,6 @@ const Rating = require('../models/rating');
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth");
 
-
-
 const FULL_URL_SIZE = 7;
 const URL_WITHOUT_HTTP_SIZE = 5;
 
@@ -45,6 +43,18 @@ const getDoc = async (link) => {
 const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
+
+router.get('/ratedCards', async (req, res) => {
+    const { userName } = req.query;
+    console.log(req.query);
+    const user = await User.findOne({ name: userName });
+    if (!user) {
+        return res.status(status.BAD_REQUEST).send({ error: "Invalid user" });
+    }
+    const cards = await Rating.find({user: user._id}).populate('card');
+    
+    return res.status(200).send(cards);
+});
 
 router.use(authMiddleware);
 router.post("/createArchive", async (req, res) => {
