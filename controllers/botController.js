@@ -51,8 +51,13 @@ router.get('/ratedCards', async (req, res) => {
     if (!user) {
         return res.status(status.BAD_REQUEST).send({ error: "Invalid user" });
     }
-    const cards = await Rating.find({user: user._id}).populate('card');
-    
+    const cards = await Rating.find({ user: user._id }).populate({
+        path: 'card',
+        populate: {
+            path: 'extraCards',
+        },
+    });
+
     return res.status(200).send(cards);
 });
 
