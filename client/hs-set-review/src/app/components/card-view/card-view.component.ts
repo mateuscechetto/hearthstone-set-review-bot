@@ -37,14 +37,13 @@ export class CardViewComponent {
       })
     ).subscribe(
       cards => {
-        
+
         this.cards = cards.map(card => ({
           ...card.card,
           rating: card.rating,
           chatRating: card.chatRating
         }));
-        console.log(this.cards);
-        
+
       }
     );
 
@@ -84,7 +83,7 @@ export class CardViewComponent {
     }
     this.ratingService.rateCard(card.name, rating, this.loggedUser.userToken).subscribe(
       data => {
-        console.log(data);
+        this.cards = this.cards.map(c => c.name == card.name ? { ...c, rating: rating } : c)
       }
     )
   }

@@ -36,7 +36,7 @@ export class CardGridItemComponent implements OnChanges {
     this.changedRate.emit({
       rating: event.value,
       card: this.card
-    })
+    });
   }
 
   onImageClicked() {

@@ -131,4 +131,32 @@ router.get('/user', async (req, res) => {
     );
 });
 
+router.put('/users/:username/isStreamer', async (req, res) => {
+    const { userName } = req.params;
+    try {
+        const user = await User.findByIdAndUpdate({ name: userName }, { isStreamer: true }, { new: true });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.put('/users/:username/notStreamer', async (req, res) => {
+    const { userName } = req.params;
+    try {
+        const user = await User.findByIdAndUpdate({ name: userName }, { isStreamer: false }, { new: true });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 module.exports = app => app.use('/api/auth', router);

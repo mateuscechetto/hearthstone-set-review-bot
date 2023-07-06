@@ -14,7 +14,7 @@ export class CardViewModalComponent implements OnChanges {
   }
   @Input()
   set shouldShowModal(value: any) {
-    if(this._shouldShowModal === value) {
+    if (this._shouldShowModal === value) {
       return;
     }
     this._shouldShowModal = value;
@@ -24,8 +24,8 @@ export class CardViewModalComponent implements OnChanges {
 
   @Input() card!: RatedCard;
   @Output() changedCard: EventEmitter<number> = new EventEmitter<number>();
-  @Output() changedCardRate: EventEmitter<number> = new EventEmitter<number>();
-  
+  @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
+
   ratingForm = this.fb.group({
     userRating: [0],
     chatRating: [0]
@@ -45,7 +45,7 @@ export class CardViewModalComponent implements OnChanges {
 
   constructor(
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnChanges(changes: any) {
     if (changes.card.currentValue) {
@@ -67,8 +67,12 @@ export class CardViewModalComponent implements OnChanges {
   }
 
 
-  changedRate(event: any) {
-    this.changedCardRate.emit(event.value);      
+  onChangedRate(event: any) {
+    this.card.rating = event.value;
+    this.changedRate.emit({
+      rating: event.value,
+      card: this.card
+    });
   }
 
 }

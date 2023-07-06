@@ -15,7 +15,7 @@
                             image="https://static-cdn.jtvnw.net/jtv_user_pictures/f0282b46-1953-440a-ba78-d77b3078eca3-profile_image-70x70.png"
                             styleClass="mr-2 avatar" shape="circle"></p-avatar>
                         <p-rating formControlName="userRating" [stars]="4" [cancel]="false"
-                            (onRate)="changedRate($event)"></p-rating>
+                            (onRate)="onChangedRate($event)"></p-rating>
                     </div>
                     <div *ngIf="true" class="flex flex-column align-items-center gap-3">
                         <div class="flex">
