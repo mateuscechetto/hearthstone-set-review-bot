@@ -11,17 +11,17 @@
                 <div class="card-description">{{ card.description }}</div>
                 <div class="flex">
                     <p-avatar [image]="userImg" styleClass="mr-2 avatar" shape="circle"></p-avatar>
-                    <p-rating formControlName="userRating" [stars]="4" [cancel]="false"
+                    <p-rating formControlName="userRating" [stars]="4" [cancel]="false" [readonly]="!isLoggedUser"
                         (onRate)="onChangedRate($event)"></p-rating>
                 </div>
-                <div *ngIf="true" class="flex flex-column align-items-center gap-1">
+                <div *ngIf="isUserStreamer" class="flex flex-column align-items-center gap-1">
                     <div class="flex">
                         <p-avatar image="https://cdn.pixabay.com/photo/2021/12/10/16/38/twitch-6860918_1280.png"
                             styleClass="mr-2 avatar" shape="circle"></p-avatar>
                         <p-rating formControlName="chatRating" [stars]="4" [cancel]="false"
                             [readonly]="true"></p-rating>
                     </div>
-                    <app-record-chat></app-record-chat>
+                    <app-record-chat *ngIf="streamerView"></app-record-chat>
                 </div>
             </div>
         </form>

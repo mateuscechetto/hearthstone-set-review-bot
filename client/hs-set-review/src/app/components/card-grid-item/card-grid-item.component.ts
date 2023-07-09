@@ -10,6 +10,9 @@ import { FormBuilder } from '@angular/forms';
 export class CardGridItemComponent implements OnChanges {
   @Input() card!: RatedCard;
   @Input() userImg: string = '';
+  @Input() isLoggedUser: boolean = false;
+  @Input() isUserStreamer: boolean = false;
+  @Input() streamerView: boolean = false;
   @Output() imageClick: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
   @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
 

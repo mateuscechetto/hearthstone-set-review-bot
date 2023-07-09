@@ -6,7 +6,6 @@ const UserSchema = new mongoose.Schema({
     view_count: Number,
     isStreamer: {
         type: Boolean,
-        default: false,
     },
     sheetLink: String,
 });

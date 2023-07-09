@@ -28,11 +28,16 @@ export class CardViewComponent {
   ) { }
 
   ngOnInit() {
+    console.log(this.route.snapshot.url.some(segment => segment.path == 'view'));
+
+
     const username = this.route.snapshot.params['username'];
 
     this.userService.getUserByUsername(username).pipe(
       switchMap(pageUser => {
         this.pageUser = pageUser;
+        console.log('pageuser', this.pageUser);
+
         return this.service.getCards(pageUser.name);
       })
     ).subscribe(
@@ -48,7 +53,12 @@ export class CardViewComponent {
     );
 
     this.userService.getUser().subscribe({
-      next: (loggedUser) => this.loggedUser = loggedUser,
+      next: (loggedUser) => {
+        this.loggedUser = loggedUser;
+        console.log('loggedUser', loggedUser);
+
+        this.userService.setUserToken(loggedUser.userToken);
+      },
       error: (e) => this.loggedUser = undefined
     });
 
@@ -81,11 +91,50 @@ export class CardViewComponent {
     if (!this.loggedUser) {
       return
     }
-    this.ratingService.rateCard(card.name, rating, this.loggedUser.userToken).subscribe(
+    this.ratingService.rateCard(card.name, rating, this.userService.getUserToken()).subscribe(
       data => {
         this.cards = this.cards.map(c => c.name == card.name ? { ...c, rating: rating } : c)
       }
     )
   }
+
+  onUserIsStreamer(): void {
+    if (this.loggedUser) {
+      this.userService.userIsStreamer(this.loggedUser.name).subscribe({
+        next: (loggedUser) => {
+          this.loggedUser = loggedUser;
+          console.log({ message: "No primeiro if", loggedUser: this.loggedUser });
+
+          if (this.pageUser?.name == this.loggedUser?.name) {
+            this.pageUser = loggedUser;
+
+            console.log({ message: "No segundo if", pageUser: this.pageUser });
+          }
+
+        },
+        error: (e) => console.log(e)
+      });
+    }
+  }
+
+  onUserIsNOTStreamer(): void {
+    if (this.loggedUser) {
+      this.userService.userIsNOTStreamer(this.loggedUser.name).subscribe({
+        next: (loggedUser) => {
+          this.loggedUser = loggedUser;
+          console.log({ message: "No primeiro if", loggedUser: this.loggedUser });
+
+          if (this.pageUser?.name == this.loggedUser?.name) {
+            this.pageUser = loggedUser;
+
+            console.log({ message: "No segundo if", pageUser: this.pageUser });
+          }
+        },
+        error: (e) => console.log(e)
+      });
+    }
+  }
+
+
 
 }

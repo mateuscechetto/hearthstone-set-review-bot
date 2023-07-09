@@ -60,4 +60,24 @@ export class UserService {
     });
   }
 
+  public userIsStreamer(username: string, userToken: string = this.getUserToken()): Observable<User> {
+    const url = `${environment.apiUrl}/api/auth/users/${username}/isStreamer`;
+    return this.http.put<any>(url, null, {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${userToken}`
+      }
+    });
+  }
+
+  public userIsNOTStreamer(username: string, userToken: string = this.getUserToken()): Observable<User> {
+    const url = `${environment.apiUrl}/api/auth/users/${username}/notStreamer`;
+    return this.http.put<any>(url, null, {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${userToken}`
+      }
+    });
+  }
+
 }

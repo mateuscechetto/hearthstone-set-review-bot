@@ -83,8 +83,8 @@ passport.use('twitch', new OAuth2Strategy({
         user = await User.findOneAndUpdate({ name: display_name }, update);
     }
 
-
-    done(null, profile);
+    console.log(user);
+    done(null, user);
 }
 ));
 
@@ -96,14 +96,8 @@ router.get('/twitch/callback', passport.authenticate('twitch', { successRedirect
 
 router.get('/login/success', (req, res) => {
     if (req.user) {
-        const user = {
-            name: req.user.data[0].display_name,
-            image: req.user.data[0].profile_image_url,
-            view_count: req.user.data[0].view_count,
-            userToken: req.user.userToken
-        }
         res.status(200).send(
-            user
+            req.user
         );
     } else {
         res.status(404).send();
@@ -131,28 +125,30 @@ router.get('/user', async (req, res) => {
     );
 });
 
-router.put('/users/:username/isStreamer', async (req, res) => {
+router.put('/users/:userName/isStreamer', async (req, res) => {
     const { userName } = req.params;
     try {
-        const user = await User.findByIdAndUpdate({ name: userName }, { isStreamer: true }, { new: true });
+        const user = await User.findOneAndUpdate({ name: userName }, { isStreamer: true }, { new: true });
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        return res.status(200).json(user);
+        req.user.isStreamer = true;
+        return res.status(200).send(user);
     } catch (error) {
         console.error('Error updating user:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-router.put('/users/:username/notStreamer', async (req, res) => {
+router.put('/users/:userName/notStreamer', async (req, res) => {
     const { userName } = req.params;
     try {
-        const user = await User.findByIdAndUpdate({ name: userName }, { isStreamer: false }, { new: true });
+        const user = await User.findOneAndUpdate({ name: userName }, { isStreamer: false }, { new: true });
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        return res.status(200).json(user);
+        req.user.isStreamer = false;
+        return res.status(200).send(user);
     } catch (error) {
         console.error('Error updating user:', error);
         return res.status(500).json({ error: 'Internal server error' });

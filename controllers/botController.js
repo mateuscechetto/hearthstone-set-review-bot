@@ -46,7 +46,6 @@ const isMessageRatingValid = (messageRating) => {
 
 router.get('/ratedCards', async (req, res) => {
     const { userName } = req.query;
-    console.log(req.query);
     const user = await User.findOne({ name: userName });
     if (!user) {
         return res.status(status.BAD_REQUEST).send({ error: "Invalid user" });
