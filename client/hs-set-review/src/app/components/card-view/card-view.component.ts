@@ -103,12 +103,9 @@ export class CardViewComponent {
       this.userService.userIsStreamer(this.loggedUser.name).subscribe({
         next: (loggedUser) => {
           this.loggedUser = loggedUser;
-          console.log({ message: "No primeiro if", loggedUser: this.loggedUser });
 
           if (this.pageUser?.name == this.loggedUser?.name) {
             this.pageUser = loggedUser;
-
-            console.log({ message: "No segundo if", pageUser: this.pageUser });
           }
 
         },
@@ -122,12 +119,9 @@ export class CardViewComponent {
       this.userService.userIsNOTStreamer(this.loggedUser.name).subscribe({
         next: (loggedUser) => {
           this.loggedUser = loggedUser;
-          console.log({ message: "No primeiro if", loggedUser: this.loggedUser });
 
           if (this.pageUser?.name == this.loggedUser?.name) {
             this.pageUser = loggedUser;
-
-            console.log({ message: "No segundo if", pageUser: this.pageUser });
           }
         },
         error: (e) => console.log(e)

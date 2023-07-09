@@ -23,6 +23,9 @@ export class CardViewModalComponent implements OnChanges {
   @Output() shouldShowModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() card!: RatedCard;
+  @Input() isLoggedUser: boolean = false;
+  @Input() isUserStreamer: boolean = false;
+  @Input() streamerView: boolean = false;
   @Output() changedCard: EventEmitter<number> = new EventEmitter<number>();
   @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
 

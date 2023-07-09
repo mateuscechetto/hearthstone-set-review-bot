@@ -48,5 +48,7 @@
 </p-dataView>
 <div *ngIf="shouldShowModal && modalCard">
     <app-card-view-modal [(shouldShowModal)]="shouldShowModal" [card]="modalCard" (changedCard)="changeCard($event)"
+        [isLoggedUser]="pageUser?.name == loggedUser?.name" [isUserStreamer]="!!pageUser?.isStreamer"
+        [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
         (changedRate)="onChangedRate($event)"></app-card-view-modal>
 </div>
