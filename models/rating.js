@@ -6,6 +6,11 @@ const RatingSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  streamer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false,
+  },
   card: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'HearthstoneCard',

@@ -43,7 +43,8 @@
         <app-card-grid-item [card]="card" [userImg]="pageUser?.image ?? ''" (imageClick)="showModal($event)"
             [isLoggedUser]="pageUser?.name == loggedUser?.name" [isUserStreamer]="!!pageUser?.isStreamer"
             [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
-            (changedRate)="onChangedRate($event)"></app-card-grid-item>
+            (changedRate)="onChangedRate($event)" (recordChat)="onRecordChat($event)"
+            (stopRecording)="onStopRecording($event)"></app-card-grid-item>
     </ng-template>
 </p-dataView>
 <div *ngIf="shouldShowModal && modalCard">

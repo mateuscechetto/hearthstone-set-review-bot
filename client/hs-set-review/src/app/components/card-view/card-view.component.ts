@@ -36,8 +36,6 @@ export class CardViewComponent {
     this.userService.getUserByUsername(username).pipe(
       switchMap(pageUser => {
         this.pageUser = pageUser;
-        console.log('pageuser', this.pageUser);
-
         return this.service.getCards(pageUser.name);
       })
     ).subscribe(
@@ -55,8 +53,8 @@ export class CardViewComponent {
     this.userService.getUser().subscribe({
       next: (loggedUser) => {
         this.loggedUser = loggedUser;
-        console.log('loggedUser', loggedUser);
-
+        console.log(loggedUser);
+        
         this.userService.setUserToken(loggedUser.userToken);
       },
       error: (e) => this.loggedUser = undefined
@@ -129,6 +127,27 @@ export class CardViewComponent {
     }
   }
 
+  onRecordChat(card: RatedCard) {
+    if (this.loggedUser) {
+      this.ratingService.recordChat(card.name, this.userService.getUserToken()).subscribe({
+        next: (ratedCard) => {
+          console.log(ratedCard);
+        },
+        error: (e) => console.log(e)
+      });
+    }
+  }
 
+  onStopRecording(card: RatedCard) {
+    if (this.loggedUser) {
+      this.ratingService.stopRecording(card.name, this.userService.getUserToken()).subscribe({
+        next: (ratedCard) => {
+          console.log(ratedCard);
+          this.cards = this.cards.map(c => c.name == card.name ? { ...c, chatRating: ratedCard.chatRating } : c)
+        },
+        error: (e) => console.log(e)
+      });
+    }
+  }
 
 }

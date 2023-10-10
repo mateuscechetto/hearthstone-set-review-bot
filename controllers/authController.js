@@ -79,12 +79,11 @@ passport.use('twitch', new OAuth2Strategy({
 
         await Rating.insertMany(ratings);
 
-    } else {
-        user = await User.findOneAndUpdate({ name: display_name }, update);
     }
 
-    console.log(user);
-    done(null, user);
+    user = await User.findOneAndUpdate({ name: display_name }, update, { new: true });
+
+    done(null, { ...user._doc, userToken });
 }
 ));
 

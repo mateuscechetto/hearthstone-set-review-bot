@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
 
 @Component({
@@ -7,6 +7,9 @@ import { Subscription, interval } from 'rxjs';
   styleUrls: ['./record-chat.component.scss']
 })
 export class RecordChatComponent implements OnInit {
+
+  @Output() onRecordChat: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onStopRecording: EventEmitter<any> = new EventEmitter<any>();
 
   isRecording: boolean = false;
 
@@ -23,6 +26,7 @@ export class RecordChatComponent implements OnInit {
   recordChat() {
     this.isRecording = true;
     this.updateChatButtonLabel();
+    this.onRecordChat.emit(true);
 
     // this.resetCounter();
   }
@@ -30,6 +34,7 @@ export class RecordChatComponent implements OnInit {
   stopRecording() {
     this.isRecording = false;
     this.updateChatButtonLabel();
+    this.onStopRecording.emit(true);
 
     // if (this.counterSubscription) {
     //   this.counterSubscription.unsubscribe();

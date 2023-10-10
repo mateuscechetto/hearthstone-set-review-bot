@@ -15,6 +15,8 @@ export class CardGridItemComponent implements OnChanges {
   @Input() streamerView: boolean = false;
   @Output() imageClick: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
   @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
+  @Output() recordChat: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
+  @Output() stopRecording: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
 
   ratingForm = this.fb.group({
     userRating: [0],
@@ -45,4 +47,13 @@ export class CardGridItemComponent implements OnChanges {
   onImageClicked() {
     this.imageClick.emit(this.card);
   }
+
+  onRecordChat() {
+    this.recordChat.emit(this.card);
+  }
+
+  onStopRecording() {
+    this.stopRecording.emit(this.card);
+  }
+
 }
