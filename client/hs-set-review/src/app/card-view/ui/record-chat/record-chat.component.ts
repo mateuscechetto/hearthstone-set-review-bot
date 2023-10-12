@@ -1,10 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
+import { NgIf } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
-  selector: 'app-record-chat',
-  templateUrl: './record-chat.component.html',
-  styleUrls: ['./record-chat.component.scss']
+    selector: 'app-record-chat',
+    templateUrl: './record-chat.component.html',
+    styleUrls: ['./record-chat.component.scss'],
+    standalone: true,
+    imports: [ButtonModule, NgIf]
 })
 export class RecordChatComponent implements OnInit {
 

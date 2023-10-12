@@ -1,11 +1,17 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { RatedCard } from '../../../shared/models/hs-card';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RecordChatComponent } from '../record-chat/record-chat.component';
+import { NgIf } from '@angular/common';
+import { RatingModule } from 'primeng/rating';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
-  selector: 'app-card-grid-item[card]',
-  templateUrl: './card-grid-item.component.html',
-  styleUrls: ['./card-grid-item.component.scss']
+    selector: 'app-card-grid-item[card]',
+    templateUrl: './card-grid-item.component.html',
+    styleUrls: ['./card-grid-item.component.scss'],
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule, AvatarModule, RatingModule, NgIf, RecordChatComponent]
 })
 export class CardGridItemComponent implements OnChanges {
   @Input() card!: RatedCard;

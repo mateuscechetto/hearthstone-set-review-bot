@@ -6,11 +6,19 @@ import { User } from 'src/app/shared/models/user';
 import { ActivatedRoute } from '@angular/router';
 import { RatingService } from 'src/app/card-view/data-access/rating/rating.service';
 import { switchMap } from 'rxjs';
+import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
+import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
+import { SharedModule } from 'primeng/api';
+import { DataViewModule } from 'primeng/dataview';
+import { ButtonModule } from 'primeng/button';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-card-view',
-  templateUrl: './card-view.page.html',
-  styleUrls: ['./card-view.page.scss']
+    selector: 'app-card-view',
+    templateUrl: './card-view.page.html',
+    styleUrls: ['./card-view.page.scss'],
+    standalone: true,
+    imports: [NgIf, ButtonModule, DataViewModule, SharedModule, CardGridItemComponent, CardViewModalComponent]
 })
 export class CardViewPage {
   layout: 'list' | 'grid' = 'grid';

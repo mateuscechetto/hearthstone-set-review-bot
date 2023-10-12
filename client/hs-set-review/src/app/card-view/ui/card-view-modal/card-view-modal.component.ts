@@ -1,11 +1,20 @@
 import { Component, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
 import { HearthstoneCard, RatedCard } from '../../../shared/models/hs-card';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TooltipModule } from 'primeng/tooltip';
+import { RecordChatComponent } from '../record-chat/record-chat.component';
+import { NgIf, NgFor } from '@angular/common';
+import { RatingModule } from 'primeng/rating';
+import { AvatarModule } from 'primeng/avatar';
+import { SharedModule } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
-  selector: 'app-card-view-modal[card]',
-  templateUrl: './card-view-modal.component.html',
-  styleUrls: ['./card-view-modal.component.scss']
+    selector: 'app-card-view-modal[card]',
+    templateUrl: './card-view-modal.component.html',
+    styleUrls: ['./card-view-modal.component.scss'],
+    standalone: true,
+    imports: [DialogModule, SharedModule, FormsModule, ReactiveFormsModule, AvatarModule, RatingModule, NgIf, RecordChatComponent, NgFor, TooltipModule]
 })
 export class CardViewModalComponent implements OnChanges {
   private _shouldShowModal: any;
