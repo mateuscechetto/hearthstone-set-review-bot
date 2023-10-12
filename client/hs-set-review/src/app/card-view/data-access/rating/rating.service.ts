@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RatedCardAPIReturn } from 'src/app/models/hs-card';
+import { RatedCardAPIReturn } from 'src/app/shared/models/hs-card';
 
 @Injectable({
   providedIn: 'root'

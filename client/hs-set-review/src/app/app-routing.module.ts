@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CardViewComponent } from './components/card-view/card-view.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { loginGuard, userGuard } from './guards/user.guard';
-import { HomeComponent } from './components/home/home.component';
+import { CardViewPage } from './card-view/feature/card-view/card-view.page';
+import { NotFoundPage } from './not-found/feature/not-found/not-found.page';
+import { loginGuard, userGuard } from './shared/guards/user.guard';
+import { HomePage } from './home/feature/home/home.page';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'not-found', component: NotFoundComponent },
-  { path: 'view/:username', component: CardViewComponent, canActivate: [userGuard] },
-  { path: ':username', component: CardViewComponent, canActivate: [userGuard, loginGuard] },
-
+  { path: 'home', component: HomePage },
+  { path: 'not-found', component: NotFoundPage },
+  { path: 'view/:username', component: CardViewPage, canActivate: [userGuard] },
+  { path: ':username', component: CardViewPage, canActivate: [userGuard, loginGuard] },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
 
 ];
 

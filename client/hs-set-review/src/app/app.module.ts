@@ -13,16 +13,16 @@ import { RatingModule } from 'primeng/rating';
 import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CardGridItemComponent } from './components/card-grid-item/card-grid-item.component';
-import { CardListItemComponent } from './components/card-list-item/card-list-item.component';
-import { CardViewComponent } from './components/card-view/card-view.component';
-import { CardViewModalComponent } from './components/card-view-modal/card-view-modal.component';
-import { RecordChatComponent } from './components/record-chat/record-chat.component';
-import { CardService } from './services/card/card.service';
-import { UserService } from './services/user/user.service';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { RatingService } from './services/rating/rating.service';
-import { HomeComponent } from './components/home/home.component';
+import { CardGridItemComponent } from './card-view/ui/card-grid-item/card-grid-item.component';
+import { CardListItemComponent } from './card-view/ui/card-list-item/card-list-item.component';
+import { CardViewPage } from './card-view/feature/card-view/card-view.page';
+import { CardViewModalComponent } from './card-view/ui/card-view-modal/card-view-modal.component';
+import { RecordChatComponent } from './card-view/ui/record-chat/record-chat.component';
+import { CardService } from './card-view/data-access/card/card.service';
+import { UserService } from './shared/data-access/user/user.service';
+import {  NotFoundPage } from './not-found/feature/not-found/not-found.page';
+import { RatingService } from './card-view/data-access/rating/rating.service';
+import { HomePage } from './home/feature/home/home.page';
 
 
 
@@ -30,13 +30,13 @@ import { HomeComponent } from './components/home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
-    CardViewComponent,
+    CardViewPage,
     CardListItemComponent,
     CardGridItemComponent,
     CardViewModalComponent,
     RecordChatComponent,
-    NotFoundComponent,
-    HomeComponent,
+    NotFoundPage,
+    HomePage,
   ],
   imports: [
     // angular imports

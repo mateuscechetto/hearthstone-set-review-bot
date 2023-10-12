@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/models/user';
+import { User } from 'src/app/shared/models/user';
 
 
 @Injectable({

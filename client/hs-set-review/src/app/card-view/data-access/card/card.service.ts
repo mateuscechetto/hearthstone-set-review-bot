@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RatedCardAPIReturn } from '../../models/hs-card';
+import { RatedCardAPIReturn } from '../../../shared/models/hs-card';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';

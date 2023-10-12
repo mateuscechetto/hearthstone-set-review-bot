@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardViewComponent } from './card-view.component';
+import { CardViewPage } from './card-view.page';
 
 describe('CardViewComponent', () => {
-  let component: CardViewComponent;
-  let fixture: ComponentFixture<CardViewComponent>;
+  let component: CardViewPage;
+  let fixture: ComponentFixture<CardViewPage>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CardViewComponent]
+      declarations: [CardViewPage]
     });
-    fixture = TestBed.createComponent(CardViewComponent);
+    fixture = TestBed.createComponent(CardViewPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

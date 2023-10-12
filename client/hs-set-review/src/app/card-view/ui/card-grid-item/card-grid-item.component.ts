@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { RatedCard } from '../../models/hs-card';
+import { RatedCard } from '../../../shared/models/hs-card';
 import { FormBuilder } from '@angular/forms';
 
 @Component({

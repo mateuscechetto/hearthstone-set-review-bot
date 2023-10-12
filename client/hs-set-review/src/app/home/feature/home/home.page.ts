@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/shared/data-access/user/user.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss']
 })
-export class HomeComponent {
+export class HomePage {
 
   constructor(
     private userService: UserService,

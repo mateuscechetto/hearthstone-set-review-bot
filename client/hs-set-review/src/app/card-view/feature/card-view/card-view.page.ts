@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { RatedCard } from '../../models/hs-card';
-import { CardService } from '../../services/card/card.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { User } from 'src/app/models/user';
+import { RatedCard } from '../../../shared/models/hs-card';
+import { CardService } from '../../data-access/card/card.service';
+import { UserService } from 'src/app/shared/data-access/user/user.service';
+import { User } from 'src/app/shared/models/user';
 import { ActivatedRoute } from '@angular/router';
-import { RatingService } from 'src/app/services/rating/rating.service';
+import { RatingService } from 'src/app/card-view/data-access/rating/rating.service';
 import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-card-view',
-  templateUrl: './card-view.component.html',
-  styleUrls: ['./card-view.component.scss']
+  templateUrl: './card-view.page.html',
+  styleUrls: ['./card-view.page.scss']
 })
-export class CardViewComponent {
+export class CardViewPage {
   layout: 'list' | 'grid' = 'grid';
   shouldShowModal = false;
   modalCard?: RatedCard;

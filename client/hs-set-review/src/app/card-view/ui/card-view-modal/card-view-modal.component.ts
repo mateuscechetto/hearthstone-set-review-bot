@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
-import { HearthstoneCard, RatedCard } from '../../models/hs-card';
+import { HearthstoneCard, RatedCard } from '../../../shared/models/hs-card';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
