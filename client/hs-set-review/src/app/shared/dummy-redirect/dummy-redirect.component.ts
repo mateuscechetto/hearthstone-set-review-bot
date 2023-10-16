@@ -22,14 +22,9 @@ export class DummyRedirectComponent implements OnInit {
   }
 
   getUser() {
-    console.log("d");
-
-
     this.http.get<any>(`${environment.apiUrl}/api/auth/login/success`, {
       withCredentials: true
-    }).subscribe((resObject) => {
-      console.log(resObject);
-    });
+    }).subscribe((resObject) => {});
   }
 
 

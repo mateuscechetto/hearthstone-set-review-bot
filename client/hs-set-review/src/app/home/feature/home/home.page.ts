@@ -20,6 +20,6 @@ export class HomePage {
   }
 
   redirect() {
-    this.router.navigate(['/molino_hs']);
+    this.router.navigate(['/review/molino_hs']);
   }
 }

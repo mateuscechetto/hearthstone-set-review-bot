@@ -29,12 +29,12 @@ export const loginGuard: CanActivateFn = (route, state) => {
         if (user.name.toLowerCase() == route.params['username'].toLowerCase()) {
           return true;
         } else {
-          router.navigate(['/view', route.params['username']]);
+          router.navigate(['/review', route.params['username'], '/view-only']);
           return false;
         }
       }
     ), catchError(() => {
-      router.navigate(['/view', route.params['username']]);
+      router.navigate(['/review', route.params['username'], '/view-only']);
       return of(false);
     })
   )

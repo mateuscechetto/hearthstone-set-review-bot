@@ -36,9 +36,6 @@ export class CardViewPage {
   ) { }
 
   ngOnInit() {
-    console.log(this.route.snapshot.url.some(segment => segment.path == 'view'));
-
-
     const username = this.route.snapshot.params['username'];
 
     this.userService.getUserByUsername(username).pipe(
@@ -60,9 +57,7 @@ export class CardViewPage {
 
     this.userService.getUser().subscribe({
       next: (loggedUser) => {
-        this.loggedUser = loggedUser;
-        console.log(loggedUser);
-        
+        this.loggedUser = loggedUser;        
         this.userService.setUserToken(loggedUser.userToken);
       },
       error: (e) => this.loggedUser = undefined
@@ -139,7 +134,6 @@ export class CardViewPage {
     if (this.loggedUser) {
       this.ratingService.recordChat(card.name, this.userService.getUserToken()).subscribe({
         next: (ratedCard) => {
-          console.log(ratedCard);
         },
         error: (e) => console.log(e)
       });
@@ -150,7 +144,6 @@ export class CardViewPage {
     if (this.loggedUser) {
       this.ratingService.stopRecording(card.name, this.userService.getUserToken()).subscribe({
         next: (ratedCard) => {
-          console.log(ratedCard);
           this.cards = this.cards.map(c => c.name == card.name ? { ...c, chatRating: ratedCard.chatRating } : c)
         },
         error: (e) => console.log(e)

@@ -8,9 +8,7 @@ import { of, Observable } from 'rxjs';
 export class ExternalUrlResolver implements Resolve<any> {
     constructor() { }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        console.log("resolve");
-        
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {        
         const url = route.queryParamMap.get('url');
         if (url) {
             window.location.href = url;
