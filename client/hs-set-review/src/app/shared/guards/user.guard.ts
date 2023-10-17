@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { UserService } from '../data-access/user/user.service';
 import { catchError, map, of } from 'rxjs';
+import { UserService } from '../data-access/user/user.service';
 
 export const userGuard: CanActivateFn = (route, state) => {
   const service = inject(UserService);
@@ -29,12 +29,12 @@ export const loginGuard: CanActivateFn = (route, state) => {
         if (user.name.toLowerCase() == route.params['username'].toLowerCase()) {
           return true;
         } else {
-          router.navigate(['/review', route.params['username'], '/view-only']);
+          router.navigate(['/review', route.params['username'], 'view-only']);
           return false;
         }
       }
     ), catchError(() => {
-      router.navigate(['/review', route.params['username'], '/view-only']);
+      router.navigate(['/review', route.params['username'], 'view-only']);
       return of(false);
     })
   )

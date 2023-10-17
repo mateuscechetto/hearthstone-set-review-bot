@@ -1,8 +1,8 @@
-import { AppComponent } from './app/app.component';
-import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
+import { AppComponent } from './app/app.component';
 import { NotFoundPage } from './app/not-found/feature/not-found/not-found.page';
 
 
