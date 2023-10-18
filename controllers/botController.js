@@ -146,13 +146,7 @@ router.post("/record", async (req, res) => {
                         card: currentCard.get(streamerName)._id,
                         rating: messageRating,
                     };
-                    const alreadyRated = await Rating.findOne({ user: user._id, card: card._id });
-                    if (alreadyRated) {
-                        await Rating.findOneAndUpdate({ user: user._id, card: card._id }, update);
-                    } else {
-                        await Rating.create(update);
-                    }
-
+                    await Rating.findOneAndUpdate({ user: user._id, card: currentCard.get(streamerName)._id }, update, { upsert: true, returnDocument: "after" });
                     await Stat.findOneAndUpdate({ name: "ratings" }, { $inc: { value: 1 } });
                 }
             }
@@ -203,6 +197,5 @@ router.post("/stop", async (req, res) => {
         });
 
 });
-
 
 module.exports = app => app.use('/api', router);
