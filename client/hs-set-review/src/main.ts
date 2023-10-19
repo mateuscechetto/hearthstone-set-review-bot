@@ -4,6 +4,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { AppComponent } from './app/app.component';
 import { NotFoundPage } from './app/not-found/feature/not-found/not-found.page';
+import { DummyRedirectComponent } from './app/shared/dummy-redirect/dummy-redirect.component';
+import { redirectGuard } from './app/shared/guards/user.guard';
 
 
 
@@ -29,6 +31,7 @@ bootstrapApplication(AppComponent, {
         redirectTo: 'home',
         pathMatch: 'full',
       },
+      { path: 'dummy', component: DummyRedirectComponent, canActivate: [redirectGuard] },
       { path: 'not-found', component: NotFoundPage },
       { path: '**', component: NotFoundPage }
     ])

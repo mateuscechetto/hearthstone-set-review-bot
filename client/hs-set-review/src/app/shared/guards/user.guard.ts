@@ -39,3 +39,17 @@ export const loginGuard: CanActivateFn = (route, state) => {
     })
   )
 };
+
+export const redirectGuard: CanActivateFn = (route, state) => {
+  const service = inject(UserService);
+  const router = inject(Router);
+  return service.getUser().pipe(
+    map(
+      user => {
+        router.navigate(['/review', user.name.toLowerCase()]);
+        return false;
+      }
+    )
+  )
+}
+

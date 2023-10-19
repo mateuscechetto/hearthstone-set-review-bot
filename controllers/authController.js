@@ -137,7 +137,7 @@ passport.use('twitch', new OAuth2Strategy({
 router.get('/twitch', passport.authenticate('twitch', { scope: 'user_read' }));
 
 // Set route for OAuth redirect
-router.get('/twitch/callback', passport.authenticate('twitch', { successRedirect: FRONTEND_URL, failureRedirect: FRONTEND_URL }));
+router.get('/twitch/callback', passport.authenticate('twitch', { successRedirect: `${FRONTEND_URL}/dummy`, failureRedirect: FRONTEND_URL }));
 
 router.get('/login/success', (req, res) => {
     if (req.user) {
