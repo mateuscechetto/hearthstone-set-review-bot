@@ -7,7 +7,7 @@
         <p-button class="ml-auto" label="Login" (onClick)="login()"></p-button>
     </ng-template>
     <ng-template #notStreamer>
-        <p-button *ngIf="loggedUser" class="mr-auto " styleClass="p-button-danger" label="I'm not a streamer"
+        <p-button *ngIf="loggedUser && loggedUser.name == pageUser?.name" class="mr-auto " styleClass="p-button-danger" label="I'm not a streamer"
             (onClick)="onUserIsNOTStreamer()"></p-button>
     </ng-template>
 </div>

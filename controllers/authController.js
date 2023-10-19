@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Card = require('../models/card');
 const Rating = require('../models/rating');
+const mongoose = require('../database/database');
 
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_SECRET = process.env.TWITCH_SECRET;
@@ -79,6 +80,51 @@ passport.use('twitch', new OAuth2Strategy({
 
         await Rating.insertMany(ratings);
 
+    } else if (!user.image) {
+        Card.aggregate([
+            {
+                $match: { rarity: { $ne: 'Extra' } } // Exclude cards with rarity 'Extra'
+            },
+            {
+                $lookup: {
+                    from: 'ratings', // The name of the ratings collection
+                    let: { cardId: '$_id' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ['$user', mongoose.Types.ObjectId(user._id)] }, // Match by user ID
+                                        { $eq: ['$card', '$$cardId'] }, // Check if the user has rated the card
+                                    ],
+                                },
+                            },
+                        },
+                    ],
+                    as: 'ratings',
+                },
+            },
+            {
+                $match: {
+                    ratings: { $size: 0 }, // Filter cards with no ratings from the user
+                },
+            },
+        ])
+            .exec(async (err, unratedCards) => {
+                if (err) {
+                    // Handle error
+                } else {
+                    // unratedCards contains cards that the user hasn't rated yet
+                    console.log(unratedCards);
+                    const ratings = unratedCards.map(card => ({
+                        user: user._id,
+                        card: card._id,
+                        rating: 0
+                    }));
+
+                    await Rating.insertMany(ratings);
+                }
+            });
     }
 
     user = await User.findOneAndUpdate({ name: display_name }, update, { new: true });
