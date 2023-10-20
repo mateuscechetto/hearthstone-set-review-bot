@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const status = require('http-status');
 const OAuth2Strategy = require("passport-oauth").OAuth2Strategy;
 const request = require("request");
 const jwt = require("jsonwebtoken");
@@ -29,7 +30,7 @@ OAuth2Strategy.prototype.userProfile = (accessToken, done) => {
     };
 
     request(options, (error, res, body) => {
-        if (res && res.statusCode == 200) {
+        if (res && res.statusCode == status.OK) {
             done(null, JSON.parse(body));
         } else {
             done(JSON.parse(body));
@@ -141,11 +142,11 @@ router.get('/twitch/callback', passport.authenticate('twitch', { successRedirect
 
 router.get('/login/success', (req, res) => {
     if (req.user) {
-        res.status(200).send(
+        res.status(status.OK).send(
             req.user
         );
     } else {
-        res.status(404).send();
+        res.status(status.NOT_FOUND).send();
     }
 });
 
@@ -157,7 +158,7 @@ router.get('/logout', (req, res) => {
 router.get('/hasUser', async (req, res) => {
     const regex = new RegExp(["^", req.query.username.toLowerCase(), "$"].join(""), "i");
     const hasUser = !!await User.exists({ name: regex });
-    res.status(200).send(
+    res.status(status.OK).send(
         hasUser
     );
 });
@@ -165,7 +166,7 @@ router.get('/hasUser', async (req, res) => {
 router.get('/user', async (req, res) => {
     const regex = new RegExp(["^", req.query.username.toLowerCase(), "$"].join(""), "i");
     const user = await User.findOne({ name: regex });
-    res.status(200).send(
+    res.status(status.OK).send(
         user
     );
 });
@@ -175,13 +176,13 @@ router.put('/users/:userName/isStreamer', async (req, res) => {
     try {
         const user = await User.findOneAndUpdate({ name: userName }, { isStreamer: true }, { new: true });
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(status.NOT_FOUND).json({ error: 'User not found' });
         }
         req.user.isStreamer = true;
-        return res.status(200).send(user);
+        return res.status(status.OK).send(user);
     } catch (error) {
         console.error('Error updating user:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(status.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
     }
 });
 
@@ -190,13 +191,13 @@ router.put('/users/:userName/notStreamer', async (req, res) => {
     try {
         const user = await User.findOneAndUpdate({ name: userName }, { isStreamer: false }, { new: true });
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(status.NOT_FOUND).json({ error: 'User not found' });
         }
         req.user.isStreamer = false;
-        return res.status(200).send(user);
+        return res.status(status.OK).send(user);
     } catch (error) {
         console.error('Error updating user:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(status.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
     }
 });
 

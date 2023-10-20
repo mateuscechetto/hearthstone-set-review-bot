@@ -162,7 +162,7 @@ router.post("/stop", async (req, res) => {
     activeTMIs.set(streamerName, false);
     const streamer = await User.findOne({ name: streamerName });
     if (!streamer) {
-        return res.status(400).send({ error: "Twtich channel not found" });
+        return res.status(status.NOT_FOUND).send({ error: "Twtich channel not found" });
     }
     let avg;
     Rating.aggregate([
