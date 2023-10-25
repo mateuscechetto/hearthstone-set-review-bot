@@ -1,6 +1,6 @@
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
@@ -18,7 +18,7 @@ import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal
     templateUrl: './card-view.page.html',
     styleUrls: ['./card-view.page.scss'],
     standalone: true,
-    imports: [NgIf, ButtonModule, DataViewModule, SharedModule, CardGridItemComponent, CardViewModalComponent]
+    imports: [NgIf, ButtonModule, DataViewModule, SharedModule, CardGridItemComponent, CardViewModalComponent, NgClass, RouterLink]
 })
 export class CardViewPage {
   layout: 'list' | 'grid' = 'grid';

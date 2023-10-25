@@ -1,13 +1,13 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
-import { HearthstoneCard, RatedCard } from '../../../shared/models/hs-card';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TooltipModule } from 'primeng/tooltip';
-import { RecordChatComponent } from '../record-chat/record-chat.component';
-import { NgIf, NgFor } from '@angular/common';
-import { RatingModule } from 'primeng/rating';
-import { AvatarModule } from 'primeng/avatar';
 import { SharedModule } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
 import { DialogModule } from 'primeng/dialog';
+import { RatingModule } from 'primeng/rating';
+import { TooltipModule } from 'primeng/tooltip';
+import { HearthstoneCard, RatedCard } from '../../../shared/models/hs-card';
+import { RecordChatComponent } from '../record-chat/record-chat.component';
 
 @Component({
     selector: 'app-card-view-modal[card]',
@@ -32,6 +32,7 @@ export class CardViewModalComponent implements OnChanges {
   @Output() shouldShowModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() card!: RatedCard;
+  @Input() userImg: string = '';
   @Input() isLoggedUser: boolean = false;
   @Input() isUserStreamer: boolean = false;
   @Input() streamerView: boolean = false;

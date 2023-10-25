@@ -1,2 +1,7 @@
-<button (click)="login()">Login</button> <br> <br><br><br><br>
-<button (click)="redirect()">Redirect</button>
+<div class="flex mr-8 ml-8">
+  <h1 class="ml-auto mr-auto">{{ title }}</h1>
+  <p-button *ngIf="loggedUser; else loginButton" label="Logout" (onClick)="logout()"></p-button>
+  <ng-template #loginButton>
+      <p-button label="Login" (onClick)="login()"></p-button>
+  </ng-template>
+</div>

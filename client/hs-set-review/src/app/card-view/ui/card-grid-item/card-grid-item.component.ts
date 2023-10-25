@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { RatedCard } from '../../../shared/models/hs-card';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RecordChatComponent } from '../record-chat/record-chat.component';
 import { NgIf } from '@angular/common';
-import { RatingModule } from 'primeng/rating';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from 'primeng/avatar';
+import { RatingModule } from 'primeng/rating';
+import { RatedCard } from '../../../shared/models/hs-card';
+import { RecordChatComponent } from '../record-chat/record-chat.component';
 
 @Component({
     selector: 'app-card-grid-item[card]',
