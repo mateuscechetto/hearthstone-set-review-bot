@@ -146,7 +146,7 @@ router.post("/record", async (req, res) => {
                         card: currentCard.get(streamerName)._id,
                         rating: messageRating,
                     };
-                    await Rating.findOneAndUpdate({ user: user._id, card: currentCard.get(streamerName)._id }, update, { upsert: true});
+                    await Rating.findOneAndUpdate({ user: user._id, card: currentCard.get(streamerName)._id }, update, { upsert: true });
                     await Stat.findOneAndUpdate({ name: "ratings" }, { $inc: { value: 1 } });
                 }
             }

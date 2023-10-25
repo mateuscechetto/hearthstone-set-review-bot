@@ -151,8 +151,10 @@ router.get('/login/success', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect(FRONTEND_URL);
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect(FRONTEND_URL);
+    });
 });
 
 router.get('/hasUser', async (req, res) => {

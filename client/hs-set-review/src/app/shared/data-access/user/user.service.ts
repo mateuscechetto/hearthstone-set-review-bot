@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/shared/models/user';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -34,6 +34,12 @@ export class UserService {
 
   public login(): void {
     window.open(`${environment.apiUrl}/api/auth/twitch`, '_self');
+  }
+
+  public logout(): Observable<void> {
+    return this.http.get<any>(`${environment.apiUrl}/api/auth/logout`, {
+      withCredentials: true
+    });
   }
 
   public getUser(): Observable<User> {

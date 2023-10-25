@@ -1,17 +1,17 @@
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { RatedCard } from '../../../shared/models/hs-card';
-import { CardService } from '../../data-access/card/card.service';
+import { ActivatedRoute } from '@angular/router';
+import { SharedModule } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { DataViewModule } from 'primeng/dataview';
+import { switchMap } from 'rxjs';
+import { RatingService } from 'src/app/card-view/data-access/rating/rating.service';
 import { UserService } from 'src/app/shared/data-access/user/user.service';
 import { User } from 'src/app/shared/models/user';
-import { ActivatedRoute } from '@angular/router';
-import { RatingService } from 'src/app/card-view/data-access/rating/rating.service';
-import { switchMap } from 'rxjs';
-import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
+import { RatedCard } from '../../../shared/models/hs-card';
+import { CardService } from '../../data-access/card/card.service';
 import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
-import { SharedModule } from 'primeng/api';
-import { DataViewModule } from 'primeng/dataview';
-import { ButtonModule } from 'primeng/button';
-import { NgIf } from '@angular/common';
+import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
 
 @Component({
     selector: 'app-card-view',
@@ -67,6 +67,10 @@ export class CardViewPage {
 
   login() {
     this.userService.login();
+  }
+
+  logout() {
+    this.userService.logout().subscribe();
   }
 
   showModal(card: RatedCard) {
