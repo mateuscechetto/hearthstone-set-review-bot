@@ -1,6 +1,7 @@
-<div class="flex  mr-8">
+<div class="flex mr-8">
     <p-button *ngIf="loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name; else notStreamer"
         class="mr-auto" label="I'm a streamer" (onClick)="onUserIsStreamer()"></p-button>
+        <h1 class="ml-auto">{{ title }}</h1>
     <p-button *ngIf="loggedUser; else loginButton" class="ml-auto" label="Logout"
         (onClick)="logout()"></p-button>
     <ng-template #loginButton>
