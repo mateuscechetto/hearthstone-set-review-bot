@@ -1,0 +1,11 @@
+.listItem {
+    border: solid #dee2e6;
+    border-width: 0 0 1px 0;
+    color: inherit; 
+    text-decoration: inherit;
+
+    &:hover {
+        background: #dee2e6;
+        cursor: pointer;
+    }
+}
