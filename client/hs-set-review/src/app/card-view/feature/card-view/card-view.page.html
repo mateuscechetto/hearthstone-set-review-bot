@@ -29,5 +29,6 @@
         [userImg]="pageUser?.image ?? ''" [isLoggedUser]="pageUser?.name == loggedUser?.name"
         [isUserStreamer]="!!pageUser?.isStreamer"
         [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
-        (changedRate)="onChangedRate($event)"></app-card-view-modal>
+        (changedRate)="onChangedRate($event)" (recordChat)="onRecordChat($event)"
+        (stopRecording)="onStopRecording($event)"></app-card-view-modal>
 </div>

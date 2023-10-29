@@ -22,7 +22,8 @@
                             <p-rating formControlName="chatRating" [stars]="4" [cancel]="false"
                                 [readonly]="true"></p-rating>
                         </div>
-                        <app-record-chat *ngIf="streamerView"></app-record-chat>
+                        <app-record-chat *ngIf="streamerView" (onRecordChat)="onRecordChat()"
+                        (onStopRecording)="onStopRecording()"></app-record-chat>
                     </div>
                 </div>
             </form>

@@ -38,6 +38,8 @@ export class CardViewModalComponent implements OnChanges {
   @Input() streamerView: boolean = false;
   @Output() changedCard: EventEmitter<number> = new EventEmitter<number>();
   @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
+  @Output() recordChat: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
+  @Output() stopRecording: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
 
   ratingForm = this.fb.group({
     userRating: [0],
@@ -86,6 +88,14 @@ export class CardViewModalComponent implements OnChanges {
       rating: event.value,
       card: this.card
     });
+  }
+
+  onRecordChat() {
+    this.recordChat.emit(this.card);
+  }
+
+  onStopRecording() {
+    this.stopRecording.emit(this.card);
   }
 
 }

@@ -55,3 +55,11 @@ export interface RatedCardAPIReturn {
     rating: number;
     chatRating?: number;
 }
+
+export interface HotCards {
+    name: string;
+    hsClass: HearthstoneClass;
+    imageURL: string;
+    avgRating: number;
+    standardDeviation: number;
+}

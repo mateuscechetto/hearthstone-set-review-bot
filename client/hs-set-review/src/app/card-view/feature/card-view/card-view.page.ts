@@ -14,11 +14,11 @@ import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.co
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
 
 @Component({
-    selector: 'app-card-view',
-    templateUrl: './card-view.page.html',
-    styleUrls: ['./card-view.page.scss'],
-    standalone: true,
-    imports: [NgIf, ButtonModule, DataViewModule, SharedModule, CardGridItemComponent, CardViewModalComponent, NgClass, RouterLink]
+  selector: 'app-card-view',
+  templateUrl: './card-view.page.html',
+  styleUrls: ['./card-view.page.scss'],
+  standalone: true,
+  imports: [NgIf, ButtonModule, DataViewModule, SharedModule, CardGridItemComponent, CardViewModalComponent, NgClass, RouterLink]
 })
 export class CardViewPage {
   layout: 'list' | 'grid' = 'grid';
@@ -67,7 +67,7 @@ export class CardViewPage {
 
     this.userService.getUser().subscribe({
       next: (loggedUser) => {
-        this.loggedUser = loggedUser;        
+        this.loggedUser = loggedUser;
         this.userService.setUserToken(loggedUser.userToken);
       },
       error: (e) => this.loggedUser = undefined
@@ -158,7 +158,10 @@ export class CardViewPage {
     if (this.loggedUser) {
       this.ratingService.stopRecording(card.name, this.userService.getUserToken()).subscribe({
         next: (ratedCard) => {
-          this.cards = this.cards.map(c => c.name == card.name ? { ...c, chatRating: ratedCard.chatRating } : c)
+          this.cards = this.cards.map(c => c.name == card.name ? { ...c, chatRating: ratedCard.chatRating } : c);
+          if (this.modalCard?.name) {
+            this.modalCard = this.cards.find(card => card.name === this.modalCard?.name);
+          }
         },
         error: (e) => console.log(e)
       });

@@ -29,6 +29,63 @@ router.get('/ratedCards', async (req, res) => {
     return res.status(status.OK).send(cards);
 });
 
+router.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({ imageURL: { $exists: true, $ne: null } }).sort('-view_count');
+        return res.status(status.OK).send(users);
+    } catch (err) {
+        return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the users', err });
+    }
+});
+
+router.get('/hotCards', async (req, res) => {
+    try {
+        const pipeline = [
+            {
+                $lookup: {
+                    from: 'ratings',
+                    localField: '_id',
+                    foreignField: 'card',
+                    as: 'ratings',
+                },
+            },
+            {
+                $unwind: '$ratings',
+            },
+            {
+                $group: {
+                    _id: '$_id',
+                    name: { $first: '$name' },
+                    hsClass: { $first: '$hsClass' },
+                    imageURL: { $first: '$imageURL' },
+                    ratings: { $push: '$ratings.rating' },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: 1,
+                    hsClass: 1,
+                    imageURL: 1,
+                    ratings: 1,
+                    avgRating: { $avg: '$ratings' },
+                    standardDeviation: { $stdDevSamp: '$ratings' },
+                },
+            },
+            {
+                $sort: {
+                    avgRating: -1,
+                },
+            },
+        ];
+        const results = await Card.aggregate(pipeline);
+        return res.status(status.OK).send(results);
+    } catch (err) {
+        console.log(err);
+        return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the cards', err });
+    }
+});
+
 router.use(authMiddleware);
 
 // TODO: Make it stateless
