@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs';
 import { RatingService } from 'src/app/card-view/data-access/rating/rating.service';
 import { UserService } from 'src/app/shared/data-access/user/user.service';
 import { User } from 'src/app/shared/models/user';
-import { RatedCard } from '../../../shared/models/hs-card';
+import { HearthstoneClass, RatedCard } from '../../../shared/models/hs-card';
 import { CardService } from '../../data-access/card/card.service';
 import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
@@ -55,13 +55,11 @@ export class CardViewPage {
       })
     ).subscribe(
       cards => {
-
-        this.cards = cards.map(card => ({
+        this.cards = this.sortCardsByClassAndMana(cards.map(card => ({
           ...card.card,
           rating: card.rating,
           chatRating: card.chatRating
-        }));
-
+        })));
       }
     );
 
@@ -98,7 +96,7 @@ export class CardViewPage {
     if (card) {
       const copy = { ...card };
       copy.rating = event;
-      this.cards = this.cards.map(c => c.name == copy.name ? copy : c);
+      this.cards = this.sortCardsByClassAndMana(this.cards.map(c => c.name == copy.name ? copy : c));
     }
   }
 
@@ -108,7 +106,9 @@ export class CardViewPage {
     }
     this.ratingService.rateCard(card.name, rating, this.userService.getUserToken()).subscribe(
       data => {
-        this.cards = this.cards.map(c => c.name == card.name ? { ...c, rating: rating } : c)
+        this.cards = this.sortCardsByClassAndMana(
+          this.cards.map(c => c.name == card.name ? { ...c, rating: rating } : c)
+        );
       }
     )
   }
@@ -158,7 +158,9 @@ export class CardViewPage {
     if (this.loggedUser) {
       this.ratingService.stopRecording(card.name, this.userService.getUserToken()).subscribe({
         next: (ratedCard) => {
-          this.cards = this.cards.map(c => c.name == card.name ? { ...c, chatRating: ratedCard.chatRating } : c);
+          this.cards = this.sortCardsByClassAndMana(
+            this.cards.map(c => c.name == card.name ? { ...c, chatRating: ratedCard.chatRating } : c)
+          );
           if (this.modalCard?.name) {
             this.modalCard = this.cards.find(card => card.name === this.modalCard?.name);
           }
@@ -166,6 +168,30 @@ export class CardViewPage {
         error: (e) => console.log(e)
       });
     }
+  }
+
+  sortCardsByClassAndMana(cards: RatedCard[]): RatedCard[] {
+    return cards.slice().sort((a, b) => {
+      if (a.hsClass === HearthstoneClass.NEUTRAL && b.hsClass !== HearthstoneClass.NEUTRAL) {
+        return 1; // 'NEUTRAL' is greater than any other class
+      } else if (a.hsClass !== HearthstoneClass.NEUTRAL && b.hsClass === HearthstoneClass.NEUTRAL) {
+        return -1; // Any other class is less than 'NEUTRAL'
+      } else {
+        // Sort by class name first
+        const classComparison = a.hsClass.localeCompare(b.hsClass);
+        if (classComparison !== 0) {
+          return classComparison;
+        } else {
+          // If classes are the same, sort by mana
+          const manaComparison = a.mana - b.mana;
+          if (manaComparison !== 0) {
+            return manaComparison;
+          } else {
+            return a.name.localeCompare(b.name);
+          }
+        }
+      }
+    });
   }
 
 }
