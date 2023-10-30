@@ -7,21 +7,23 @@
       (onClick)="login()"></p-button>
   </ng-template>
 </div>
-<div class="grid">
-  <div class="col-12 flex-order-1  md:flex-order-0 md:col-4 md:col-offset-1">
-    <p-table [value]="hotCards" styleClass="p-datatable-striped" [rows]="20">
+<div class="grid md:ml-1">
+  <div class="col-12 flex-order-1  md:flex-order-0 md:col-5 md:col-offset-0">
+    <p-table [value]="hotCards" [rows]="20">
       <ng-template pTemplate="caption"> Cards </ng-template>
       <ng-template pTemplate="header">
         <tr>
+          <th pSortableColumn="hsClass" style="width:16.6%">Class <p-sortIcon field="hsClass"></p-sortIcon></th>
           <th pSortableColumn="name" style="width:50%">Name <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="avgRating" style="width:25%">Avg <p-sortIcon field="avgRating"></p-sortIcon></th>
-          <th pSortableColumn="standardDeviation" style="width:25%">SD <p-sortIcon
+          <th pSortableColumn="avgRating" style="width:16.6%">Avg <p-sortIcon field="avgRating"></p-sortIcon></th>
+          <th pSortableColumn="standardDeviation" style="width:16.6%">SD <p-sortIcon
               field="standardDeviation"></p-sortIcon></th>
 
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-card>
-        <tr>
+        <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false" tooltipPosition="right">
+          <td>{{card.hsClass}}</td>
           <td>{{card.name}}</td>
           <td>{{card.avgRating}}</td>
           <td>{{card.standardDeviation}}</td>

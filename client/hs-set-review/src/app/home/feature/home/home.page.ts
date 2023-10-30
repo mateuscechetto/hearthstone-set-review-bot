@@ -1,10 +1,11 @@
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 import { forkJoin } from 'rxjs';
 import { UserService } from 'src/app/shared/data-access/user/user.service';
 import { HotCards } from 'src/app/shared/models/hs-card';
@@ -15,7 +16,7 @@ import { HomeService } from '../../data-access/home.service';
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [ButtonModule, NgIf, DataViewModule, AvatarModule, RouterLink, TableModule],
+  imports: [ButtonModule, NgIf, DataViewModule, AvatarModule, RouterLink, TableModule, NgClass, TooltipModule],
   standalone: true
 })
 export class HomePage {
