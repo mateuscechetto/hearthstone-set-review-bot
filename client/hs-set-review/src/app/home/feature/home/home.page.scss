@@ -19,10 +19,6 @@ tr {
         background-color: #42606d71;
     }
 
-    &.Demon {
-        background-color: #105e2688;
-    }
-
     &.Druid {
         background-color: #7036067a;
     }
@@ -61,6 +57,10 @@ tr {
 
     &.Neutral {
         background-color: #80808063;
+    }
+
+    &.Demon {
+        background-color: #105e26b9;
     }
 }
 
