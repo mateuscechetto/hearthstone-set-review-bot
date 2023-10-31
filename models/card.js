@@ -46,9 +46,29 @@ const HearthstoneCardSchema = new mongoose.Schema({
   },
   extraCards: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'HearthstoneCard',
-    },
+      name: {
+        type: String,
+        required: true,
+      },
+      imageURL: {
+        type: String,
+        required: true
+      },
+      expansion: {
+        type: String,
+        required: true
+      },
+      hsClass: {
+        type: String,
+        enum: ['Death Knight', 'Demon Hunter', 'Druid', 'Hunter', 'Mage', 'Paladin', 'Priest', 'Rogue', 'Shaman', 'Warlock', 'Warrior', 'Neutral'],
+        required: true,
+      },
+      rarity: {
+        type: String,
+        enum: ['Common', 'Rare', 'Epic', 'Legendary', 'Extra', 'Basic'],
+        required: true,
+      },
+    }
   ],
 });
 

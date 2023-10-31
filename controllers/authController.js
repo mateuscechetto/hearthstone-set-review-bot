@@ -81,7 +81,7 @@ passport.use('twitch', new OAuth2Strategy({
 
         await Rating.insertMany(ratings);
 
-    } else if (!user.image) {
+    } else {
         Card.aggregate([
             {
                 $match: { rarity: { $ne: 'Extra' } } // Exclude cards with rarity 'Extra'

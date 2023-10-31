@@ -1,0 +1,17 @@
+.fixed-image-container {
+    flex: 0 0 auto;
+    /* Prevent the image from growing */
+}
+
+.text-container {
+    flex: 1;
+    overflow-y: auto;
+    /* Enable scrolling for the text content */
+    max-height: 75vh;
+    /* Set a maximum height for scrolling */
+}
+
+:host ::ng-deep .p-dialog-content {
+    overflow-y: hidden;
+    flex-grow: 1;
+}

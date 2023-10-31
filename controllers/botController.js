@@ -67,6 +67,20 @@ router.get('/hotCards', async (req, res) => {
                     name: 1,
                     hsClass: 1,
                     imageURL: 1,
+                    ratings: {
+                        $filter: {
+                            input: '$ratings',
+                            as: 'rating',
+                            cond: { $ne: ['$$rating', 0] },
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    name: 1,
+                    hsClass: 1,
+                    imageURL: 1,
                     ratings: 1,
                     avgRating: { $avg: '$ratings' },
                     standardDeviation: { $stdDevSamp: '$ratings' },
@@ -183,7 +197,6 @@ router.post("/record", async (req, res) => {
                     tmiClient.say(channel, stopRecordingMessage);
                     sentStartRecordingMessage.set(streamerName, true);
                 }
-                await Stat.findOneAndUpdate({ name: "messagesRead" }, { $inc: { value: 1 } });
 
                 const isBot = botNames.includes(tags.username.toLowerCase());
                 if (isBot) return;
@@ -204,7 +217,6 @@ router.post("/record", async (req, res) => {
                         rating: messageRating,
                     };
                     await Rating.findOneAndUpdate({ user: user._id, card: currentCard.get(streamerName)._id }, update, { upsert: true });
-                    await Stat.findOneAndUpdate({ name: "ratings" }, { $inc: { value: 1 } });
                 }
             }
         });
@@ -248,7 +260,6 @@ router.post("/stop", async (req, res) => {
                         path: 'extraCards',
                     },
                 });
-                await Stat.findOneAndUpdate({ name: "cardsRated" }, { $inc: { value: 1 } });
                 res.status(status.OK).send(streamerChatRating);
             }
         });
