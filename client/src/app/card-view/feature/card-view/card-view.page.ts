@@ -31,7 +31,7 @@ export class CardViewPage {
   get title() {
     const name = this.pageUser?.name;
     if (!name) return '';
-    if (name.endsWith('s')) {
+    if (name.toLocaleLowerCase().endsWith('s')) {
       return `${name}' Showdown in the Badlands Card Review`;
     } else {
       return `${name}'s Showdown in the Badlands Card Review`;
