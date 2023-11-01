@@ -9,7 +9,7 @@
 </div>
 <div class="grid md:ml-1">
   <div class="col-12 flex-order-1  md:flex-order-0 md:col-5 md:col-offset-0">
-    <p-table [value]="hotCards" [rows]="20">
+    <p-table [value]="hotCards" [rows]="10" [paginator]="true">
       <ng-template pTemplate="caption"> Cards </ng-template>
       <ng-template pTemplate="header">
         <tr>

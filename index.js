@@ -35,10 +35,10 @@ require("./controllers/authController")(app);
 require("./controllers/botController")(app);
 
 
-//app.use(express.static('client/build'));
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname + '/client/build/index.html'));
-// });
+app.use(express.static('client/hs-set-review/dist/hs-set-review'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/hs-set-review/dist/hs-set-review/index.html'));
+});
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => {

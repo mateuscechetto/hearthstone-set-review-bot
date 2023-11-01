@@ -116,7 +116,6 @@ passport.use('twitch', new OAuth2Strategy({
                     // Handle error
                 } else {
                     // unratedCards contains cards that the user hasn't rated yet
-                    console.log(unratedCards);
                     const ratings = unratedCards.map(card => ({
                         user: user._id,
                         card: card._id,
