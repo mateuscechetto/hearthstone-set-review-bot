@@ -27,6 +27,7 @@ export class CardViewPage {
   cards!: RatedCard[];
   loggedUser: User | undefined;
   pageUser: User | undefined;
+  loading: boolean = false;
 
   get title() {
     const name = this.pageUser?.name;
@@ -47,6 +48,7 @@ export class CardViewPage {
 
   ngOnInit() {
     const username = this.route.snapshot.params['username'];
+    this.loading = true;
 
     this.userService.getUserByUsername(username).pipe(
       switchMap(pageUser => {
@@ -55,6 +57,7 @@ export class CardViewPage {
       })
     ).subscribe(
       cards => {
+        this.loading = false;
         this.cards = this.sortCardsByClassAndMana(cards.map(card => ({
           ...card.card,
           rating: card.rating,

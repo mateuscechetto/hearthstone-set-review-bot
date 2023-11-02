@@ -20,7 +20,8 @@
             label="I'm not a streamer" (onClick)="onUserIsNOTStreamer()"></p-button>
     </ng-template>
 </div>
-<p-dataView #dv [value]="cards" [layout]="layout">
+
+<p-dataView #dv [value]="cards" [layout]="layout" *ngIf="!loading; else loadingMessage">
     <ng-template let-card pTemplate="gridItem">
         <app-card-grid-item [card]="card" [userImg]="pageUser?.image ?? ''" (imageClick)="showModal($event)"
             [isLoggedUser]="pageUser?.name == loggedUser?.name" [isUserStreamer]="!!pageUser?.isStreamer"
@@ -29,6 +30,11 @@
             (stopRecording)="onStopRecording($event)"></app-card-grid-item>
     </ng-template>
 </p-dataView>
+
+<ng-template #loadingMessage>
+    <p>Loading the cards...</p>
+</ng-template>
+
 <div *ngIf="shouldShowModal && modalCard">
     <app-card-view-modal [(shouldShowModal)]="shouldShowModal" [card]="modalCard" (changedCard)="changeCard($event)"
         [userImg]="pageUser?.image ?? ''" [isLoggedUser]="pageUser?.name == loggedUser?.name"
