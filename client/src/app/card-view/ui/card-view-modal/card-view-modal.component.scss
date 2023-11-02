@@ -3,6 +3,11 @@
     /* Prevent the image from growing */
 }
 
+.card-image {
+    height: 558px;
+    width: 404px;
+}
+
 .text-container {
     flex: 1;
     overflow-y: auto;
