@@ -140,6 +140,14 @@ const RogueExcavateLegendary = {
     "rarity": "Extra"
 };
 
+const WarriorExcavateLegendary = {
+    "name": "The Azerite Ox",
+    "imageURL": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/610cfb30115912c18896bdeada5b48089b1deb76e2384d4cb179daeabe66223a.png",
+    "expansion": "Showdown in the Badlands",
+    "hsClass": "Warrior",
+    "rarity": "Extra"
+}
+
 const barrel = {
     "name": "Barrel of Sludge",
     "imageURL": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/37dfa5339b4269990fff81ac236260523d38e40b53c635b75dfba6db2775b279.png",
@@ -271,25 +279,6 @@ const DKCards = [
 
 ];
 
-// {
-//     name: "Holy Springwater",
-//     description: "Restore 8 Health to a damaged character. Save any excess in a 1-Cost Bottle.",
-//     imageURL: "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/4292c4baed0eae8ba27f3093d092c91c1c35d6a57fbbf2a90b3f9ce88c9ddfe2.png",
-//     expansion: "Showdown in the Badlands",
-//     mana: 2,
-//     type: "Spell",
-//     hsClass: "Priest",
-//     rarity: "Common",
-//     extraCards: [
-//         {
-//             "name": "Bottled Springwater",
-//             "imageURL": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/f9f78bcc3a8043063a88b3f0682bd03ae99283dcef85c4aefa33cce5d3377533.png",
-//             "expansion": "Showdown in the Badlands",
-//             "hsClass": "Priest",
-//             "rarity": "Extra"
-//         }
-//     ]
-// },
 
 const DHCards = [
     {
@@ -751,12 +740,21 @@ const createCards = (cards) => {
 
 const fs = require("fs");
 const path = require("path");
+const yargs = require('yargs');
+
+const argv = yargs
+  .option('input', {
+    alias: 'i',
+    description: 'Path to the input JSON file',
+    demandOption: true,
+  })
+  .help()
+  .alias('help', 'h')
+  .argv;
 
 
-const file = "output_with_extra_cards.json"; 
-const filePath = path.join(__dirname, file);
-
-const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+const inputFile = path.resolve(argv.input);
+const data = JSON.parse(fs.readFileSync(inputFile, 'utf8'));
 
 
 Card.insertMany(data.cards, (err) => {

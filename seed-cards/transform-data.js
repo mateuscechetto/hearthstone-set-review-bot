@@ -1,10 +1,24 @@
 const fs = require('fs');
 const path = require('path');
+const yargs = require('yargs');
 
-const inputFile = 'from-api.json'; 
-const inputFilePath = path.join(__dirname, inputFile);
+const argv = yargs
+  .option('input', {
+    alias: 'i',
+    description: 'Path to the input JSON file',
+    demandOption: true,
+  })
+  .help()
+  .alias('help', 'h')
+  .argv;
 
-const originalData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
+// const inputFile = 'from-api.json'; 
+// const inputFilePath = path.join(__dirname, inputFile);
+
+// const originalData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
+
+const inputFile = path.resolve(argv.input);
+const originalData = JSON.parse(fs.readFileSync(inputFile, 'utf8'));
 
 const transformedData = {
   cards: originalData.cards.map(card => ({
@@ -20,7 +34,6 @@ const transformedData = {
   }))
 };
 
-const currentDate = new Date().toISOString().replace(/[-:.Z]/g, '');
 const formattedDate = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '_');
 const outputFile = `output_${formattedDate}.json`;
 const outputFilePath = path.join(__dirname, outputFile);

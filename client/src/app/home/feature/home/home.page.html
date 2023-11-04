@@ -32,7 +32,7 @@
     </p-table>
   </div>
   <div class="col-12 flex-order-0  md:flex-order-1 md:col-4 md:col-offset-1">
-    <p-dataView [value]="usersWithRating" [layout]="'list'" [sortField]="'view_count'" [sortOrder]="-1">
+    <p-dataView [value]="usersWithRating" [layout]="'list'" [sortField]="'view_count'" [sortOrder]="-1" [rows]="12" [paginator]="true">
       <ng-template pTemplate="header">
         <div class="flex flex-column md:flex-row md:justify-content-between">
           Reviews

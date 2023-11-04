@@ -24,7 +24,7 @@ const HearthstoneCardSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ['Minion', 'Spell', 'Weapon', 'Hero', 'Location', 'Quest'],
-    required: true,
+    required: false,
   },
   hsClass: {
     type: String,
