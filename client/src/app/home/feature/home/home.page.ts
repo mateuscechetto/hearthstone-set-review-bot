@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { DecimalPipe, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
@@ -16,7 +16,7 @@ import { HomeService } from '../../data-access/home.service';
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  imports: [ButtonModule, NgIf, DataViewModule, AvatarModule, RouterLink, TableModule, NgClass, TooltipModule],
+  imports: [ButtonModule, NgIf, DataViewModule, AvatarModule, RouterLink, TableModule, NgClass, TooltipModule, DecimalPipe],
   standalone: true
 })
 export class HomePage {
