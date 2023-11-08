@@ -1,6 +1,6 @@
-# Hearthstone set review bot
+# Hearthstone set review
 
-A bot to help Twitch streamers to record their chats for Hearthstone Set Review. It lets users to participate and give their own ratings to a Google Spreadsheet.
+A web application for Hearthstone Set Reviews. It centralizes information about card reviews, let any user create their own, and let streamers record their chat's ratings for each card.
 Live on: https://hs-set-review.herokuapp.com/
 
 ## Technologies
@@ -11,16 +11,56 @@ Live on: https://hs-set-review.herokuapp.com/
 - Express
 - OAuth2
 - JWT
-- Google Sheet API
 - MongoDB (mongoose)
 
 
 ### Frontend
 
-- React
+- Angular
 
 ### Deploy
 
 - Heroku
 
-![Screenshot of the interface](https://cdn.discordapp.com/attachments/986854371620962364/1047216127283052574/image.png)
+## Running the project in DEV mode
+
+---
+
+Clone the repository:
+
+    git clone hearthstone-set-review-bot
+
+---
+
+Install backend dependencies:
+
+    npm install
+
+---
+
+Create a .env file and fill it with the content of [template.env](https://github.com/mateuscechetto/hearthstone-set-review-bot/blob/master/template.env). You may need to create a [MongoDB Atlas Database](https://www.mongodb.com/atlas/database)
+
+---
+
+Install frontend dependencies:
+
+    cd client
+    npm install
+
+---
+
+Run the backend:
+    
+    cd ..
+    nodemon index.js
+
+The backend will be served at http://localhost:5000
+
+---
+
+In another terminal run the frontend:
+
+    cd client
+    ng serve
+
+The frontend will be served at http://localhost:4200
