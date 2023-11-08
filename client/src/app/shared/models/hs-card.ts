@@ -62,4 +62,5 @@ export interface HotCards {
     imageURL: string;
     avgRating: number;
     standardDeviation: number;
+    ratings: number[];
 }

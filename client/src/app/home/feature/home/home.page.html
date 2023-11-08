@@ -15,18 +15,20 @@
         <tr>
           <th pSortableColumn="hsClass" style="width:16.6%">Class <p-sortIcon field="hsClass"></p-sortIcon></th>
           <th pSortableColumn="name" style="width:50%">Name <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="avgRating" style="width:16.6%">Avg <p-sortIcon field="avgRating"></p-sortIcon></th>
+          <th pSortableColumn="avgRating" style="width:16.6%">Avg. <p-sortIcon field="avgRating"></p-sortIcon></th>
           <th pSortableColumn="standardDeviation" style="width:16.6%">SD <p-sortIcon
               field="standardDeviation"></p-sortIcon></th>
-
+            <th pSortableColumn="ratings.length" style="width:10%">Ratings <p-sortIcon
+                field="ratings.length"></p-sortIcon></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-card>
         <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false" tooltipPosition="right">
           <td>{{card.hsClass}}</td>
           <td>{{card.name}}</td>
-          <td>{{card.avgRating | number }}</td>
-          <td>{{card.standardDeviation | number }}</td>
+          <td>{{card.avgRating | number: '1.0-2' }}</td>
+          <td>± {{card.standardDeviation | number: '1.0-2' }}</td>
+          <td>{{card.ratings.length}}</td>
         </tr>
       </ng-template>
     </p-table>
