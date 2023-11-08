@@ -52,7 +52,7 @@ Install frontend dependencies:
 Run the backend:
     
     cd ..
-    nodemon index.js
+    npm start
 
 The backend will be served at http://localhost:5000
 
