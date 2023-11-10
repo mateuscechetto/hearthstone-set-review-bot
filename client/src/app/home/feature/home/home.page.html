@@ -8,18 +8,60 @@
   </ng-template>
 </div>
 <div class="grid md:ml-1">
-  <div class="col-12 flex-order-1  md:flex-order-0 md:col-5 md:col-offset-0">
-    <p-table [value]="hotCards" [rows]="10" [paginator]="true">
-      <ng-template pTemplate="caption"> Cards </ng-template>
+  <div class="col-12 flex-order-2  lg:flex-order-0 grid">
+    <div class="col-12 flex justify-content-end">
+      <a [routerLink]="['/stats']" style="color: inherit;">
+      See full stats
+    </a>
+    </div>
+    <div class="col-12 mb-4 lg:col-4">
+      <p-table [value]="bestCards">
+        <ng-template pTemplate="caption"> Best Cards </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Class</th>
+            <th>Name</th>
+            <th>Avg.</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-card>
+          <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false" tooltipPosition="right">
+            <td>{{card.hsClass}}</td>
+            <td>{{card.name}}</td>
+            <td>{{card.avgRating | number: '1.0-2' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="col-12 mb-4 lg:col-4">
+      <p-table [value]="standardDeviationCards" class="mb-1">
+        <ng-template pTemplate="caption">Most Controversial Cards </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Class</th>
+            <th>Name</th>
+            <th>Avg.</th>
+            <th>SD</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-card>
+          <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false" tooltipPosition="right">
+            <td>{{card.hsClass}}</td>
+            <td>{{card.name}}</td>
+            <td>{{card.avgRating | number: '1.0-2' }}</td>
+            <td>±{{card.standardDeviation | number: '1.0-2' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="col-12 lg:col-4">
+    <p-table [value]="worstCards">
+      <ng-template pTemplate="caption"> Worst Cards </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="hsClass" style="width:16.6%">Class <p-sortIcon field="hsClass"></p-sortIcon></th>
-          <th pSortableColumn="name" style="width:50%">Name <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="avgRating" style="width:16.6%">Avg. <p-sortIcon field="avgRating"></p-sortIcon></th>
-          <th pSortableColumn="standardDeviation" style="width:16.6%">SD <p-sortIcon
-              field="standardDeviation"></p-sortIcon></th>
-            <th pSortableColumn="ratings.length" style="width:10%">Ratings <p-sortIcon
-                field="ratings.length"></p-sortIcon></th>
+          <th>Class</th>
+          <th>Name</th>
+          <th>Avg.</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-card>
@@ -27,13 +69,15 @@
           <td>{{card.hsClass}}</td>
           <td>{{card.name}}</td>
           <td>{{card.avgRating | number: '1.0-2' }}</td>
-          <td>±{{card.standardDeviation | number: '1.0-2' }}</td>
-          <td>{{card.ratings.length}}</td>
         </tr>
       </ng-template>
     </p-table>
+    </div>
   </div>
-  <div class="col-12 flex-order-0  md:flex-order-1 md:col-4 md:col-offset-1">
+  <div class="col-12 hidden flex-order-0  lg:flex-order-1 lg:flex banner">
+      <h2> See who reviewed the cards</h2>
+  </div>
+  <div class="col-12 flex-order-1  lg:flex-order-2">
     <p-dataView [value]="usersWithRating" [layout]="'list'" [sortField]="'view_count'" [sortOrder]="-1" [rows]="12" [paginator]="true">
       <ng-template pTemplate="header">
         <div class="flex flex-column md:flex-row md:justify-content-between">

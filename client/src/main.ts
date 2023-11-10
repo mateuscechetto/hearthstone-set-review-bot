@@ -27,6 +27,12 @@ bootstrapApplication(AppComponent, {
             .then(r => r.CARD_VIEW_ROUTES)
       },
       {
+        path: 'stats',
+        loadChildren: () =>
+          import('./app/stats/feature/stats.routes')
+            .then(r => r.STATS_ROUTES)
+      },
+      {
         path: '',
         redirectTo: 'home',
         pathMatch: 'full',
