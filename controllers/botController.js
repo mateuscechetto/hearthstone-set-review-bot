@@ -3,7 +3,6 @@ const tmi = require("tmi.js");
 const express = require("express");
 const status = require('http-status');
 const User = require("../models/user");
-const Stat = require('../models/stat');
 const Card = require('../models/card');
 const Rating = require('../models/rating');
 const router = express.Router();
@@ -94,9 +93,135 @@ router.get('/hotCards', async (req, res) => {
         ];
         const results = await Card.aggregate(pipeline);
         return res.status(status.OK).send(results);
+    } catch (error) {
+        console.log(error);
+        return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the cards', error });
+    }
+});
+
+router.get('/homeStats', async (req, res) => {
+    try {
+        const pipeline = [
+            {
+              $lookup: {
+                from: 'ratings',
+                localField: '_id',
+                foreignField: 'card',
+                as: 'ratings',
+              },
+            },
+            {
+              $unwind: '$ratings',
+            },
+            {
+              $group: {
+                _id: '$_id',
+                name: { $first: '$name' },
+                hsClass: { $first: '$hsClass' },
+                imageURL: { $first: '$imageURL' },
+                ratings: { $push: '$ratings.rating' },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                name: 1,
+                hsClass: 1,
+                imageURL: 1,
+                ratings: {
+                  $filter: {
+                    input: '$ratings',
+                    as: 'rating',
+                    cond: { $ne: ['$$rating', 0] },
+                  },
+                },
+              },
+            },
+            {
+              $project: {
+                name: 1,
+                hsClass: 1,
+                imageURL: 1,
+                ratings: 1,
+                avgRating: { $avg: '$ratings' },
+                standardDeviation: { $stdDevSamp: '$ratings' },
+              },
+            },
+            {
+              $sort: {
+                avgRating: -1,
+              },
+            },
+        ];
+          
+        const results = await Card.aggregate(pipeline);
+          
+        const bestCards = results.slice(0, 5);
+        const worstCards = results.slice(-5).sort((a,b) => a.avgRating - b.avgRating);
+        const standardDeviationCards = results
+            .slice() // Create a shallow copy of the array
+            .sort((a, b) => b.standardDeviation - a.standardDeviation)
+            .slice(0, 5);
+          
+        const response = {
+            bestCards,
+            worstCards,
+            standardDeviationCards,
+        };
+
+        return res.status(status.OK).send(response);
     } catch (err) {
         console.log(err);
         return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the cards', err });
+    }
+});
+
+router.get('/averageRatingsByClass', async (req, res) => {
+    try {
+        const pipeline = [
+            {
+              $lookup: {
+                from: 'ratings',
+                localField: '_id',
+                foreignField: 'card',
+                as: 'ratings',
+              },
+            },
+            {
+              $unwind: '$ratings',
+            },
+            {
+              $match: {
+                'ratings.rating': { $ne: 0 }, // Exclude ratings with value 0
+              },
+            },
+            {
+              $group: {
+                _id: '$hsClass',
+                avgRating: { $avg: '$ratings.rating' },
+                numRatings: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                hsClass: '$_id',
+                avgRating: 1,
+                numRatings: 1,
+              },
+            },
+            {
+              $sort: {
+                avgRating: -1,
+              },
+            },
+          ];
+  
+      const results = await Card.aggregate(pipeline);
+      return res.status(status.OK).json(results);
+    } catch (error) {
+      console.error(error);
+      return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the cards' }, error);
     }
 });
 

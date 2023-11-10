@@ -1,20 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HotCards } from 'src/app/shared/models/hs-card';
-import { User } from 'src/app/shared/models/user';
+import { HearthstoneClass, HotCards } from 'src/app/shared/models/hs-card';
 import { environment } from 'src/environments/environment';
 
-export type HomeApiReturn = {
+export type StatsApiReturn = {
   bestCards: HotCards[];
   worstCards: HotCards[];
   standardDeviationCards: HotCards[];
 }
 
+export type AverageRatingByClass = {
+  hsClass: HearthstoneClass;
+  avgRating: number;
+  numRatings: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
-export class HomeService {
+export class StatsService {
 
   constructor(private http: HttpClient) { }
 
@@ -24,14 +29,8 @@ export class HomeService {
     });
   }
 
-  getStats(): Observable<HomeApiReturn> {
-    return this.http.get<HomeApiReturn>(`${environment.apiUrl}/api/homeStats`, {
-      withCredentials: true,
-    });
-  }
-
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.apiUrl}/api/users`, {
+  getAverageRatingsByClass() {
+    return this.http.get<AverageRatingByClass[]>(`${environment.apiUrl}/api/averageRatingsByClass`, {
       withCredentials: true,
     });
   }

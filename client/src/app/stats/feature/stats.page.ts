@@ -1,4 +1,4 @@
-import { DecimalPipe, NgClass, NgIf } from '@angular/common';
+import { DecimalPipe, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
@@ -10,27 +10,27 @@ import { forkJoin } from 'rxjs';
 import { UserService } from 'src/app/shared/data-access/user/user.service';
 import { HotCards } from 'src/app/shared/models/hs-card';
 import { User } from 'src/app/shared/models/user';
-import { HomeService } from '../../data-access/home.service';
+import { AverageRatingByClass, StatsService } from '../data-access/stats.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
-  imports: [ButtonModule, NgIf, DataViewModule, AvatarModule, RouterLink, TableModule, NgClass, TooltipModule, DecimalPipe],
+  selector: 'app-Stats',
+  templateUrl: './stats.page.html',
+  styleUrls: ['./stats.page.scss'],
+  imports: [ButtonModule, NgIf, NgFor, DataViewModule, AvatarModule, RouterLink, TableModule, NgClass, TooltipModule, DecimalPipe, KeyValuePipe],
   standalone: true
 })
-export class HomePage {
+export class StatsPage {
 
   title = "Showdown in the Badlands Card Review";
   loggedUser: User | undefined;
-  bestCards: HotCards[] = [];
-  worstCards: HotCards[] = [];
   standardDeviationCards: HotCards[] = [];
-  usersWithRating: User[] = [];
+  hotCards: HotCards[] = [];
+  ratingsByClass: AverageRatingByClass[] = [];
+  cardsByClass: { [key: string]: HotCards[] } = {};
 
   constructor(
     private userService: UserService,
-    private homeService: HomeService,
+    private statsService: StatsService,
     private router: Router,
   ) { }
 
@@ -44,16 +44,14 @@ export class HomePage {
     });
 
     forkJoin([
-      this.homeService.getUsers(),
-      this.homeService.getStats(),
+      this.statsService.getCards(),
+      this.statsService.getAverageRatingsByClass(),
     ])
       .subscribe(
-        ([users, cards]) => {
-        this.usersWithRating = users;        
-        const {bestCards, worstCards, standardDeviationCards} = cards;
-        this.bestCards = bestCards;
-        this.worstCards = worstCards;
-        this.standardDeviationCards = standardDeviationCards;
+        ([hotCards, ratingsByClass]) => {
+        this.hotCards = hotCards;
+        this.setClassesCards(hotCards);
+        this.ratingsByClass = ratingsByClass;
       });
   }
 
@@ -68,4 +66,17 @@ export class HomePage {
   redirect() {
     this.router.navigate(['/review/molino_hs']);
   }
+
+  setClassesCards(cards: HotCards[]) {
+    this.cardsByClass = {};
+    cards.forEach(card => {
+      const hsClass = card.hsClass || 'Neutral';
+      if (!this.cardsByClass[hsClass]) {
+        this.cardsByClass[hsClass] = [];
+      }
+      this.cardsByClass[hsClass].push(card);
+    })
+  }
+
+
 }
