@@ -60,17 +60,18 @@ passport.use('twitch', new OAuth2Strategy({
 
     const { display_name, profile_image_url, view_count } = profile.data[0];
 
-    const apiUrl = `https://twitchtracker.com/api/channels/summary/${display_name}`;
+    // TODO add followerCount when user logs in
+    // const apiUrl = `https://twitchtracker.com/api/channels/summary/${display_name}`;
 
-    const response = await axios.get(apiUrl);
+    // const response = await axios.get(apiUrl);
 
-    const followerCount = response.data?.followers_total || 0;
+    // const followerCount = response.data?.followers_total || 0;
 
     const update = {
         name: display_name,
         image: profile_image_url,
         view_count: view_count,
-        followers: followerCount,
+        followers: 0,
     };
 
     const userToken = jwt.sign({ name: update.name }, process.env.JWT_SECRET);
