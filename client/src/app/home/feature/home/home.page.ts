@@ -49,7 +49,7 @@ export class HomePage {
     ])
       .subscribe(
         ([users, cards]) => {
-        this.usersWithRating = users;        
+        this.usersWithRating = users.sort((a,b) => b.followers - a.followers);        
         const {bestCards, worstCards, standardDeviationCards} = cards;
         this.bestCards = bestCards;
         this.worstCards = worstCards;

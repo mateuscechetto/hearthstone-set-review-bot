@@ -4,4 +4,5 @@ export interface User {
     view_count: number,
     userToken: string,
     isStreamer: boolean,
+    followers: number,
 }
