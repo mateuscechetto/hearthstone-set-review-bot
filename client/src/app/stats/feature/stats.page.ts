@@ -49,10 +49,10 @@ export class StatsPage {
     ])
       .subscribe(
         ([hotCards, ratingsByClass]) => {
-        this.hotCards = hotCards;
-        this.setClassesCards(hotCards);
-        this.ratingsByClass = ratingsByClass;
-      });
+          this.hotCards = hotCards;
+          this.setClassesCards(hotCards);
+          this.ratingsByClass = ratingsByClass;
+        });
   }
 
   login() {
