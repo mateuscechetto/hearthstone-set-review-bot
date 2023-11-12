@@ -6,6 +6,7 @@ const status = require('http-status');
 const OAuth2Strategy = require("passport-oauth").OAuth2Strategy;
 const request = require("request");
 const jwt = require("jsonwebtoken");
+const axios = require('axios');
 const User = require("../models/user");
 const Card = require('../models/card');
 const Rating = require('../models/rating');
@@ -59,11 +60,17 @@ passport.use('twitch', new OAuth2Strategy({
 
     const { display_name, profile_image_url, view_count } = profile.data[0];
 
+    const apiUrl = `https://twitchtracker.com/api/channels/summary/${display_name}`;
+
+    const response = await axios.get(apiUrl);
+
+    const followerCount = response.data?.followers_total || 0;
 
     const update = {
         name: display_name,
         image: profile_image_url,
-        view_count: view_count
+        view_count: view_count,
+        followers: followerCount,
     };
 
     const userToken = jwt.sign({ name: update.name }, process.env.JWT_SECRET);

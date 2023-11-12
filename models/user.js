@@ -8,6 +8,10 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
     },
     sheetLink: String,
+    followers: {
+        type: Number,
+        required: false,
+    },
 });
 
 const User = mongoose.model("User", UserSchema);
