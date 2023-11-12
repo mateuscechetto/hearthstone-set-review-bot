@@ -21,19 +21,17 @@
     </ng-template>
 </div>
 
-<div class="grid">
-    <div class="col-12 m-auto">
-        <p-dataView #dv [value]="cards" [layout]="layout" *ngIf="!loading; else loadingMessage">
-            <ng-template let-card pTemplate="gridItem">
-                <app-card-grid-item [card]="card" [userImg]="pageUser?.image ?? ''" (imageClick)="showModal($event)"
-                    [isLoggedUser]="pageUser?.name == loggedUser?.name" [isUserStreamer]="!!pageUser?.isStreamer"
-                    [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
-                    (changedRate)="onChangedRate($event)" (recordChat)="onRecordChat($event)"
-                    (stopRecording)="onStopRecording($event)"></app-card-grid-item>
-            </ng-template>
-        </p-dataView>
-    </div>
-</div>
+
+<p-dataView #dv [value]="cards" [layout]="layout" *ngIf="!loading; else loadingMessage">
+    <ng-template let-card pTemplate="gridItem">
+        <app-card-grid-item [card]="card" [userImg]="pageUser?.image ?? ''" (imageClick)="showModal($event)"
+            [isLoggedUser]="pageUser?.name == loggedUser?.name" [isUserStreamer]="!!pageUser?.isStreamer"
+            [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
+            (changedRate)="onChangedRate($event)" (recordChat)="onRecordChat($event)"
+            (stopRecording)="onStopRecording($event)"></app-card-grid-item>
+    </ng-template>
+</p-dataView>
+
 
 <ng-template #loadingMessage>
     <p>Loading the cards...</p>
