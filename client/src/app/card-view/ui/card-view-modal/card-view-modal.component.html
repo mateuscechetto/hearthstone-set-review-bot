@@ -12,7 +12,7 @@
                 <div class="flex flex-column align-items-center gap-3">
                     <div class="flex">
                         <p-avatar [image]="userImg" styleClass="mr-2 avatar" shape="circle"></p-avatar>
-                        <p-rating formControlName="userRating" [stars]="4" [cancel]="false" [readonly]="!isLoggedUser"
+                        <p-rating formControlName="userRating" [stars]="4" [cancel]="false" [readonly]="!isLoggedUser || !isInPreExpansionSeason"
                             (onRate)="onChangedRate($event)"></p-rating>
                     </div>
                     <div *ngIf="isUserStreamer" class="flex flex-column align-items-center gap-3">

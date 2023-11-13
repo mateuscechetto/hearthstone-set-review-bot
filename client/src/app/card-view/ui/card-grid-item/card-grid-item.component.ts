@@ -5,6 +5,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';
 import { RatedCard } from '../../../shared/models/hs-card';
 import { RecordChatComponent } from '../record-chat/record-chat.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-card-grid-item[card]',
@@ -28,6 +29,8 @@ export class CardGridItemComponent implements OnChanges {
     userRating: [0],
     chatRating: [0]
   });
+
+  isInPreExpansionSeason = environment.isInPreExpansionSeason;
 
   constructor(
     private fb: FormBuilder

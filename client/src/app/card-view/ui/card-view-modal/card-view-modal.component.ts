@@ -8,6 +8,7 @@ import { RatingModule } from 'primeng/rating';
 import { TooltipModule } from 'primeng/tooltip';
 import { HearthstoneCard, RatedCard } from '../../../shared/models/hs-card';
 import { RecordChatComponent } from '../record-chat/record-chat.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-card-view-modal[card]',
@@ -47,6 +48,8 @@ export class CardViewModalComponent implements OnChanges {
   });
 
   cardToDisplay: HearthstoneCard = this.card;
+
+  isInPreExpansionSeason = environment.isInPreExpansionSeason;
 
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
