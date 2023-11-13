@@ -29,13 +29,13 @@ export class CardViewPage {
   pageUser: User | undefined;
   loading: boolean = false;
 
-  get title() {
-    const name = this.pageUser?.name;
-    if (!name) return '';
-    if (name.toLocaleLowerCase().endsWith('s')) {
-      return `${name}' Showdown in the Badlands Card Review`;
+  get name() {
+    const username = this.pageUser?.name;
+    if (!username) return '';
+    if (username.toLocaleLowerCase().endsWith('s')) {
+      return `${username}' `;
     } else {
-      return `${name}'s Showdown in the Badlands Card Review`;
+      return `${username}'s `;
     }
   }
 
