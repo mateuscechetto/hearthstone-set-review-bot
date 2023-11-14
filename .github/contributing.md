@@ -2,7 +2,7 @@
 
 Thanks for thinking about contributing to this project! As an open-source endeavor, we welcome feedback, pull requests, and bug reports from anyone.
 
-Please review the following to learn more about how you can help.
+Join the [Discord server](https://discord.gg/zKGyxFP6Yk), review the following to learn more about how you can help, and get added as a contributor!
 
 ## Issues
 
