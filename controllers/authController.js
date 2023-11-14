@@ -71,7 +71,6 @@ passport.use('twitch', new OAuth2Strategy({
         name: display_name,
         image: profile_image_url,
         view_count: view_count,
-        followers: 0,
     };
 
     const userToken = jwt.sign({ name: update.name }, process.env.JWT_SECRET);
