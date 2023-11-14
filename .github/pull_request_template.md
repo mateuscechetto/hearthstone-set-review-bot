@@ -20,9 +20,8 @@
 
 #### Basics
 
-- [ ] Does `ng build` succeed?
-- [ ] Does `ng test` succeed?
-- [ ] Does `ng e2e` succeed?
+- [ ] Does `npm run build` succeed?
+- [ ] Does `npm run test` succeed?
 
 #### Testing
 

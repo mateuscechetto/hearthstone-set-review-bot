@@ -12,6 +12,6 @@ The [issue tracker](https://github.com/mateuscechetto/hearthstone-set-review-bot
 
 If there's a change you'd like to contribute, follow the README to get started with running the project locally. Before contributing any code, make sure you've had a chance to understand the codebase, as well as how to properly use Angular, Node, and MongoDB.
 
-Create a new branch for your contributions, ideally with the name `users/{your-username}/{feature-name}`. Try to keep a single branch focused on one change, whether a feature or a bug fix. Before submitting a PR, review the PR checklist and make sure your changes pass all relevant tests.
+Create a new branch for your contributions, with a clear name that summarizes the feature change. Try to keep a single branch focused on one change, whether a feature or a bug fix. Before submitting a PR, review the PR checklist and make sure your changes pass all relevant tests.
 
 If you're looking to help review open PRs, you can check the list of PRs that have the tag ['needs review'](https://github.com/mateuscechetto/hearthstone-set-review-bot/labels/needs%20review).
