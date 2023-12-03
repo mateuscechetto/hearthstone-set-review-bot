@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 import { UserService } from '../data-access/user/user.service';
-import { environment } from 'src/environments/environment';
+import { EnvironmentService } from '../environment/environment.service';
 
 export const userGuard: CanActivateFn = (route, state) => {
   const service = inject(UserService);
@@ -24,10 +24,11 @@ export const userGuard: CanActivateFn = (route, state) => {
 export const loginGuard: CanActivateFn = (route, state) => {
   const service = inject(UserService);
   const router = inject(Router);
+  const environment = inject(EnvironmentService);
   return service.getUser().pipe(
     map(
       user => {
-        if (environment.isInPreExpansionSeason && user.name.toLowerCase() == route.params['username'].toLowerCase()) {
+        if (environment.isInPreExpansionSeason() && user.name.toLowerCase() == route.params['username'].toLowerCase()) {
           return true;
         } else {
           router.navigate(['/review', route.params['username'], 'view-only']);

@@ -5,13 +5,14 @@ import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { switchMap } from 'rxjs';
-import { RatingService } from 'src/app/card-view/data-access/rating/rating.service';
-import { UserService } from 'src/app/shared/data-access/user/user.service';
-import { User } from 'src/app/shared/models/user';
+import { RatingService } from '../../data-access/rating/rating.service';
+import { UserService } from '../../../shared/data-access/user/user.service';
+import { User } from '../../../shared/models/user';
 import { HearthstoneClass, RatedCard } from '../../../shared/models/hs-card';
 import { CardService } from '../../data-access/card/card.service';
 import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
+import { EnvironmentService } from '../../../shared/environment/environment.service';
 
 @Component({
   selector: 'app-card-view',
@@ -39,11 +40,14 @@ export class CardViewPage {
     }
   }
 
+  isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
+
   constructor(
     private service: CardService,
     private userService: UserService,
     private route: ActivatedRoute,
     private ratingService: RatingService,
+    private environment: EnvironmentService,
   ) { }
 
   ngOnInit() {

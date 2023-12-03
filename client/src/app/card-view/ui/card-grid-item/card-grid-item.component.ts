@@ -5,7 +5,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';
 import { RatedCard } from '../../../shared/models/hs-card';
 import { RecordChatComponent } from '../record-chat/record-chat.component';
-import { environment } from 'src/environments/environment';
+import { EnvironmentService } from '../../../shared/environment/environment.service';
 
 @Component({
     selector: 'app-card-grid-item[card]',
@@ -30,10 +30,11 @@ export class CardGridItemComponent implements OnChanges {
     chatRating: [0]
   });
 
-  isInPreExpansionSeason = environment.isInPreExpansionSeason;
+  isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private environment: EnvironmentService,
   ) { }
 
   ngOnChanges(changes: any) {
