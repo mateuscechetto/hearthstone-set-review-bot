@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/shared/models/user';
+import { User } from '../../../shared/models/user';
 import { environment } from '../../../../environments/environment';
 
 

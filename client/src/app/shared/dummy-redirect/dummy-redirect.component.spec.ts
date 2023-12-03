@@ -8,7 +8,6 @@ describe('DummyRedirectComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DummyRedirectComponent]
     });
     fixture = TestBed.createComponent(DummyRedirectComponent);
     component = fixture.componentInstance;

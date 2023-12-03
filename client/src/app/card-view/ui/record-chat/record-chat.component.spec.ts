@@ -8,7 +8,6 @@ describe('RecordChatComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RecordChatComponent]
     });
     fixture = TestBed.createComponent(RecordChatComponent);
     component = fixture.componentInstance;

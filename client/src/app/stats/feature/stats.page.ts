@@ -7,9 +7,9 @@ import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { forkJoin } from 'rxjs';
-import { UserService } from 'src/app/shared/data-access/user/user.service';
-import { HotCards } from 'src/app/shared/models/hs-card';
-import { User } from 'src/app/shared/models/user';
+import { UserService } from '../../shared/data-access/user/user.service';
+import { HotCards } from '../../shared/models/hs-card';
+import { User } from '../../shared/models/user';
 import { AverageRatingByClass, StatsService } from '../data-access/stats.service';
 
 @Component({
