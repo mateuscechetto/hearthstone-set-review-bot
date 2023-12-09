@@ -1,25 +1,42 @@
 <div class="grid ml-1 mr-1">
-    <p-button class="col-6 flex-order-0 md:flex-order-0 md:col-2"
-        *ngIf="loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name; else notStreamer"
-        label="Record chat ratings" (onClick)="onUserIsStreamer()"></p-button>
-    <h1 class="col-12 flex-order-2 md:flex-order-1 md:col-6 text-center" [ngClass]="loggedUser && loggedUser.name == pageUser?.name ? 'md:col-offset-1' : 
+    <ng-container *ngIf="isInPreExpansionSeason; else notPreExpansionSeason">
+        <p-button 
+            *ngIf="loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name; else notStreamer"
+            class="col-6 flex-order-0 md:flex-order-0 md:col-2" 
+            data-testid="record-chat-ratings-button"
+            label="Record chat ratings"
+            (onClick)="onUserIsStreamer()"
+        ></p-button>
+    </ng-container>
+    <h1 class="col-12 flex-order-2 md:flex-order-1 md:col-6 text-center" [ngClass]="!isInPreExpansionSeason || loggedUser && loggedUser.name == pageUser?.name ? 'md:col-offset-1' : 
         'md:col-offset-3'">
-        <a [href]="'https://www.twitch.tv/' + pageUser?.name" target="_blank" style="color: #6441a5; text-decoration: inherit;">
+        <a [href]="'https://www.twitch.tv/' + pageUser?.name" target="_blank"
+            style="color: #6441a5; text-decoration: inherit;">
             {{ name }}
         </a><a [routerLink]="['/home']" style="color: inherit; text-decoration: inherit;">
             Showdown in the Badlands Card Review
         </a>
     </h1>
-    <p-button class="col-3 flex-order-1 md:flex-order-2 md:col-1 md:col-offset-2" [ngClass]="loggedUser && loggedUser.name == pageUser?.name ? 'col-offset-3' : 
+    <p-button class="col-3 flex-order-1 md:flex-order-2 md:col-1 md:col-offset-2" [ngClass]="!isInPreExpansionSeason || loggedUser && loggedUser.name == pageUser?.name ? 'col-offset-3' : 
         'col-offset-9'" *ngIf="loggedUser; else loginButton" label="Logout" (onClick)="logout()"></p-button>
+
+    <ng-template #notPreExpansionSeason>
+        <b class="col-6 flex-order-0 md:flex-order-0 md:col-2" data-testid="not-pre-expansion-message">
+            This expansion has been released. Users can no longer change their ratings.
+        </b>
+    </ng-template>
     <ng-template #loginButton>
         <p-button class="col-3 col-offset-9 flex-order-1 md:flex-order-2 md:col-1 md:col-offset-2" label="Login"
             (onClick)="login()"></p-button>
     </ng-template>
     <ng-template #notStreamer>
-        <p-button class="col-6 flex-order-0 md:flex-order-0 md:col-2"
-            *ngIf="loggedUser && loggedUser.name == pageUser?.name" styleClass="p-button-danger"
-            label="Hide chat ratings" (onClick)="onUserIsNOTStreamer()"></p-button>
+        <p-button 
+            *ngIf="loggedUser && loggedUser.name == pageUser?.name" 
+            class="col-6 flex-order-0 md:flex-order-0 md:col-2"    
+            styleClass="p-button-danger"
+            data-testid="hide-chat-ratings-button"
+            label="Hide chat ratings" (onClick)="onUserIsNOTStreamer()"
+        ></p-button>
     </ng-template>
 </div>
 

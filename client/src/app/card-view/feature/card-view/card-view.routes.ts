@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { loginGuard, userGuard } from "src/app/shared/guards/user.guard";
+import { loginGuard, userGuard } from "../../../shared/guards/user.guard";
 import { CardViewPage } from "./card-view.page";
 
 export const CARD_VIEW_ROUTES: Routes = [

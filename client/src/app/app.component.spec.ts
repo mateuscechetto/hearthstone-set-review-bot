@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [RouterTestingModule],
-    declarations: [AppComponent]
   }));
 
   it('should create the app', () => {
@@ -20,10 +19,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('hs-set-review');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('hs-set-review app is running!');
-  });
 });

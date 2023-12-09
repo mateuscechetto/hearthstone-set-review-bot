@@ -8,10 +8,10 @@ import { RatingModule } from 'primeng/rating';
 import { TooltipModule } from 'primeng/tooltip';
 import { HearthstoneCard, RatedCard } from '../../../shared/models/hs-card';
 import { RecordChatComponent } from '../record-chat/record-chat.component';
-import { environment } from 'src/environments/environment';
+import { EnvironmentService } from '../../../shared/environment/environment.service';
 
 @Component({
-    selector: 'app-card-view-modal[card]',
+    selector: 'app-card-view-modal',
     templateUrl: './card-view-modal.component.html',
     styleUrls: ['./card-view-modal.component.scss'],
     standalone: true,
@@ -32,7 +32,7 @@ export class CardViewModalComponent implements OnChanges {
   }
   @Output() shouldShowModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() card!: RatedCard;
+  @Input({required: true}) card!: RatedCard;
   @Input() userImg: string = '';
   @Input() isLoggedUser: boolean = false;
   @Input() isUserStreamer: boolean = false;
@@ -49,7 +49,7 @@ export class CardViewModalComponent implements OnChanges {
 
   cardToDisplay: HearthstoneCard = this.card;
 
-  isInPreExpansionSeason = environment.isInPreExpansionSeason;
+  isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
 
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -62,7 +62,8 @@ export class CardViewModalComponent implements OnChanges {
   }
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private environment: EnvironmentService,
   ) { }
 
   ngOnChanges(changes: any) {

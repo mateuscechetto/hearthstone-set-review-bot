@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HotCards } from 'src/app/shared/models/hs-card';
-import { User } from 'src/app/shared/models/user';
-import { environment } from 'src/environments/environment';
+import { HotCards } from '../../shared/models/hs-card';
+import { User } from '../../shared/models/user';
+import { environment } from '../../../environments/environment';
 
 export type HomeApiReturn = {
   bestCards: HotCards[];
