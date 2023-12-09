@@ -6,13 +6,14 @@ import { RatingModule } from 'primeng/rating';
 import { RatedCard } from '../../../shared/models/hs-card';
 import { RecordChatComponent } from '../record-chat/record-chat.component';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-card-grid-item[card]',
     templateUrl: './card-grid-item.component.html',
     styleUrls: ['./card-grid-item.component.scss'],
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, AvatarModule, RatingModule, NgIf, RecordChatComponent]
+    imports: [FormsModule, ReactiveFormsModule, AvatarModule, RatingModule, NgIf, RecordChatComponent, TooltipModule]
 })
 export class CardGridItemComponent implements OnChanges {
   @Input() card!: RatedCard;
@@ -27,10 +28,14 @@ export class CardGridItemComponent implements OnChanges {
 
   ratingForm = this.fb.group({
     userRating: [0],
-    chatRating: [0]
+    chatRating: [0],
+    hsrRating: [0],
   });
 
   isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
+
+  twitchIconURL = 'https://cdn.pixabay.com/photo/2021/12/10/16/38/twitch-6860918_1280.png';
+  hsrIconURL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvw2ri47mehC08Q5LKf4SamN5ayk7Fzof00j2O2yCbHw&s';
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +46,8 @@ export class CardGridItemComponent implements OnChanges {
     if (changes.card?.currentValue) {
       this.ratingForm.patchValue({
         userRating: this.card.rating,
-        chatRating: this.card.chatRating
+        chatRating: this.card.chatRating,
+        hsrRating: this.card.hsr_rating,
       });
     }
   }

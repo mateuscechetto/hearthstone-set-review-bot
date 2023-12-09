@@ -44,12 +44,16 @@ export class CardViewModalComponent implements OnChanges {
 
   ratingForm = this.fb.group({
     userRating: [0],
-    chatRating: [0]
+    chatRating: [0],
+    hsrRating: [0],
   });
 
   cardToDisplay: HearthstoneCard = this.card;
 
   isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
+
+  twitchIconURL = 'https://cdn.pixabay.com/photo/2021/12/10/16/38/twitch-6860918_1280.png';
+  hsrIconURL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvw2ri47mehC08Q5LKf4SamN5ayk7Fzof00j2O2yCbHw&s';
 
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -70,7 +74,8 @@ export class CardViewModalComponent implements OnChanges {
     if (changes.card.currentValue) {
       this.ratingForm.patchValue({
         userRating: this.card.rating,
-        chatRating: this.card.chatRating
+        chatRating: this.card.chatRating,
+        hsrRating: this.card.hsr_rating,
       });
 
       this.cardToDisplay = this.card;

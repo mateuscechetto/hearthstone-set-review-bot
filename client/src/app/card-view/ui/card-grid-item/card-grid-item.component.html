@@ -14,9 +14,21 @@
                     <p-rating formControlName="userRating" [stars]="4" [cancel]="false" [readonly]="!isLoggedUser || !isInPreExpansionSeason"
                         (onRate)="onChangedRate($event)"></p-rating>
                 </div>
+                <div class="flex" *ngIf="card.hsr_rating">
+                    <a [href]="'https://hsreplay.net/cards/' + card.dbf_id" target="_blank">
+                        <p-avatar 
+                            [image]="hsrIconURL" 
+                            styleClass="mr-2 avatar cursor-pointer" 
+                            shape="circle" 
+                            pTooltip="Rating based on HSReplay data from patch 28.2" 
+                            tooltipPosition="bottom"
+                        ></p-avatar>
+                    </a>
+                    <p-rating formControlName="hsrRating" [stars]="4" [cancel]="false" [readonly]="true"></p-rating>
+                </div>
                 <div *ngIf="isUserStreamer" class="flex flex-column align-items-center gap-1">
                     <div class="flex">
-                        <p-avatar image="https://cdn.pixabay.com/photo/2021/12/10/16/38/twitch-6860918_1280.png"
+                        <p-avatar [image]="twitchIconURL"
                             styleClass="mr-2 avatar" shape="circle"></p-avatar>
                         <p-rating formControlName="chatRating" [stars]="4" [cancel]="false"
                             [readonly]="true"></p-rating>

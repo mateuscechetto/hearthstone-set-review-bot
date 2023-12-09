@@ -17,6 +17,14 @@ const HearthstoneCardSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  dbf_id: {
+    type: Number,
+    required: false,
+  },
+  hsr_rating: {
+    type: Number,
+    required: false,
+  },
   mana: {
     type: Number,
     required: true,

@@ -42,7 +42,9 @@ export interface HearthstoneCard {
     rarity: CardRarity;
     atk?: number;
     health?: number;
-    extraCards?: HearthstoneCard[]
+    extraCards?: HearthstoneCard[];
+    hsr_rating?: number;
+    dbf_id?: number;
 }
 
 export interface RatedCard extends HearthstoneCard {
@@ -63,4 +65,5 @@ export interface HotCards {
     avgRating: number;
     standardDeviation: number;
     ratings: number[];
+    hsr_rating?: number;
 }
