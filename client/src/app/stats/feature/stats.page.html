@@ -19,13 +19,31 @@
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="hsClass">Class <p-sortIcon field="hsClass"></p-sortIcon></th>
-          <th pSortableColumn="avgRating">Avg. <p-sortIcon field="avgRating"></p-sortIcon></th>
-          <th pSortableColumn="numRatings">Ratings <p-sortIcon field="numRatings"></p-sortIcon></th>
+          <th *ngIf="ratingsByClass[0]?.avg_hsr_rating" 
+            pSortableColumn="avg_hsr_rating" 
+            style="width:16.6%"
+            pTooltip="Average Class Rating calculated using HSReplay data from the 28.2 patch"
+            tooltipPosition="top"
+          > Final Avg. <p-sortIcon field="hsr_rating"></p-sortIcon>
+          </th>
+          <th 
+            pSortableColumn="avgRating"
+            pTooltip="Average Users Rating"
+            tooltipPosition="top"
+          > Avg. <p-sortIcon field="avgRating"></p-sortIcon>
+          </th>
+          <th 
+            pSortableColumn="numRatings"
+            pTooltip="Number Users that rated the card" 
+            tooltipPosition="top"
+          > Ratings <p-sortIcon field="numRatings"></p-sortIcon>
+          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-class>
         <tr [ngClass]="class.hsClass">
           <td>{{class.hsClass}}</td>
+          <td *ngIf="class?.avg_hsr_rating">{{ class.avg_hsr_rating  | number: '1.0-1' }}</td>
           <td>{{class.avgRating | number: '1.0-2' }}</td>
           <td>{{class.numRatings}}</td>
         </tr>
