@@ -58,6 +58,7 @@ router.get('/hotCards', async (req, res) => {
                     hsClass: { $first: '$hsClass' },
                     imageURL: { $first: '$imageURL' },
                     ratings: { $push: '$ratings.rating' },
+                    hsr_rating: {$first: '$hsr_rating'},
                 },
             },
             {
@@ -73,6 +74,7 @@ router.get('/hotCards', async (req, res) => {
                             cond: { $ne: ['$$rating', 0] },
                         },
                     },
+                    hsr_rating: 1,
                 },
             },
             {
@@ -83,6 +85,7 @@ router.get('/hotCards', async (req, res) => {
                     ratings: 1,
                     avgRating: { $avg: '$ratings' },
                     standardDeviation: { $stdDevSamp: '$ratings' },
+                    hsr_rating: 1,
                 },
             },
             {
@@ -200,6 +203,7 @@ router.get('/averageRatingsByClass', async (req, res) => {
                 _id: '$hsClass',
                 avgRating: { $avg: '$ratings.rating' },
                 numRatings: { $sum: 1 },
+                hsr_rating: {$first: '$hsr_rating'},
               },
             },
             {
@@ -208,6 +212,7 @@ router.get('/averageRatingsByClass', async (req, res) => {
                 hsClass: '$_id',
                 avgRating: 1,
                 numRatings: 1,
+                hsr_rating: 1,
               },
             },
             {
