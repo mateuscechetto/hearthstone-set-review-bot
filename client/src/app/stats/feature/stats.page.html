@@ -14,6 +14,11 @@
 
 <div class="grid md:ml-1 md:mr-1 mb-4">
   <div class="col-12 lg:col-10 lg:col-offset-1 flex-order-0 mb-4">
+    <div class="col-12 flex justify-content-end" *ngIf="ratingsByClass[0]?.avg_hsr_rating">
+      <a href="https://hsreplay.net/cards/" target="_blank">
+      Powered by HSReplay
+    </a>
+    </div>
     <p-table [value]="ratingsByClass">
       <ng-template pTemplate="caption"> Best Classes </ng-template>
       <ng-template pTemplate="header">

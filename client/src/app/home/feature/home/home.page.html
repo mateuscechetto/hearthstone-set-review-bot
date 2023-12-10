@@ -16,11 +16,18 @@
     </div>
     <div class="col-12 mb-4 lg:col-4">
       <p-table [value]="bestCards">
-        <ng-template pTemplate="caption"> Best Cards </ng-template>
+        <ng-template pTemplate="caption">
+          <span pTooltip="Best cards based on Users Ratings" tooltipPosition="top"> Best Cards </span>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>Class</th>
             <th>Name</th>
+            <th *ngIf="bestCards[0]?.hsr_rating" 
+              pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
+              tooltipPosition="top"
+            > Final Rating
+            </th>
             <th>Avg.</th>
           </tr>
         </ng-template>
@@ -28,6 +35,7 @@
           <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false" tooltipPosition="right">
             <td>{{card.hsClass}}</td>
             <td>{{card.name}}</td>
+            <td *ngIf="card?.hsr_rating">{{ card.hsr_rating  | number: '1.0-1' }}</td>
             <td>{{card.avgRating | number: '1.0-2' }}</td>
           </tr>
         </ng-template>
@@ -35,7 +43,9 @@
     </div>
     <div class="col-12 mb-4 lg:col-4">
       <p-table [value]="standardDeviationCards" class="mb-1">
-        <ng-template pTemplate="caption">Most Controversial Cards </ng-template>
+        <ng-template pTemplate="caption">
+          <span pTooltip="Cards with highest User Ratings standard deviation" tooltipPosition="top">Most Controversial Cards </span>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>Class</th>
@@ -56,11 +66,18 @@
     </div>
     <div class="col-12 lg:col-4">
     <p-table [value]="worstCards">
-      <ng-template pTemplate="caption"> Worst Cards </ng-template>
+      <ng-template pTemplate="caption">
+        <span pTooltip="Worst cards based on Users Ratings" tooltipPosition="top"> Worst Cards </span>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th>Class</th>
           <th>Name</th>
+          <th *ngIf="worstCards[0]?.hsr_rating" 
+              pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
+              tooltipPosition="top"
+            > Final Rating
+            </th>
           <th>Avg.</th>
         </tr>
       </ng-template>
@@ -68,6 +85,7 @@
         <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false" tooltipPosition="right">
           <td>{{card.hsClass}}</td>
           <td>{{card.name}}</td>
+          <td *ngIf="card?.hsr_rating">{{ card.hsr_rating  | number: '1.0-1' }}</td>
           <td>{{card.avgRating | number: '1.0-2' }}</td>
         </tr>
       </ng-template>

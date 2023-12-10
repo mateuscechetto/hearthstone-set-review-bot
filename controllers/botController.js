@@ -191,6 +191,7 @@ router.get('/homeStats', async (req, res) => {
                     hsClass: { $first: '$hsClass' },
                     imageURL: { $first: '$imageURL' },
                     ratings: { $push: '$ratings.rating' },
+                    hsr_rating: { $first: '$hsr_rating' },
                 },
             },
             {
@@ -206,6 +207,7 @@ router.get('/homeStats', async (req, res) => {
                             cond: { $ne: ['$$rating', 0] },
                         },
                     },
+                    hsr_rating: 1,
                 },
             },
             {
@@ -216,6 +218,7 @@ router.get('/homeStats', async (req, res) => {
                     ratings: 1,
                     avgRating: { $avg: '$ratings' },
                     standardDeviation: { $stdDevSamp: '$ratings' },
+                    hsr_rating: 1,
                 },
             },
             {
