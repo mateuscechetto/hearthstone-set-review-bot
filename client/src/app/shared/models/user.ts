@@ -5,4 +5,6 @@ export interface User {
     userToken: string,
     isStreamer: boolean,
     followers: number,
+    score?: number,
+    totalDeviation?: number,
 }

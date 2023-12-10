@@ -30,9 +30,77 @@ router.get('/ratedCards', async (req, res) => {
 
 router.get('/users', async (req, res) => {
     try {
-        const users = await User.find({ imageURL: { $exists: true, $ne: null } }).sort('-view_count');
-        return res.status(status.OK).send(users);
+        // const users = await User.find({ imageURL: { $exists: true, $ne: null } }).sort('-view_count');
+        const pipeline = [
+            {
+                $lookup: {
+                    from: 'ratings',
+                    localField: '_id',
+                    foreignField: 'card',
+                    as: 'ratings',
+                },
+            },
+            {
+                $unwind: '$ratings',
+            },
+            {
+                $project: {
+                    _id: 0,
+                    user: '$ratings.user',
+                    hsr_rating: '$hsr_rating',
+                    userRating: '$ratings.rating',
+                },
+            },
+            {
+                $project: {
+                    user: '$user',
+                    deviation: {
+                        $abs: { $subtract: ['$hsr_rating', '$userRating'] },
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: '$user',
+                    totalDeviation: { $sum: { $pow: ['$deviation', 2] } },
+                    count: { $sum: 1 },
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users', // Replace with your User collection name
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'userData',
+                },
+            },
+            {
+                $unwind: '$userData',
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: '$userData.name',
+                    image: '$userData.image',
+                    view_count: '$userData.view_count',
+                    isStreamer: '$userData.isStreamer',
+                    sheetLink: '$userData.sheetLink',
+                    followers: '$userData.followers',
+                    totalDeviation: '$totalDeviation', 
+                    score: { $subtract: [9, {$divide: ['$totalDeviation' , '$count']}] }, 
+                },
+            },
+            {
+                $sort: {
+                    'followers': -1,
+                },
+            }
+        ];
+
+        const results = await Card.aggregate(pipeline);
+        return res.status(status.OK).send(results);
     } catch (err) {
+        console.log(err);
         return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the users', err });
     }
 });
