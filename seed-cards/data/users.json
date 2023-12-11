@@ -6,24 +6,24 @@
     "view_count": 0,
     "__v": 0,
     "followers": 0,
-    "isStreamer": false
+    "isStreamer": true
   },
   {
     "_id": "654271bf2d83a2536c024613",
     "name": "FenoHS",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/da4b2af6-4c0f-4aec-8059-25386d6c8d47-profile_image-300x300.png",
     "view_count": 0,
+    "isStreamer": true,
     "__v": 0,
-    "isStreamer": false,
-    "followers": 88323
+    "followers": 88373
   },
   {
     "_id": "6543a5dda63b3fffadeae938",
     "name": "reqvam",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/a1d9044e-496e-402f-b7ba-86008ec86d37-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": true,
+    "__v": 0,
     "followers": 15101
   },
   {
@@ -31,8 +31,8 @@
     "name": "Machadogps",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/8612ca5c-3099-446a-b394-ad8b76710a3f-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -105,8 +105,7 @@
     "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/de130ab0-def7-11e9-b668-784f43822e80-profile_image-300x300.png",
     "view_count": 0,
     "__v": 0,
-    "followers": 0,
-    "isStreamer": false
+    "followers": 0
   },
   {
     "_id": "6545200d79b92310bfb1c508",
@@ -129,8 +128,8 @@
     "name": "Talso",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/063aa71a-046d-4f49-9af0-c65c140f7d84-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": true,
+    "__v": 0,
     "followers": 3402
   },
   {
@@ -138,8 +137,8 @@
     "name": "NecroPepp",
     "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ce57700a-def9-11e9-842d-784f43822e80-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -155,8 +154,8 @@
     "name": "WolfLock_HS",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/fb1e7507-af64-43ec-8b2b-b128f6e94d76-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -228,8 +227,8 @@
     "name": "cosmincosman",
     "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/215b7342-def9-11e9-9a66-784f43822e80-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -237,8 +236,8 @@
     "name": "TJSCOUSER_",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/9c02665a9a038cad-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -310,8 +309,8 @@
     "name": "Klugisel",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/f8692d7f-f60d-4ebf-bdcb-f018527b6e03-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -319,8 +318,8 @@
     "name": "fridgeyfridge",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/30b04ea4-ec93-4161-8d15-cf7052426de9-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -336,8 +335,8 @@
     "name": "highestmarx",
     "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/294c98b5-e34d-42cd-a8f0-140b72fba9b0-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -369,8 +368,8 @@
     "name": "stinzy_",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/44146214-2727-4c6d-893b-ffa7048cce68-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -466,8 +465,8 @@
     "name": "penor_man4",
     "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/dbdc9198-def8-11e9-8681-784f43822e80-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": false,
+    "__v": 0,
     "followers": 0
   },
   {
@@ -499,290 +498,8 @@
     "name": "SidisiTV",
     "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/f0c67e9b-19d2-40e1-8731-1e6b63dda739-profile_image-300x300.png",
     "view_count": 0,
-    "__v": 0,
     "isStreamer": true,
+    "__v": 0,
     "followers": 3301
-  },
-  {
-    "_id": "6550e1592a2ab0f3b4e5995a",
-    "name": "iNS4NE_HS",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/ffcd5824-1c83-410c-9fa8-d5621eaed2bc-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 5116,
-    "__v": 0
-  },
-  {
-    "_id": "6550e8df2a2ab0f3b4e5a20d",
-    "name": "GuilloTroll",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/0aedb12a-c0e5-4c44-a1d6-220e801bb8a4-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6550ebdf2a2ab0f3b4e5a4bb",
-    "name": "Gumek_",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ce57700a-def9-11e9-842d-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6550f2c72a2ab0f3b4e5b059",
-    "name": "flackpolo",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/42f21f17c450fb14-profile_image-300x300.jpeg",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6551a18d2a2ab0f3b4e5d30c",
-    "name": "theneddlesking",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/dbdc9198-def8-11e9-8681-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0
-  },
-  {
-    "_id": "655230147db9abd22fb10a64",
-    "name": "fatcatHS",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/65e8917e-2c50-4ad0-abdd-c9addab24940-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0,
-    "isStreamer": true
-  },
-  {
-    "_id": "6552b18c7db9abd22fb1481e",
-    "name": "Jambre",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/af30aaa6-46c9-4056-9dff-0058be88f406-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 19802,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "6552b7b97db9abd22fb16603",
-    "name": "greatina",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/bee0e1cf-476e-471f-9010-fa44402c1355-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "6552b98a7db9abd22fb17385",
-    "name": "Valdrie",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/b139a490-4579-492e-a2ca-44845da2e64e-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0,
-    "isStreamer": true
-  },
-  {
-    "_id": "6552bb097db9abd22fb17ddb",
-    "name": "Acelga_",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/2cfb175b-8472-4aed-8555-fb05143f9c63-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "6552bd297db9abd22fb1958a",
-    "name": "alf9811",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "6552c1187db9abd22fb1a87a",
-    "name": "vayazu2",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/7b420c1c-a659-46a7-8a74-05a2bbfe3303-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6552c1277db9abd22fb1abdf",
-    "name": "luciogabrielx",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/e53c194f-7035-4dc5-aa93-78b6936aa691-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 0,
-    "__v": 0,
-    "isStreamer": true
-  },
-  {
-    "_id": "6552c1ba7db9abd22fb1b626",
-    "name": "McBanterFace",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/1165b8aa-76e9-46d5-9c8c-071df0e0acf0-profile_image-300x300.png",
-    "view_count": 0,
-    "followers": 22915,
-    "__v": 0
-  },
-  {
-    "_id": "6552d0690d8fae3c5be9faff",
-    "name": "pahanau",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ebe4cd89-b4f4-4cd9-adac-2f30151b4209-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "6552d0b60d8fae3c5be9fd77",
-    "name": "jawapride",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/a8365166-4ed3-4d93-8c5e-0e3ff7f352cc-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6552d9690d8fae3c5bea0d2b",
-    "name": "Chapuzo",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/6a4848e1-ecb8-47df-bb13-b43f61a2fe21-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6552de1a0d8fae3c5bea1b60",
-    "name": "d3xy_h",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/105b5fd0-a830-4eff-aefa-115b6dc2d2c3-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6552ef120d8fae3c5bea2885",
-    "name": "osuomelette",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6552fb510d8fae3c5bea2dbc",
-    "name": "cordeiro_0",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/30446cfd-2819-4adf-b8c8-cfb4aae75a44-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6552fe740d8fae3c5bea3137",
-    "name": "dread_eye_",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/4c3e9031-03a9-4360-9450-c325ed35309c-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "655309460d8fae3c5bea3a73",
-    "name": "Supremecommand2",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/13e5fa74-defa-11e9-809c-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "655330200d8fae3c5bea826c",
-    "name": "plushagm",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "655335c50d8fae3c5bea8e6f",
-    "name": "Misaks",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/misaks-profile_image-a21c8e87bb42b7d1-300x300.jpeg",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "65533a280d8fae3c5bea97d1",
-    "name": "jyyyk2707",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "655355190d8fae3c5beab87a",
-    "name": "BoomerangBR",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/7aaa55c2-9133-4642-b019-414c7c5bce98-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "6553623d0d8fae3c5beac696",
-    "name": "PapaLim",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/d4c6b6a2-4194-41c1-a371-3de41ccd9ff1-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "65538d4d0d8fae3c5beb0ab0",
-    "name": "JackBelyeu",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "655397070d8fae3c5beb1994",
-    "name": "iTerko",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "6553a4870d8fae3c5beb268b",
-    "name": "Antiwhamite",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ebe4cd89-b4f4-4cd9-adac-2f30151b4209-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6553b56a0d8fae3c5beb2f05",
-    "name": "theoneandonlyhi_",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/c11415f8-936f-47f8-874d-5cecc7735c3f-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "6553cf400d8fae3c5beb34eb",
-    "name": "ThisWeekinHS",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/09d31532-691c-4ad4-a088-2e615df128bf-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "65565f9310a4e4ce40b9ed4e",
-    "name": "Morgloth19",
-    "image": "https://static-cdn.jtvnw.net/jtv_user_pictures/7d2ec342-5996-4c29-b4a7-c96c753b4772-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0
-  },
-  {
-    "_id": "655751e252f95daeb53d372d",
-    "name": "shadyghost7",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/ebb84563-db81-4b9c-8940-64ed33ccfc7b-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "65596a4a22f6f1d295dbb8bf",
-    "name": "heyitsmestardust",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/dbdc9198-def8-11e9-8681-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
-  },
-  {
-    "_id": "655a496061e359a318db7df4",
-    "name": "umikarp",
-    "image": "https://static-cdn.jtvnw.net/user-default-pictures-uv/998f01ae-def8-11e9-b95c-784f43822e80-profile_image-300x300.png",
-    "view_count": 0,
-    "__v": 0,
-    "isStreamer": false
   }
 ]
