@@ -14,6 +14,7 @@ export type AverageRatingByClass = {
   hsClass: HearthstoneClass;
   avgRating: number;
   numRatings: number;
+  avg_hsr_rating?: number;
 }
 
 @Injectable({

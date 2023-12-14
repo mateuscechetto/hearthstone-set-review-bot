@@ -30,9 +30,77 @@ router.get('/ratedCards', async (req, res) => {
 
 router.get('/users', async (req, res) => {
     try {
-        const users = await User.find({ imageURL: { $exists: true, $ne: null } }).sort('-view_count');
-        return res.status(status.OK).send(users);
+        // const users = await User.find({ imageURL: { $exists: true, $ne: null } }).sort('-view_count');
+        const pipeline = [
+            {
+                $lookup: {
+                    from: 'ratings',
+                    localField: '_id',
+                    foreignField: 'card',
+                    as: 'ratings',
+                },
+            },
+            {
+                $unwind: '$ratings',
+            },
+            {
+                $project: {
+                    _id: 0,
+                    user: '$ratings.user',
+                    hsr_rating: '$hsr_rating',
+                    userRating: '$ratings.rating',
+                },
+            },
+            {
+                $project: {
+                    user: '$user',
+                    deviation: {
+                        $abs: { $subtract: ['$hsr_rating', '$userRating'] },
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: '$user',
+                    totalDeviation: { $sum: { $pow: ['$deviation', 2] } },
+                    count: { $sum: 1 },
+                },
+            },
+            {
+                $lookup: {
+                    from: 'users', // Replace with your User collection name
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'userData',
+                },
+            },
+            {
+                $unwind: '$userData',
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: '$userData.name',
+                    image: '$userData.image',
+                    view_count: '$userData.view_count',
+                    isStreamer: '$userData.isStreamer',
+                    sheetLink: '$userData.sheetLink',
+                    followers: '$userData.followers',
+                    totalDeviation: '$totalDeviation', 
+                    score: { $subtract: [9, {$divide: ['$totalDeviation' , '$count']}] }, 
+                },
+            },
+            {
+                $sort: {
+                    'followers': -1,
+                },
+            }
+        ];
+
+        const results = await Card.aggregate(pipeline);
+        return res.status(status.OK).send(results);
     } catch (err) {
+        console.log(err);
         return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the users', err });
     }
 });
@@ -58,6 +126,7 @@ router.get('/hotCards', async (req, res) => {
                     hsClass: { $first: '$hsClass' },
                     imageURL: { $first: '$imageURL' },
                     ratings: { $push: '$ratings.rating' },
+                    hsr_rating: { $first: '$hsr_rating' },
                 },
             },
             {
@@ -73,6 +142,7 @@ router.get('/hotCards', async (req, res) => {
                             cond: { $ne: ['$$rating', 0] },
                         },
                     },
+                    hsr_rating: 1,
                 },
             },
             {
@@ -83,6 +153,7 @@ router.get('/hotCards', async (req, res) => {
                     ratings: 1,
                     avgRating: { $avg: '$ratings' },
                     standardDeviation: { $stdDevSamp: '$ratings' },
+                    hsr_rating: 1,
                 },
             },
             {
@@ -103,66 +174,69 @@ router.get('/homeStats', async (req, res) => {
     try {
         const pipeline = [
             {
-              $lookup: {
-                from: 'ratings',
-                localField: '_id',
-                foreignField: 'card',
-                as: 'ratings',
-              },
-            },
-            {
-              $unwind: '$ratings',
-            },
-            {
-              $group: {
-                _id: '$_id',
-                name: { $first: '$name' },
-                hsClass: { $first: '$hsClass' },
-                imageURL: { $first: '$imageURL' },
-                ratings: { $push: '$ratings.rating' },
-              },
-            },
-            {
-              $project: {
-                _id: 0,
-                name: 1,
-                hsClass: 1,
-                imageURL: 1,
-                ratings: {
-                  $filter: {
-                    input: '$ratings',
-                    as: 'rating',
-                    cond: { $ne: ['$$rating', 0] },
-                  },
+                $lookup: {
+                    from: 'ratings',
+                    localField: '_id',
+                    foreignField: 'card',
+                    as: 'ratings',
                 },
-              },
             },
             {
-              $project: {
-                name: 1,
-                hsClass: 1,
-                imageURL: 1,
-                ratings: 1,
-                avgRating: { $avg: '$ratings' },
-                standardDeviation: { $stdDevSamp: '$ratings' },
-              },
+                $unwind: '$ratings',
             },
             {
-              $sort: {
-                avgRating: -1,
-              },
+                $group: {
+                    _id: '$_id',
+                    name: { $first: '$name' },
+                    hsClass: { $first: '$hsClass' },
+                    imageURL: { $first: '$imageURL' },
+                    ratings: { $push: '$ratings.rating' },
+                    hsr_rating: { $first: '$hsr_rating' },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: 1,
+                    hsClass: 1,
+                    imageURL: 1,
+                    ratings: {
+                        $filter: {
+                            input: '$ratings',
+                            as: 'rating',
+                            cond: { $ne: ['$$rating', 0] },
+                        },
+                    },
+                    hsr_rating: 1,
+                },
+            },
+            {
+                $project: {
+                    name: 1,
+                    hsClass: 1,
+                    imageURL: 1,
+                    ratings: 1,
+                    avgRating: { $avg: '$ratings' },
+                    standardDeviation: { $stdDevSamp: '$ratings' },
+                    hsr_rating: 1,
+                },
+            },
+            {
+                $sort: {
+                    avgRating: -1,
+                },
             },
         ];
-          
+
         const results = await Card.aggregate(pipeline);
-          
+
         const bestCards = results.slice(0, 5);
-        const worstCards = results.slice(-5).sort((a,b) => a.avgRating - b.avgRating);
+        const worstCards = results.slice(-5).sort((a, b) => a.avgRating - b.avgRating);
         const standardDeviationCards = results
             .slice() // Create a shallow copy of the array
             .sort((a, b) => b.standardDeviation - a.standardDeviation)
             .slice(0, 5);
-          
+
         const response = {
             bestCards,
             worstCards,
@@ -180,48 +254,50 @@ router.get('/averageRatingsByClass', async (req, res) => {
     try {
         const pipeline = [
             {
-              $lookup: {
-                from: 'ratings',
-                localField: '_id',
-                foreignField: 'card',
-                as: 'ratings',
-              },
+                $lookup: {
+                    from: 'ratings',
+                    localField: '_id',
+                    foreignField: 'card',
+                    as: 'ratings',
+                },
             },
             {
-              $unwind: '$ratings',
+                $unwind: '$ratings',
             },
             {
-              $match: {
-                'ratings.rating': { $ne: 0 }, // Exclude ratings with value 0
-              },
+                $match: {
+                    'ratings.rating': { $ne: 0 }, // Exclude ratings with value 0
+                },
             },
             {
-              $group: {
-                _id: '$hsClass',
-                avgRating: { $avg: '$ratings.rating' },
-                numRatings: { $sum: 1 },
-              },
+                $group: {
+                    _id: '$hsClass',
+                    avgRating: { $avg: '$ratings.rating' },
+                    numRatings: { $sum: 1 },
+                    avg_hsr_rating: { $avg: '$hsr_rating' },
+                },
             },
             {
-              $project: {
-                _id: 0,
-                hsClass: '$_id',
-                avgRating: 1,
-                numRatings: 1,
-              },
+                $project: {
+                    _id: 0,
+                    hsClass: '$_id',
+                    avgRating: 1,
+                    numRatings: 1,
+                    avg_hsr_rating: 1,
+                },
             },
             {
-              $sort: {
-                avgRating: -1,
-              },
+                $sort: {
+                    avgRating: -1,
+                },
             },
-          ];
-  
-      const results = await Card.aggregate(pipeline);
-      return res.status(status.OK).json(results);
+        ];
+
+        const results = await Card.aggregate(pipeline);
+        return res.status(status.OK).json(results);
     } catch (error) {
-      console.error(error);
-      return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the cards' }, error);
+        console.error(error);
+        return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching the cards' }, error);
     }
 });
 
