@@ -28,7 +28,10 @@
               tooltipPosition="top"
             > Final Rating
             </th>
-            <th>Avg.</th>
+            <th
+              pTooltip="Average of Users Ratings" 
+              tooltipPosition="top"
+            > Avg.</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-card>
@@ -50,8 +53,14 @@
           <tr>
             <th>Class</th>
             <th>Name</th>
-            <th>Avg.</th>
-            <th>SD</th>
+            <th 
+              pTooltip="Average of Users Ratings" 
+              tooltipPosition="top"
+            > Avg.</th>
+            <th
+            pTooltip="Standard Deviation of Users Ratings" 
+            tooltipPosition="top"
+            >SD</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-card>
@@ -78,7 +87,10 @@
               tooltipPosition="top"
             > Final Rating
             </th>
-          <th>Avg.</th>
+          <th
+            pTooltip="Average of Users Ratings" 
+            tooltipPosition="top"
+          >Avg.</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-card>
