@@ -40,7 +40,7 @@ export class CardViewPage {
     }
   }
 
-  isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
+  isInPreExpansionSeason: boolean = false;
 
   constructor(
     private service: CardService,
@@ -51,6 +51,7 @@ export class CardViewPage {
   ) { }
 
   ngOnInit() {
+    this.isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
     const username = this.route.snapshot.params['username'];
     this.loading = true;
 
@@ -112,7 +113,7 @@ export class CardViewPage {
       return
     }
     this.ratingService.rateCard(card.name, rating, this.userService.getUserToken()).subscribe(
-      data => {
+      _ => {
         this.cards = this.sortCardsByClassAndMana(
           this.cards.map(c => c.name == card.name ? { ...c, rating: rating } : c)
         );
@@ -154,7 +155,7 @@ export class CardViewPage {
   onRecordChat(card: RatedCard) {
     if (this.loggedUser) {
       this.ratingService.recordChat(card.name, this.userService.getUserToken()).subscribe({
-        next: (ratedCard) => {
+        next: (_) => {
         },
         error: (e) => console.log(e)
       });
