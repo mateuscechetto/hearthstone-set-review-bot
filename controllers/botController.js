@@ -16,7 +16,8 @@ const currentExpansion = "Showdown in the Badlands";
 const minRatings = 30;
 
 router.get('/ratedCards', async (req, res) => {
-    const { userName } = req.query;
+    const { userName, expansion } = req.query;
+    const activeExpansion = expansion || currentExpansion;
     const user = await User.findOne({ name: userName });
     if (!user) {
         return res.status(status.BAD_REQUEST).send({ error: "Invalid user" });
@@ -37,7 +38,7 @@ router.get('/ratedCards', async (req, res) => {
             $unwind: '$cardData',
         },
         {
-            $match: { 'cardData.expansion': currentExpansion },
+            $match: { 'cardData.expansion': activeExpansion },
         },
         {
             $lookup: {
@@ -61,10 +62,12 @@ router.get('/ratedCards', async (req, res) => {
 });
 
 router.get('/users', async (req, res) => {
+    const { expansion } = req.query;
+    const activeExpansion = expansion || currentExpansion;
     try {
         const pipeline = [
             {
-                $match: { expansion: currentExpansion },
+                $match: { expansion: activeExpansion },
             },
             {
                 $lookup: {
@@ -148,10 +151,12 @@ router.get('/users', async (req, res) => {
 });
 
 router.get('/hotCards', async (req, res) => {
+    const { expansion } = req.query;
+    const activeExpansion = expansion || currentExpansion;
     try {
         const pipeline = [
             {
-                $match: { expansion: currentExpansion },
+                $match: { expansion: activeExpansion },
             },
             {
                 $lookup: {
@@ -216,10 +221,12 @@ router.get('/hotCards', async (req, res) => {
 });
 
 router.get('/homeStats', async (req, res) => {
+    const { expansion } = req.query;
+    const activeExpansion = expansion || currentExpansion;
     try {
         const pipeline = [
             {
-                $match: { expansion: currentExpansion },
+                $match: { expansion: activeExpansion },
             },
             {
                 $lookup: {
@@ -299,10 +306,12 @@ router.get('/homeStats', async (req, res) => {
 });
 
 router.get('/averageRatingsByClass', async (req, res) => {
+    const { expansion } = req.query;
+    const activeExpansion = expansion || currentExpansion;
     try {
         const pipeline = [
             {
-                $match: { expansion: currentExpansion },
+                $match: { expansion: activeExpansion },
             },
             {
                 $lookup: {
