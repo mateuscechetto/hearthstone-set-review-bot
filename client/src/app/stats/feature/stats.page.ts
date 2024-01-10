@@ -1,9 +1,11 @@
 import {
+  AsyncPipe,
   DecimalPipe,
   KeyValuePipe,
   NgClass,
   NgFor,
   NgIf,
+  NgTemplateOutlet,
 } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -12,12 +14,14 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-import { combineLatest } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { HotCards } from '../../shared/models/hs-card';
 import {
   AverageRatingByClass,
   StatsService,
 } from '../data-access/stats.service';
+import { ALL_CARDS_TABLE_MOCK, BEST_CLASSES_MOCK } from './stats-data.mock';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-Stats',
@@ -35,26 +39,47 @@ import {
     TooltipModule,
     DecimalPipe,
     KeyValuePipe,
+    AsyncPipe,
+    SkeletonModule,
+    NgTemplateOutlet,
   ],
   standalone: true,
 })
 export class StatsPage {
   title = 'Showdown in the Badlands Card Review';
-  standardDeviationCards: HotCards[] = [];
   hotCards: HotCards[] = [];
   ratingsByClass: AverageRatingByClass[] = [];
   cardsByClass: { [key: string]: HotCards[] } = {};
 
+  loadingCards = this.statsService.loadingCards.pipe(
+    tap((loading) => {
+      if (loading) {
+        this.hotCards = ALL_CARDS_TABLE_MOCK;
+      }
+    })
+  );
+  loadingAvgRatingByClass = this.statsService.loadingAvgRatingByClass.pipe(
+    tap((loading) => {
+      if (loading) {
+        this.ratingsByClass = BEST_CLASSES_MOCK;
+      }
+    })
+  );
+
   constructor(private statsService: StatsService) {}
 
   ngOnInit() {
-    combineLatest([
-      this.statsService.getCards(),
-      this.statsService.getAverageRatingsByClass(),
-    ]).subscribe(([hotCards, ratingsByClass]) => {
-      this.hotCards = hotCards;
-      this.setClassesCards(hotCards);
-      this.ratingsByClass = ratingsByClass;
+    this.statsService.getCards().subscribe({
+      next: (cards) => {
+        this.hotCards = cards;
+        this.setClassesCards(cards);
+      },
+    });
+
+    this.statsService.getAverageRatingsByClass().subscribe({
+      next: (ratingsByClass) => {
+        this.ratingsByClass = ratingsByClass;
+      },
     });
   }
 

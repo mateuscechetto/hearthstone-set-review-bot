@@ -5,6 +5,8 @@ import {
   RatedCard,
 } from 'src/app/shared/models/hs-card';
 
+// Those mocks are used so we know how many skeletons need to be rendered
+
 export const RATED_CARDS_MOCK: RatedCard[] = [
   {
     description: '',

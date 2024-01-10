@@ -1,10 +1,14 @@
-<div class="grid md:ml-1 md:mr-1 mb-4">
+<div
+  *ngIf="{loadingCards: loadingCards | async, loadingAvgRatingByClass: loadingAvgRatingByClass | async} as context"
+  class="grid md:ml-1 md:mr-1 mb-4"
+>
   <div class="col-12 lg:col-10 lg:col-offset-1 flex-order-0 mb-4">
-    <div
-      class="col-12 flex justify-content-end"
-      *ngIf="ratingsByClass[0]?.avg_hsr_rating"
-    >
-      <a href="https://hsreplay.net/cards/" target="_blank">
+    <div class="col-12 flex justify-content-end" style="height: 37px">
+      <a
+        *ngIf="ratingsByClass[0]?.avg_hsr_rating"
+        href="https://hsreplay.net/cards/"
+        target="_blank"
+      >
         Powered by HSReplay
       </a>
     </div>
@@ -41,14 +45,19 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-class>
-        <tr [ngClass]="class.hsClass">
-          <td>{{class.hsClass}}</td>
-          <td *ngIf="class?.avg_hsr_rating">
-            {{ class.avg_hsr_rating | number: '1.0-1' }}
-          </td>
-          <td>{{class.avgRating | number: '1.0-2' }}</td>
-          <td>{{class.numRatings}}</td>
-        </tr>
+        <ng-container
+          *ngTemplateOutlet="context.loadingAvgRatingByClass ? skeletonTableRow : bestClassesRow; context: {columns:3}"
+        ></ng-container>
+        <ng-template #bestClassesRow>
+          <tr [ngClass]="class.hsClass">
+            <td>{{class.hsClass}}</td>
+            <td *ngIf="class?.avg_hsr_rating">
+              {{ class.avg_hsr_rating | number: '1.0-1' }}
+            </td>
+            <td>{{class.avgRating | number: '1.0-2' }}</td>
+            <td>{{class.numRatings}}</td>
+          </tr>
+        </ng-template>
       </ng-template>
     </p-table>
   </div>
@@ -99,19 +108,24 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-card>
-        <tr
-          [ngClass]="card.hsClass"
-          pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
-          [escape]="false"
-          tooltipPosition="right"
-        >
-          <td>{{card.hsClass}}</td>
-          <td>{{card.name}}</td>
-          <td *ngIf="hotCards[0]?.hsr_rating">{{ card.hsr_rating }}</td>
-          <td>{{card.avgRating | number: '1.0-2' }}</td>
-          <td>± {{card.standardDeviation | number: '1.0-2' }}</td>
-          <td>{{card.ratings.length}}</td>
-        </tr>
+        <ng-container
+          *ngTemplateOutlet="context.loadingCards ? skeletonTableRow : allCardsRow; context: {columns:5}"
+        ></ng-container>
+        <ng-template #allCardsRow>
+          <tr
+            [ngClass]="card.hsClass"
+            pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
+            [escape]="false"
+            tooltipPosition="right"
+          >
+            <td>{{card.hsClass}}</td>
+            <td>{{card.name}}</td>
+            <td *ngIf="hotCards[0]?.hsr_rating">{{ card.hsr_rating }}</td>
+            <td>{{card.avgRating | number: '1.0-2' }}</td>
+            <td>± {{card.standardDeviation | number: '1.0-2' }}</td>
+            <td>{{card.ratings.length}}</td>
+          </tr>
+        </ng-template>
       </ng-template>
     </p-table>
   </div>
@@ -181,4 +195,11 @@
       </ng-template>
     </p-table>
   </div>
+  <ng-template #skeletonTableRow let-columns="columns">
+    <tr style="height: 54px">
+      <td *ngFor="let _ of [].constructor(columns)">
+        <p-skeleton width="100px"></p-skeleton>
+      </td>
+    </tr>
+  </ng-template>
 </div>
