@@ -10,3 +10,5 @@ export class EnvironmentService {
         return environment.isInPreExpansionSeason;
     }
 }
+
+export const CURRENT_EXPANSION = 'Showdown in the Badlands';

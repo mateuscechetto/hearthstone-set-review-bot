@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { HotCards } from '../../shared/models/hs-card';
 import { User } from '../../shared/models/user';
 import { environment } from '../../../environments/environment';
+import { CURRENT_EXPANSION } from '../../shared/environment/environment.service';
+
 
 export type HomeApiReturn = {
   bestCards: HotCards[];
@@ -18,21 +20,30 @@ export class HomeService {
 
   constructor(private http: HttpClient) { }
 
-  getCards(): Observable<HotCards[]> {
+  getCards(expansion: string = CURRENT_EXPANSION): Observable<HotCards[]> {
     return this.http.get<HotCards[]>(`${environment.apiUrl}/api/hotCards`, {
       withCredentials: true,
+      params: {
+        expansion
+      },
     });
   }
 
-  getStats(): Observable<HomeApiReturn> {
+  getStats(expansion: string = CURRENT_EXPANSION): Observable<HomeApiReturn> {
     return this.http.get<HomeApiReturn>(`${environment.apiUrl}/api/homeStats`, {
       withCredentials: true,
+      params: {
+        expansion
+      },
     });
   }
 
-  getUsers(): Observable<User[]> {
+  getUsers(expansion: string = CURRENT_EXPANSION): Observable<User[]> {
     return this.http.get<User[]>(`${environment.apiUrl}/api/users`, {
       withCredentials: true,
+      params: {
+        expansion
+      },
     });
   }
 
