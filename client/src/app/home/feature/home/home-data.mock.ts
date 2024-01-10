@@ -1,6 +1,8 @@
 import { User } from 'src/app/shared/models/user';
 import { HearthstoneClass, HotCards } from '../../../shared/models/hs-card';
 
+// Those mocks are used so we know how many skeletons need to be rendered
+
 export const CARDS_MOCK: HotCards[] = [
   {
     avgRating: 1,

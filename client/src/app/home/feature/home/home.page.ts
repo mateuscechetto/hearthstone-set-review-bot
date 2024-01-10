@@ -13,12 +13,12 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-import { combineLatest } from 'rxjs';
 import { HotCards } from '../../../shared/models/hs-card';
 import { User } from '../../../shared/models/user';
 import { HomeService } from '../../data-access/home.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CARDS_MOCK, USERS_MOCK } from './home-data.mock';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -43,14 +43,26 @@ import { CARDS_MOCK, USERS_MOCK } from './home-data.mock';
 })
 export class HomePage {
   title = 'Showdown in the Badlands Card Review';
-  bestCards: HotCards[] = CARDS_MOCK;
-  worstCards: HotCards[] = CARDS_MOCK;
-  standardDeviationCards: HotCards[] = CARDS_MOCK;
-  usersWithRating: User[] = USERS_MOCK;
-  loadingUsers = this.homeService.loadingUsers;
-  loadingStats = this.homeService.loadingStats;
-
-  // skeletonTableItems = [1, 2, 3, 3, 4];
+  bestCards: HotCards[] = [];
+  worstCards: HotCards[] = [];
+  standardDeviationCards: HotCards[] = [];
+  usersWithRating: User[] = [];
+  loadingUsers = this.homeService.loadingUsers.pipe(
+    tap((loading) => {
+      if (loading) {
+        this.usersWithRating = USERS_MOCK;
+      }
+    })
+  );
+  loadingStats = this.homeService.loadingStats.pipe(
+    tap((loading) => {
+      if (loading) {
+        this.bestCards = CARDS_MOCK;
+        this.worstCards = CARDS_MOCK;
+        this.standardDeviationCards = CARDS_MOCK;
+      }
+    })
+  );
 
   constructor(private homeService: HomeService) {}
 
