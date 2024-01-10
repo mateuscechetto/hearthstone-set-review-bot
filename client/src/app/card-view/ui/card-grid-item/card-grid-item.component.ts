@@ -6,13 +6,14 @@ import { RatingModule } from 'primeng/rating';
 import { RatedCard } from '../../../shared/models/hs-card';
 import { RecordChatComponent } from '../record-chat/record-chat.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { CardGridSkeletonComponent } from '../card-grid-skeleton/card-grid-skeleton.component';
 
 @Component({
     selector: 'app-card-grid-item[card]',
     templateUrl: './card-grid-item.component.html',
     styleUrls: ['./card-grid-item.component.scss'],
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, AvatarModule, RatingModule, NgIf, RecordChatComponent, TooltipModule]
+    imports: [FormsModule, ReactiveFormsModule, AvatarModule, RatingModule, NgIf, RecordChatComponent, TooltipModule, CardGridSkeletonComponent]
 })
 export class CardGridItemComponent implements OnChanges {
   @Input() card!: RatedCard;
@@ -21,6 +22,7 @@ export class CardGridItemComponent implements OnChanges {
   @Input() isUserStreamer: boolean = false;
   @Input() streamerView: boolean = false;
   @Input() isInPreExpansionSeason: boolean = true;
+  @Input() showSkeleton: boolean = false;
   @Output() imageClick: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
   @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
   @Output() recordChat: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
