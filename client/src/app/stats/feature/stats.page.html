@@ -1,54 +1,51 @@
-<div class="grid">
-  <h1 class="col-12 flex-order-1 md:flex-order-0 md:col-6 md:col-offset-3 text-center"><a [routerLink]="['/home']"
-      style="color: inherit; text-decoration: inherit;">
-      {{ title }}
-    </a></h1>
-  <p-button class="col-3 col-offset-9 flex-order-0 md:flex-order-1 md:col-1 md:col-offset-2"
-    *ngIf="loggedUser; else loginButton" label="Logout" (onClick)="logout()"></p-button>
-  <ng-template #loginButton>
-    <p-button class="col-3 col-offset-9 flex-order-0 md:flex-order-1 md:col-1 md:col-offset-2" label="Login"
-      (onClick)="login()"></p-button>
-  </ng-template>
-</div>
-
-
 <div class="grid md:ml-1 md:mr-1 mb-4">
   <div class="col-12 lg:col-10 lg:col-offset-1 flex-order-0 mb-4">
-    <div class="col-12 flex justify-content-end" *ngIf="ratingsByClass[0]?.avg_hsr_rating">
+    <div
+      class="col-12 flex justify-content-end"
+      *ngIf="ratingsByClass[0]?.avg_hsr_rating"
+    >
       <a href="https://hsreplay.net/cards/" target="_blank">
-      Powered by HSReplay
-    </a>
+        Powered by HSReplay
+      </a>
     </div>
     <p-table [value]="ratingsByClass">
       <ng-template pTemplate="caption"> Best Classes </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="hsClass">Class <p-sortIcon field="hsClass"></p-sortIcon></th>
-          <th *ngIf="ratingsByClass[0]?.avg_hsr_rating" 
-            pSortableColumn="avg_hsr_rating" 
-            style="width:16.6%"
+          <th pSortableColumn="hsClass">
+            Class <p-sortIcon field="hsClass"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="ratingsByClass[0]?.avg_hsr_rating"
+            pSortableColumn="avg_hsr_rating"
+            style="width: 16.6%"
             pTooltip="Average Class Rating calculated using HSReplay data from the 28.2 patch"
             tooltipPosition="top"
-          > Final Avg. <p-sortIcon field="hsr_rating"></p-sortIcon>
+          >
+            Final Avg. <p-sortIcon field="hsr_rating"></p-sortIcon>
           </th>
-          <th 
+          <th
             pSortableColumn="avgRating"
             pTooltip="Average Users Rating"
             tooltipPosition="top"
-          > Avg. <p-sortIcon field="avgRating"></p-sortIcon>
+          >
+            Avg. <p-sortIcon field="avgRating"></p-sortIcon>
           </th>
-          <th 
+          <th
             pSortableColumn="numRatings"
-            pTooltip="Number Users that rated the card" 
+            pTooltip="Number Users that rated the card"
             tooltipPosition="top"
-          > Ratings <p-sortIcon field="numRatings"></p-sortIcon>
+          >
+            Ratings <p-sortIcon field="numRatings"></p-sortIcon>
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-class>
         <tr [ngClass]="class.hsClass">
           <td>{{class.hsClass}}</td>
-          <td *ngIf="class?.avg_hsr_rating">{{ class.avg_hsr_rating  | number: '1.0-1' }}</td>
+          <td *ngIf="class?.avg_hsr_rating">
+            {{ class.avg_hsr_rating | number: '1.0-1' }}
+          </td>
           <td>{{class.avgRating | number: '1.0-2' }}</td>
           <td>{{class.numRatings}}</td>
         </tr>
@@ -60,36 +57,41 @@
       <ng-template pTemplate="caption">All Cards </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="hsClass" style="width:16.6%">Class <p-sortIcon field="hsClass"></p-sortIcon></th>
-          <th pSortableColumn="name" style="width:35%">Name <p-sortIcon field="name"></p-sortIcon></th>
-          <th *ngIf="hotCards[0]?.hsr_rating" 
-            pSortableColumn="hsr_rating" 
-            style="width:16.6%"
+          <th pSortableColumn="hsClass" style="width: 16.6%">
+            Class <p-sortIcon field="hsClass"></p-sortIcon>
+          </th>
+          <th pSortableColumn="name" style="width: 35%">
+            Name <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="hotCards[0]?.hsr_rating"
+            pSortableColumn="hsr_rating"
+            style="width: 16.6%"
             pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
             tooltipPosition="top"
           >
             Final Rating <p-sortIcon field="hsr_rating"></p-sortIcon>
           </th>
-          <th 
-            pSortableColumn="avgRating" 
-            style="width:16.6%"
-            pTooltip="Average of Users Ratings" 
+          <th
+            pSortableColumn="avgRating"
+            style="width: 16.6%"
+            pTooltip="Average of Users Ratings"
             tooltipPosition="top"
           >
-            Avg.  <p-sortIcon field="avgRating"></p-sortIcon>
+            Avg. <p-sortIcon field="avgRating"></p-sortIcon>
           </th>
-          <th 
-            pSortableColumn="standardDeviation" 
-            style="width:16.6%"
-            pTooltip="Standard Deviation of Users Ratings" 
+          <th
+            pSortableColumn="standardDeviation"
+            style="width: 16.6%"
+            pTooltip="Standard Deviation of Users Ratings"
             tooltipPosition="top"
           >
             SD <p-sortIcon field="standardDeviation"></p-sortIcon>
           </th>
-          <th 
+          <th
             pSortableColumn="ratings.length"
-            style="width:10%"
-            pTooltip="Number Users that rated the card" 
+            style="width: 10%"
+            pTooltip="Number Users that rated the card"
             tooltipPosition="top"
           >
             Ratings <p-sortIcon field="ratings.length"></p-sortIcon>
@@ -97,8 +99,12 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-card>
-        <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false"
-          tooltipPosition="right">
+        <tr
+          [ngClass]="card.hsClass"
+          pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
+          [escape]="false"
+          tooltipPosition="right"
+        >
           <td>{{card.hsClass}}</td>
           <td>{{card.name}}</td>
           <td *ngIf="hotCards[0]?.hsr_rating">{{ card.hsr_rating }}</td>
@@ -115,36 +121,44 @@
 </div>
 <div class="grid md:ml-1 md:mr-1">
   <div class="col-12 lg:col-6" *ngFor="let class of cardsByClass | keyvalue">
-    <p-table [value]="class.value" [rows]="10" [paginator]="class.key == 'Neutral'">
+    <p-table
+      [value]="class.value"
+      [rows]="10"
+      [paginator]="class.key == 'Neutral'"
+    >
       <ng-template pTemplate="caption">{{ class.key }} </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-          <th *ngIf="class.value[0]?.hsr_rating" 
-            pSortableColumn="hsr_rating" 
-            style="width:16.6%"
+          <th pSortableColumn="name">
+            Name <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th
+            *ngIf="class.value[0]?.hsr_rating"
+            pSortableColumn="hsr_rating"
+            style="width: 16.6%"
             pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
             tooltipPosition="top"
           >
             Final Rating <p-sortIcon field="hsr_rating"></p-sortIcon>
           </th>
-          <th 
-            pSortableColumn="avgRating" 
-            pTooltip="Average of Users Ratings" 
+          <th
+            pSortableColumn="avgRating"
+            pTooltip="Average of Users Ratings"
             tooltipPosition="top"
           >
             Avg. <p-sortIcon field="avgRating"></p-sortIcon>
           </th>
-          <th 
+          <th
             pSortableColumn="standardDeviation"
-            pTooltip="Standard Deviation of Users Ratings" 
+            pTooltip="Standard Deviation of Users Ratings"
             tooltipPosition="top"
           >
             SD <p-sortIcon field="standardDeviation"></p-sortIcon>
           </th>
-          <th *ngIf="!class.value[0]?.hsr_rating" 
-            pTooltip="Number Users that rated the card" 
-            tooltipPosition="top" 
+          <th
+            *ngIf="!class.value[0]?.hsr_rating"
+            pTooltip="Number Users that rated the card"
+            tooltipPosition="top"
             pSortableColumn="ratings.length"
           >
             Ratings <p-sortIcon field="ratings.length"></p-sortIcon>
@@ -152,13 +166,17 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-card>
-        <tr [ngClass]="card.hsClass" pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>" [escape]="false"
-          tooltipPosition="right">
+        <tr
+          [ngClass]="card.hsClass"
+          pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
+          [escape]="false"
+          tooltipPosition="right"
+        >
           <td>{{card.name}}</td>
           <td *ngIf="class.value[0]?.hsr_rating">{{ card.hsr_rating }}</td>
           <td>{{card.avgRating | number: '1.0-2' }}</td>
           <td>± {{card.standardDeviation | number: '1.0-2' }}</td>
-          <td  *ngIf="!class.value[0]?.hsr_rating" >{{card.ratings.length}}</td>
+          <td *ngIf="!class.value[0]?.hsr_rating">{{card.ratings.length}}</td>
         </tr>
       </ng-template>
     </p-table>

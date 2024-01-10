@@ -91,11 +91,23 @@
           "options": {
             "browserTarget": "hs-set-review:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "2f56e4fe-cd6a-42ed-b8fa-baa4a8bd5245"
+    "analytics": "2f56e4fe-cd6a-42ed-b8fa-baa4a8bd5245",
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

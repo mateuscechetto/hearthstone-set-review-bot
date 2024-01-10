@@ -1,77 +1,85 @@
 <div class="grid ml-1 mr-1">
-    <ng-container *ngIf="isInPreExpansionSeason; else notPreExpansionSeason">
-        <p-button 
-            *ngIf="loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name; else notStreamer"
-            class="col-6 flex-order-0 md:flex-order-0 md:col-2" 
-            data-testid="record-chat-ratings-button"
-            label="Record chat ratings"
-            (onClick)="onUserIsStreamer()"
-        ></p-button>
-    </ng-container>
-    <h1 class="col-12 flex-order-2 md:flex-order-1 md:col-6 text-center" [ngClass]="!isInPreExpansionSeason || loggedUser && loggedUser.name == pageUser?.name ? 'md:col-offset-1' : 
-        'md:col-offset-3'">
-        <a [href]="'https://www.twitch.tv/' + pageUser?.name" target="_blank"
-            style="color: #6441a5; text-decoration: inherit;">
-            {{ name }}
-        </a><a [routerLink]="['/home']" style="color: inherit; text-decoration: inherit;">
-            Showdown in the Badlands Card Review
-        </a>
-    </h1>
-    <p-button class="col-3 flex-order-1 md:flex-order-2 md:col-1 md:col-offset-2" [ngClass]="!isInPreExpansionSeason || loggedUser && loggedUser.name == pageUser?.name ? 'col-offset-3' : 
-        'col-offset-9'" *ngIf="loggedUser; else loginButton" label="Logout" (onClick)="logout()"></p-button>
-
-    <ng-template #notPreExpansionSeason>
-        <b class="col-6 flex-order-0 md:flex-order-0 md:col-2" data-testid="not-pre-expansion-message">
-            This expansion has been released. Users can no longer change their ratings.
-        </b>
-    </ng-template>
-    <ng-template #loginButton>
-        <p-button class="col-3 col-offset-9 flex-order-1 md:flex-order-2 md:col-1 md:col-offset-2" label="Login"
-            (onClick)="login()"></p-button>
-    </ng-template>
-    <ng-template #notStreamer>
-        <p-button 
-            *ngIf="loggedUser && loggedUser.name == pageUser?.name" 
-            class="col-6 flex-order-0 md:flex-order-0 md:col-2"    
-            styleClass="p-button-danger"
-            data-testid="hide-chat-ratings-button"
-            label="Hide chat ratings" (onClick)="onUserIsNOTStreamer()"
-        ></p-button>
-    </ng-template>
+  <h1
+    class="col-12 flex-order-0 md:flex-order-0 md:col-8 md:col-offset-2 text-center"
+  >
+    <a
+      [href]="'https://www.twitch.tv/' + pageUser?.name"
+      target="_blank"
+      style="color: #6441a5; text-decoration: inherit"
+    >
+      {{ name }} </a
+    >
+      Showdown in the Badlands Card Review
+  </h1>
+  <ng-container *ngIf="isInPreExpansionSeason; else notPreExpansionSeason">
+    <p-button
+      *ngIf="loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name; else notStreamer"
+      class="col-6 col-offset-6 flex-order-1 md:flex-order-1 md:col-2 md:col-offset-0 mt-4"
+      data-testid="record-chat-ratings-button"
+      label="Record chat ratings"
+      (onClick)="onUserIsStreamer()"
+    ></p-button>
+  </ng-container>
+  <ng-template #notPreExpansionSeason>
+    <b
+      class="col-6 flex-order-0 md:flex-order-0 md:col-2 mt-4"
+      data-testid="not-pre-expansion-message"
+    >
+      This expansion has been released. Users can no longer change their
+      ratings.
+    </b>
+  </ng-template>
+  <ng-template #notStreamer>
+    <p-button
+      *ngIf="loggedUser && loggedUser.name == pageUser?.name"
+      class="col-6 flex-order-0 md:flex-order-0 md:col-2"
+      styleClass="p-button-danger"
+      data-testid="hide-chat-ratings-button"
+      label="Hide chat ratings"
+      (onClick)="onUserIsNOTStreamer()"
+    ></p-button>
+  </ng-template>
 </div>
 
-
-<p-dataView #dv [value]="cards" [layout]="layout" *ngIf="!loading; else loadingMessage">
-    <ng-template let-card pTemplate="gridItem">
-        <app-card-grid-item 
-            [card]="card" 
-            [userImg]="pageUser?.image ?? ''" 
-            [isLoggedUser]="pageUser?.name == loggedUser?.name"
-            [isUserStreamer]="!!pageUser?.isStreamer"
-            [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
-            [isInPreExpansionSeason]="isInPreExpansionSeason"
-            (imageClick)="showModal($event)"
-            (changedRate)="onChangedRate($event)" (recordChat)="onRecordChat($event)"
-            (stopRecording)="onStopRecording($event)"></app-card-grid-item>
-    </ng-template>
+<p-dataView
+  #dv
+  [value]="cards"
+  [layout]="layout"
+  *ngIf="!loading; else loadingMessage"
+>
+  <ng-template let-card pTemplate="gridItem">
+    <app-card-grid-item
+      [card]="card"
+      [userImg]="pageUser?.image ?? ''"
+      [isLoggedUser]="pageUser?.name == loggedUser?.name"
+      [isUserStreamer]="!!pageUser?.isStreamer"
+      [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
+      [isInPreExpansionSeason]="isInPreExpansionSeason"
+      (imageClick)="showModal($event)"
+      (changedRate)="onChangedRate($event)"
+      (recordChat)="onRecordChat($event)"
+      (stopRecording)="onStopRecording($event)"
+    ></app-card-grid-item>
+  </ng-template>
 </p-dataView>
 
 <ng-template #loadingMessage>
-    <p>Loading the cards...</p>
+  <p>Loading the cards...</p>
 </ng-template>
 
 <div *ngIf="shouldShowModal && modalCard">
-    <app-card-view-modal 
-        [card]="modalCard"
-        [(shouldShowModal)]="shouldShowModal" 
-        [userImg]="pageUser?.image ?? ''" 
-        [isLoggedUser]="pageUser?.name == loggedUser?.name"
-        [isUserStreamer]="!!pageUser?.isStreamer"
-        [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
-        [isInPreExpansionSeason]="isInPreExpansionSeason"
-        (changedCard)="changeCard($event)"
-        (changedRate)="onChangedRate($event)" 
-        (recordChat)="onRecordChat($event)"
-        (stopRecording)="onStopRecording($event)">
-    </app-card-view-modal>
+  <app-card-view-modal
+    [card]="modalCard"
+    [(shouldShowModal)]="shouldShowModal"
+    [userImg]="pageUser?.image ?? ''"
+    [isLoggedUser]="pageUser?.name == loggedUser?.name"
+    [isUserStreamer]="!!pageUser?.isStreamer"
+    [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
+    [isInPreExpansionSeason]="isInPreExpansionSeason"
+    (changedCard)="changeCard($event)"
+    (changedRate)="onChangedRate($event)"
+    (recordChat)="onRecordChat($event)"
+    (stopRecording)="onStopRecording($event)"
+  >
+  </app-card-view-modal>
 </div>

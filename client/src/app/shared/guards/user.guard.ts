@@ -8,17 +8,15 @@ export const userGuard: CanActivateFn = (route, state) => {
   const service = inject(UserService);
   const router = inject(Router);
   return service.hasUser(route.params['username']).pipe(
-    map(
-      hasUser => {
-        if (hasUser) {
-          return true;
-        } else {
-          router.navigate(['/not-found']);
-          return false;
-        }
+    map((hasUser) => {
+      if (hasUser) {
+        return true;
+      } else {
+        router.navigate(['/not-found']);
+        return false;
       }
-    )
-  )
+    })
+  );
 };
 
 export const loginGuard: CanActivateFn = (route, state) => {
@@ -26,32 +24,31 @@ export const loginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const environment = inject(EnvironmentService);
   return service.getUser().pipe(
-    map(
-      user => {
-        if (environment.isInPreExpansionSeason() && user.name.toLowerCase() == route.params['username'].toLowerCase()) {
-          return true;
-        } else {
-          router.navigate(['/review', route.params['username'], 'view-only']);
-          return false;
-        }
+    map((user) => {
+      if (
+        environment.isInPreExpansionSeason() &&
+        user.name.toLowerCase() == route.params['username'].toLowerCase()
+      ) {
+        return true;
+      } else {
+        router.navigate(['/review', route.params['username'], 'view-only']);
+        return false;
       }
-    ), catchError(() => {
+    }),
+    catchError(() => {
       router.navigate(['/review', route.params['username'], 'view-only']);
       return of(false);
     })
-  )
+  );
 };
 
 export const redirectGuard: CanActivateFn = (route, state) => {
   const service = inject(UserService);
   const router = inject(Router);
   return service.getUser().pipe(
-    map(
-      user => {
-        router.navigate(['/review', user.name.toLowerCase()]);
-        return false;
-      }
-    )
-  )
-}
-
+    map((user) => {
+      router.navigate(['/review', user.name.toLowerCase()]);
+      return false;
+    })
+  );
+};
