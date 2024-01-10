@@ -9,7 +9,7 @@
     >
       {{ name }} </a
     >
-      Showdown in the Badlands Card Review
+      {{ activeExpansion | async }} Card Review
   </h1>
   <ng-container *ngIf="isInPreExpansionSeason; else notPreExpansionSeason">
     <p-button

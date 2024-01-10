@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SharedModule } from 'primeng/api';
@@ -13,6 +13,7 @@ import { CardService } from '../../data-access/card/card.service';
 import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
+import { ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
 
 @Component({
   selector: 'app-card-view',
@@ -28,6 +29,7 @@ import { EnvironmentService } from '../../../shared/environment/environment.serv
     CardViewModalComponent,
     NgClass,
     RouterLink,
+    AsyncPipe,
   ],
 })
 export class CardViewPage {
@@ -38,6 +40,8 @@ export class CardViewPage {
   loggedUser: User | null = null;
   pageUser: User | undefined;
   loading: boolean = false;
+
+  activeExpansion = this.expansionService.activeExpansion;
 
   loggedUser$ = this.userService.loggedUser;
 
@@ -58,7 +62,8 @@ export class CardViewPage {
     private userService: UserService,
     private route: ActivatedRoute,
     private ratingService: RatingService,
-    private environment: EnvironmentService
+    private environment: EnvironmentService,
+    private expansionService: ExpansionService
   ) {}
 
   ngOnInit() {
