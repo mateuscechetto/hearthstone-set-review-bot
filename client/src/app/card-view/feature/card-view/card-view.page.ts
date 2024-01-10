@@ -1,10 +1,10 @@
-import { NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
-import { switchMap } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
 import { RatingService } from '../../data-access/rating/rating.service';
 import { UserService } from '../../../shared/data-access/user/user.service';
 import { User } from '../../../shared/models/user';
@@ -13,22 +13,37 @@ import { CardService } from '../../data-access/card/card.service';
 import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
+import { ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
 
 @Component({
   selector: 'app-card-view',
   templateUrl: './card-view.page.html',
   styleUrls: ['./card-view.page.scss'],
   standalone: true,
-  imports: [NgIf, ButtonModule, DataViewModule, SharedModule, CardGridItemComponent, CardViewModalComponent, NgClass, RouterLink]
+  imports: [
+    NgIf,
+    ButtonModule,
+    DataViewModule,
+    SharedModule,
+    CardGridItemComponent,
+    CardViewModalComponent,
+    NgClass,
+    RouterLink,
+    AsyncPipe,
+  ],
 })
 export class CardViewPage {
   layout: 'list' | 'grid' = 'grid';
   shouldShowModal = false;
   modalCard?: RatedCard;
   cards!: RatedCard[];
-  loggedUser: User | undefined;
+  loggedUser: User | null = null;
   pageUser: User | undefined;
   loading: boolean = false;
+
+  activeExpansion = this.expansionService.activeExpansion;
+
+  loggedUser$ = this.userService.loggedUser;
 
   get name() {
     const username = this.pageUser?.name;
@@ -48,45 +63,41 @@ export class CardViewPage {
     private route: ActivatedRoute,
     private ratingService: RatingService,
     private environment: EnvironmentService,
-  ) { }
+    private expansionService: ExpansionService
+  ) {}
 
   ngOnInit() {
     this.isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
-    const username = this.route.snapshot.params['username'];
-    this.loading = true;
 
-    this.userService.getUserByUsername(username).pipe(
-      switchMap(pageUser => {
-        this.pageUser = pageUser;
-        return this.service.getCards(pageUser.name);
-      })
-    ).subscribe(
-      cards => {
+    this.route.params
+      .pipe(
+        tap(() => (this.loading = true)),
+        switchMap(({ username }) =>
+          this.userService.getUserByUsername(username).pipe(
+            switchMap((pageUser) => {
+              this.pageUser = pageUser;
+              return this.service.getCards(pageUser.name);
+            })
+          )
+        )
+      )
+      .subscribe((cards) => {
         this.loading = false;
-        this.cards = this.sortCardsByClassAndMana(cards.map(card => ({
-          ...card.card,
-          rating: card.rating,
-          chatRating: card.chatRating
-        })));
-      }
-    );
+        this.cards = this.sortCardsByClassAndMana(
+          cards.map((card) => ({
+            ...card.card,
+            rating: card.rating,
+            chatRating: card.chatRating,
+          }))
+        );
+      });
 
-    this.userService.getUser().subscribe({
-      next: (loggedUser) => {
-        this.loggedUser = loggedUser;
-        this.userService.setUserToken(loggedUser.userToken);
+    this.loggedUser$.subscribe({
+      next: (user) => {
+        this.loggedUser = user;
       },
-      error: (e) => this.loggedUser = undefined
+      error: (_) => (this.loggedUser = null),
     });
-
-  }
-
-  login() {
-    this.userService.login();
-  }
-
-  logout() {
-    this.userService.logout().subscribe();
   }
 
   showModal(card: RatedCard) {
@@ -95,30 +106,34 @@ export class CardViewPage {
   }
 
   changeCard(event: number) {
-    const index = this.cards.findIndex(c => c.name == this.modalCard?.name);
+    const index = this.cards.findIndex((c) => c.name == this.modalCard?.name);
     this.modalCard = this.cards[index + event] || this.modalCard;
   }
 
   changedCardRate(event: number) {
-    const card = this.cards.find(c => c.name == this.modalCard?.name);
+    const card = this.cards.find((c) => c.name == this.modalCard?.name);
     if (card) {
       const copy = { ...card };
       copy.rating = event;
-      this.cards = this.sortCardsByClassAndMana(this.cards.map(c => c.name == copy.name ? copy : c));
+      this.cards = this.sortCardsByClassAndMana(
+        this.cards.map((c) => (c.name == copy.name ? copy : c))
+      );
     }
   }
 
-  onChangedRate({ rating, card }: { rating: number, card: RatedCard }) {
+  onChangedRate({ rating, card }: { rating: number; card: RatedCard }) {
     if (!this.loggedUser) {
-      return
+      return;
     }
-    this.ratingService.rateCard(card.name, rating, this.userService.getUserToken()).subscribe(
-      _ => {
+    this.ratingService
+      .rateCard(card.name, rating, this.userService.getUserToken())
+      .subscribe((_) => {
         this.cards = this.sortCardsByClassAndMana(
-          this.cards.map(c => c.name == card.name ? { ...c, rating: rating } : c)
+          this.cards.map((c) =>
+            c.name == card.name ? { ...c, rating: rating } : c
+          )
         );
-      }
-    )
+      });
   }
 
   onUserIsStreamer(): void {
@@ -130,9 +145,8 @@ export class CardViewPage {
           if (this.pageUser?.name == this.loggedUser?.name) {
             this.pageUser = loggedUser;
           }
-
         },
-        error: (e) => console.log(e)
+        error: (e) => console.log(e),
       });
     }
   }
@@ -147,42 +161,57 @@ export class CardViewPage {
             this.pageUser = loggedUser;
           }
         },
-        error: (e) => console.log(e)
+        error: (e) => console.log(e),
       });
     }
   }
 
   onRecordChat(card: RatedCard) {
     if (this.loggedUser) {
-      this.ratingService.recordChat(card.name, this.userService.getUserToken()).subscribe({
-        next: (_) => {
-        },
-        error: (e) => console.log(e)
-      });
+      this.ratingService
+        .recordChat(card.name, this.userService.getUserToken())
+        .subscribe({
+          next: (_) => {},
+          error: (e) => console.log(e),
+        });
     }
   }
 
   onStopRecording(card: RatedCard) {
     if (this.loggedUser) {
-      this.ratingService.stopRecording(card.name, this.userService.getUserToken()).subscribe({
-        next: (ratedCard) => {
-          this.cards = this.sortCardsByClassAndMana(
-            this.cards.map(c => c.name == card.name ? { ...c, chatRating: ratedCard.chatRating } : c)
-          );
-          if (this.modalCard?.name) {
-            this.modalCard = this.cards.find(card => card.name === this.modalCard?.name);
-          }
-        },
-        error: (e) => console.log(e)
-      });
+      this.ratingService
+        .stopRecording(card.name, this.userService.getUserToken())
+        .subscribe({
+          next: (ratedCard) => {
+            this.cards = this.sortCardsByClassAndMana(
+              this.cards.map((c) =>
+                c.name == card.name
+                  ? { ...c, chatRating: ratedCard.chatRating }
+                  : c
+              )
+            );
+            if (this.modalCard?.name) {
+              this.modalCard = this.cards.find(
+                (card) => card.name === this.modalCard?.name
+              );
+            }
+          },
+          error: (e) => console.log(e),
+        });
     }
   }
 
   sortCardsByClassAndMana(cards: RatedCard[]): RatedCard[] {
     return cards.slice().sort((a, b) => {
-      if (a.hsClass === HearthstoneClass.NEUTRAL && b.hsClass !== HearthstoneClass.NEUTRAL) {
+      if (
+        a.hsClass === HearthstoneClass.NEUTRAL &&
+        b.hsClass !== HearthstoneClass.NEUTRAL
+      ) {
         return 1; // 'NEUTRAL' is greater than any other class
-      } else if (a.hsClass !== HearthstoneClass.NEUTRAL && b.hsClass === HearthstoneClass.NEUTRAL) {
+      } else if (
+        a.hsClass !== HearthstoneClass.NEUTRAL &&
+        b.hsClass === HearthstoneClass.NEUTRAL
+      ) {
         return -1; // Any other class is less than 'NEUTRAL'
       } else {
         // Sort by class name first
@@ -201,5 +230,4 @@ export class CardViewPage {
       }
     });
   }
-
 }
