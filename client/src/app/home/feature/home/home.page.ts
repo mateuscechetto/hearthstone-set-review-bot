@@ -19,6 +19,7 @@ import { HomeService } from '../../data-access/home.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CARDS_MOCK, USERS_MOCK } from './home-data.mock';
 import { tap } from 'rxjs';
+import { ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
 
 @Component({
   selector: 'app-home',
@@ -42,11 +43,11 @@ import { tap } from 'rxjs';
   standalone: true,
 })
 export class HomePage {
-  title = 'Showdown in the Badlands Card Review';
   bestCards: HotCards[] = [];
   worstCards: HotCards[] = [];
   standardDeviationCards: HotCards[] = [];
   usersWithRating: User[] = [];
+  activeExpansion = this.expansionService.activeExpansion;
   loadingUsers = this.homeService.loadingUsers.pipe(
     tap((loading) => {
       if (loading) {
@@ -64,7 +65,7 @@ export class HomePage {
     })
   );
 
-  constructor(private homeService: HomeService) {}
+  constructor(private homeService: HomeService, private expansionService: ExpansionService) {}
 
   ngOnInit() {
     this.homeService.getUsers().subscribe({

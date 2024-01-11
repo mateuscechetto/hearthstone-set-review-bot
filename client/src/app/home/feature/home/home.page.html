@@ -1,7 +1,7 @@
 <h1
   class="col-12 flex-order-1 md:flex-order-0 md:col-6 md:col-offset-3 text-center"
 >
-  {{ title }}
+{{ activeExpansion | async }} Card Review
 </h1>
 
 <div class="grid md:ml-1">
@@ -97,7 +97,7 @@
                 <td>{{card.hsClass}}</td>
                 <td>{{card.name}}</td>
                 <td>{{card.avgRating | number: '1.0-2' }}</td>
-                <td>±{{card.standardDeviation | number: '1.0-2' }}</td>
+                <td>±{{(card.standardDeviation | number: '1.0-2') || 0 }}</td>
               </tr>
             </ng-template>
           </ng-template>
@@ -260,7 +260,11 @@
       </ng-template>
       <ng-template #skeleton>
         <div class="col-12 flex h-3rem">
-          <p-skeleton class="col-0 ml-3 mt-2" shape="circle" size="2rem"></p-skeleton>
+          <p-skeleton
+            class="col-0 ml-3 mt-2"
+            shape="circle"
+            size="2rem"
+          ></p-skeleton>
           <p-skeleton class="col-9 md:col-2 mt-2"></p-skeleton>
           <!-- <p-skeleton class="col-3 col-offset-1 md:col-1 md:col-offset-4 mt-2"></p-skeleton> -->
         </div>

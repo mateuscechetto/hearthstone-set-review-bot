@@ -12,8 +12,8 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = "Showdown in the Badlands";
-const minRatings = 30;
+const currentExpansion = "Delve into Deepholm";
+const minRatings = 1;
 
 router.get('/ratedCards', async (req, res) => {
     const { userName, expansion } = req.query;
@@ -132,7 +132,7 @@ router.get('/users', async (req, res) => {
             },
             {
                 $match: {
-                    rated: { $gt: minRatings },
+                    rated: { $gte: minRatings },
                 },
             },
             {

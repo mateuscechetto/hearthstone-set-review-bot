@@ -13,7 +13,7 @@ import { CardService } from '../../data-access/card/card.service';
 import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
-import { ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
+import { CURRENT_EXPANSION, ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
 import { RATED_CARDS_MOCK } from './card-view-data.mock';
 
 @Component({
@@ -41,6 +41,8 @@ export class CardViewPage {
   loggedUser: User | null = null;
   pageUser: User | undefined;
   loading: boolean = false;
+
+  CURRENT_EXPANSION = CURRENT_EXPANSION;
 
   activeExpansion = this.expansionService.activeExpansion;
 
