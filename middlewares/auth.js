@@ -28,9 +28,11 @@ module.exports = (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if(err) {
             req.error = "Token invalid";
+            console.log("Token invalid", token);
             return res.status(status.UNAUTHORIZED).send({ error: "Token invalid"});
         }
 
+        console.log("Valid token", token);
         req.userName = decoded.name;
         return next();
     });
