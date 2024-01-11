@@ -1,0 +1,138 @@
+import { User } from 'src/app/shared/models/user';
+import { HearthstoneClass, HotCards } from '../../../shared/models/hs-card';
+
+// Those mocks are used so we know how many skeletons need to be rendered
+
+export const CARDS_MOCK: HotCards[] = [
+  {
+    avgRating: 1,
+    hsClass: HearthstoneClass.DEATH_KNIGHT,
+    imageURL: '',
+    name: '',
+    ratings: [],
+    standardDeviation: 1,
+  },
+  {
+    avgRating: 1,
+    hsClass: HearthstoneClass.DEATH_KNIGHT,
+    imageURL: '',
+    name: '',
+    ratings: [],
+    standardDeviation: 1,
+  },
+  {
+    avgRating: 1,
+    hsClass: HearthstoneClass.DEATH_KNIGHT,
+    imageURL: '',
+    name: '',
+    ratings: [],
+    standardDeviation: 1,
+  },
+  {
+    avgRating: 1,
+    hsClass: HearthstoneClass.DEATH_KNIGHT,
+    imageURL: '',
+    name: '',
+    ratings: [],
+    standardDeviation: 1,
+  },
+  {
+    avgRating: 1,
+    hsClass: HearthstoneClass.DEATH_KNIGHT,
+    imageURL: '',
+    name: '',
+    ratings: [],
+    standardDeviation: 1,
+  },
+];
+
+export const USERS_MOCK: User[] = [
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+  {
+    followers: 0,
+    image: '',
+    isStreamer: false,
+    name: '',
+    userToken: '',
+    view_count: 0,
+  },
+];

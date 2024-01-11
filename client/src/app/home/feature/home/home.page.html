@@ -5,168 +5,241 @@
 </h1>
 
 <div class="grid md:ml-1">
-  <div class="col-12 flex-order-2 lg:flex-order-0 grid">
-    <div class="col-12 flex justify-content-end">
-      <a [routerLink]="['/stats']" style="color: inherit"> See full stats </a>
-    </div>
-    <div class="col-12 mb-4 lg:col-4">
-      <p-table [value]="bestCards">
-        <ng-template pTemplate="caption">
-          <span
-            pTooltip="Best cards based on Users Ratings"
-            tooltipPosition="top"
-          >
-            Best Cards
-          </span>
-        </ng-template>
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Class</th>
-            <th>Name</th>
-            <th
-              *ngIf="bestCards[0]?.hsr_rating"
-              pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
+  <ng-container *ngIf="{loadingStats: loadingStats | async} as context">
+    <div class="col-12 flex-order-2 lg:flex-order-0 grid">
+      <div class="col-12 flex justify-content-end">
+        <a [routerLink]="['/stats']" style="color: inherit"> See full stats </a>
+      </div>
+      <div class="col-12 mb-4 lg:col-4">
+        <p-table [value]="bestCards">
+          <ng-template pTemplate="caption">
+            <span
+              pTooltip="Best cards based on Users Ratings"
               tooltipPosition="top"
             >
-              Final Rating
-            </th>
-            <th pTooltip="Average of Users Ratings" tooltipPosition="top">
-              Avg.
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-card>
-          <tr
-            [ngClass]="card.hsClass"
-            pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
-            [escape]="false"
-            tooltipPosition="right"
-          >
-            <td>{{card.hsClass}}</td>
-            <td>{{card.name}}</td>
-            <td *ngIf="card?.hsr_rating">
-              {{ card.hsr_rating | number: '1.0-1' }}
-            </td>
-            <td>{{card.avgRating | number: '1.0-2' }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-    <div class="col-12 mb-4 lg:col-4">
-      <p-table [value]="standardDeviationCards" class="mb-1">
-        <ng-template pTemplate="caption">
-          <span
-            pTooltip="Cards with highest User Ratings standard deviation"
-            tooltipPosition="top"
-            >Most Controversial Cards
-          </span>
-        </ng-template>
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Class</th>
-            <th>Name</th>
-            <th pTooltip="Average of Users Ratings" tooltipPosition="top">
-              Avg.
-            </th>
-            <th
-              pTooltip="Standard Deviation of Users Ratings"
+              Best Cards
+            </span>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Class</th>
+              <th>Name</th>
+              <th
+                *ngIf="bestCards[0]?.hsr_rating"
+                pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
+                tooltipPosition="top"
+              >
+                Final Rating
+              </th>
+              <th pTooltip="Average of Users Ratings" tooltipPosition="top">
+                Avg.
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-card>
+            <ng-container
+              *ngTemplateOutlet="context.loadingStats ? skeletonTableRow : bestCardsRows; context: {columns:3}"
+            ></ng-container>
+            <ng-template #bestCardsRows>
+              <tr
+                [ngClass]="card.hsClass"
+                pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
+                [escape]="false"
+                tooltipPosition="right"
+              >
+                <td>{{card.hsClass}}</td>
+                <td>{{card.name}}</td>
+                <td *ngIf="card?.hsr_rating">
+                  {{ card.hsr_rating | number: '1.0-1' }}
+                </td>
+                <td>{{card.avgRating | number: '1.0-2' }}</td>
+              </tr>
+            </ng-template>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="col-12 mb-4 lg:col-4">
+        <p-table [value]="standardDeviationCards" class="mb-1">
+          <ng-template pTemplate="caption">
+            <span
+              pTooltip="Cards with highest User Ratings standard deviation"
+              tooltipPosition="top"
+              >Most Controversial Cards
+            </span>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Class</th>
+              <th>Name</th>
+              <th pTooltip="Average of Users Ratings" tooltipPosition="top">
+                Avg.
+              </th>
+              <th
+                pTooltip="Standard Deviation of Users Ratings"
+                tooltipPosition="top"
+              >
+                SD
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-card>
+            <ng-container
+              *ngTemplateOutlet="context.loadingStats ? skeletonTableRow : mostControverisalRows; context: {columns:4}"
+            >
+            </ng-container>
+            <ng-template #mostControverisalRows>
+              <tr
+                [ngClass]="card.hsClass"
+                pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
+                [escape]="false"
+                tooltipPosition="right"
+              >
+                <td>{{card.hsClass}}</td>
+                <td>{{card.name}}</td>
+                <td>{{card.avgRating | number: '1.0-2' }}</td>
+                <td>±{{card.standardDeviation | number: '1.0-2' }}</td>
+              </tr>
+            </ng-template>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="col-12 lg:col-4">
+        <p-table [value]="worstCards">
+          <ng-template pTemplate="caption">
+            <span
+              pTooltip="Worst cards based on Users Ratings"
               tooltipPosition="top"
             >
-              SD
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-card>
-          <tr
-            [ngClass]="card.hsClass"
-            pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
-            [escape]="false"
-            tooltipPosition="right"
-          >
-            <td>{{card.hsClass}}</td>
-            <td>{{card.name}}</td>
-            <td>{{card.avgRating | number: '1.0-2' }}</td>
-            <td>±{{card.standardDeviation | number: '1.0-2' }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-    <div class="col-12 lg:col-4">
-      <p-table [value]="worstCards">
-        <ng-template pTemplate="caption">
-          <span
-            pTooltip="Worst cards based on Users Ratings"
-            tooltipPosition="top"
-          >
-            Worst Cards
-          </span>
-        </ng-template>
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Class</th>
-            <th>Name</th>
-            <th
-              *ngIf="worstCards[0]?.hsr_rating"
-              pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
-              tooltipPosition="top"
+              Worst Cards
+            </span>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Class</th>
+              <th>Name</th>
+              <th
+                *ngIf="worstCards[0]?.hsr_rating"
+                pTooltip="Rating calculated using HSReplay data from the 28.2 patch"
+                tooltipPosition="top"
+              >
+                Final Rating
+              </th>
+              <th pTooltip="Average of Users Ratings" tooltipPosition="top">
+                Avg.
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-card>
+            <ng-container
+              *ngTemplateOutlet="context.loadingStats ? skeletonTableRow : worstCardsRows; context: {columns:3}"
             >
-              Final Rating
-            </th>
-            <th pTooltip="Average of Users Ratings" tooltipPosition="top">
-              Avg.
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-card>
-          <tr
-            [ngClass]="card.hsClass"
-            pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
-            [escape]="false"
-            tooltipPosition="right"
-          >
-            <td>{{card.hsClass}}</td>
-            <td>{{card.name}}</td>
-            <td *ngIf="card?.hsr_rating">
-              {{ card.hsr_rating | number: '1.0-1' }}
-            </td>
-            <td>{{card.avgRating | number: '1.0-2' }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
+            </ng-container>
+            <ng-template #worstCardsRows>
+              <tr
+                [ngClass]="card.hsClass"
+                pTooltip="<img src='{{card.imageURL}}' style='width: 180px'/>"
+                [escape]="false"
+                tooltipPosition="right"
+              >
+                <td>{{card.hsClass}}</td>
+                <td>{{card.name}}</td>
+                <td *ngIf="card?.hsr_rating">
+                  {{ card.hsr_rating | number: '1.0-1' }}
+                </td>
+                <td>{{card.avgRating | number: '1.0-2' }}</td>
+              </tr>
+            </ng-template>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
-  </div>
+    <ng-template #skeletonTableRow let-columns="columns">
+      <tr style="height: 54px">
+        <td *ngFor="let _ of [].constructor(columns)">
+          <p-skeleton></p-skeleton>
+        </td>
+      </tr>
+    </ng-template>
+  </ng-container>
   <div class="col-12 hidden flex-order-0 lg:flex-order-1 lg:flex banner">
     <h2>See who reviewed the cards</h2>
   </div>
   <div class="col-12 flex-order-1 lg:flex-order-2">
-    <p-table
-      *ngIf="usersWithRating[0]?.totalDeviation"
-      [value]="usersWithRating"
-      [rows]="10"
-      [paginator]="true"
-    >
-      <ng-template pTemplate="caption"> Reviewers </ng-template>
-      <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="name" style="width: 60%">
-            Twitch Username <p-sortIcon field="name"></p-sortIcon>
-          </th>
-          <th
-            pSortableColumn="score"
-            style="width: 40%"
-            pTooltip="Score is calculated based on the difference between the User's Rating and the Real Rating. The higher is the score, the better is the review."
-            tooltipPosition="bottom"
+    <ng-container *ngIf="{loadingUsers: loadingUsers | async} as context">
+      <p-table
+        *ngIf="usersWithRating[0]?.totalDeviation"
+        [value]="usersWithRating"
+        [rows]="10"
+        [paginator]="true"
+      >
+        <ng-template pTemplate="caption"> Reviewers </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name" style="width: 60%">
+              Twitch Username <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th
+              pSortableColumn="score"
+              style="width: 40%"
+              pTooltip="Score is calculated based on the difference between the User's Rating and the Real Rating. The higher is the score, the better is the review."
+              tooltipPosition="bottom"
+            >
+              Score <p-sortIcon field="score"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <ng-container
+            *ngTemplateOutlet="context.loadingUsers ? skeletonRows : usersRows"
           >
-            Score <p-sortIcon field="score"></p-sortIcon>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-user>
-        <tr class="listItem">
-          <td class="p-0">
+          </ng-container>
+          <ng-template #usersRows>
+            <tr class="listItem">
+              <td class="p-0">
+                <a
+                  [routerLink]="'/review/' + user.name"
+                  class="col-12 flex h-3rem align-items-center remove-link-appearance"
+                >
+                  <p-avatar
+                    [image]="user.image"
+                    styleClass="ml-1 mr-4"
+                    shape="circle"
+                  ></p-avatar>
+                  {{user.name}}
+                </a>
+              </td>
+              <td class="p-0">
+                <a
+                  [routerLink]="'/review/' + user.name"
+                  class="col-12 flex h-3rem align-items-center remove-link-appearance"
+                  >{{ user.score | number: '1.0-2' }}</a
+                >
+              </td>
+            </tr>
+          </ng-template>
+        </ng-template>
+      </p-table>
+      <p-dataView
+        [value]="usersWithRating"
+        [layout]="'list'"
+        [rows]="10"
+        [paginator]="true"
+        *ngIf="!usersWithRating[0]?.totalDeviation"
+      >
+        <ng-template pTemplate="header">
+          <div class="flex flex-column md:flex-row md:justify-content-between">
+            Reviewers
+          </div>
+        </ng-template>
+        <ng-template let-user pTemplate="listItem">
+          <ng-container
+            *ngTemplateOutlet="context.loadingUsers ? skeleton : usersRows2"
+          >
+          </ng-container>
+          <ng-template #usersRows2>
             <a
               [routerLink]="'/review/' + user.name"
-              class="col-12 flex h-3rem align-items-center remove-link-appearance"
+              class="col-12 flex h-3rem align-items-center listItem"
             >
               <p-avatar
                 [image]="user.image"
@@ -175,42 +248,23 @@
               ></p-avatar>
               {{user.name}}
             </a>
-          </td>
-          <td class="p-0">
-            <a
-              [routerLink]="'/review/' + user.name"
-              class="col-12 flex h-3rem align-items-center remove-link-appearance"
-              >{{ user.score | number: '1.0-2' }}</a
-            >
+          </ng-template>
+        </ng-template>
+      </p-dataView>
+      <ng-template #skeletonRows>
+        <tr style="height: 54px">
+          <td>
+            <p-skeleton></p-skeleton>
           </td>
         </tr>
       </ng-template>
-    </p-table>
-    <p-dataView
-      [value]="usersWithRating"
-      [layout]="'list'"
-      [rows]="10"
-      [paginator]="true"
-      *ngIf="!usersWithRating[0]?.totalDeviation"
-    >
-      <ng-template pTemplate="header">
-        <div class="flex flex-column md:flex-row md:justify-content-between">
-          Reviews
+      <ng-template #skeleton>
+        <div class="col-12 flex h-3rem">
+          <p-skeleton class="col-0 ml-3 mt-2" shape="circle" size="2rem"></p-skeleton>
+          <p-skeleton class="col-9 md:col-2 mt-2"></p-skeleton>
+          <!-- <p-skeleton class="col-3 col-offset-1 md:col-1 md:col-offset-4 mt-2"></p-skeleton> -->
         </div>
       </ng-template>
-      <ng-template let-user pTemplate="listItem">
-        <a
-          [routerLink]="'/review/' + user.name"
-          class="col-12 flex h-3rem align-items-center listItem"
-        >
-          <p-avatar
-            [image]="user.image"
-            styleClass="ml-1 mr-4"
-            shape="circle"
-          ></p-avatar>
-          {{user.name}}
-        </a>
-      </ng-template>
-    </p-dataView>
+    </ng-container>
   </div>
 </div>

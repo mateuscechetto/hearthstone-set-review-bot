@@ -1,48 +1,89 @@
-<div class="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" [style]="{ width: '360px' }">
-    <div class="p-4 border-1 surface-border surface-card border-round">
-        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-            <span class="font-semibold">{{ card.hsClass }}</span>
-            <span class="font-semibold">{{ card.type }}</span>
-        </div>
-        <form [formGroup]="ratingForm">
-            <div class="flex flex-column align-items-center gap-1">
-                <img class="w-9" [alt]="card.name" [src]="card.imageURL" (click)="onImageClicked()" />
-                <div class="text-2xl font-bold">{{ card.name }}</div>
-                <div class="card-description">{{ card.description }}</div>
-                <div class="flex">
-                    <p-avatar [image]="userImg" styleClass="mr-2 avatar" shape="circle"></p-avatar>
-                    <p-rating formControlName="userRating" [stars]="4" [cancel]="false" [readonly]="!isLoggedUser || !isInPreExpansionSeason"
-                        (onRate)="onChangedRate($event)"></p-rating>
-                </div>
-                <div class="flex" *ngIf="card.hsr_rating">
-                    <a [href]="'https://hsreplay.net/cards/' + card.dbf_id" target="_blank">
-                        <p-avatar 
-                            [image]="hsrIconURL" 
-                            styleClass="mr-2 avatar cursor-pointer" 
-                            shape="circle" 
-                            pTooltip="Rating based on HSReplay data from 28.2 patch" 
-                            tooltipPosition="bottom"
-                        ></p-avatar>
-                    </a>
-                    <p-rating formControlName="hsrRating" [stars]="4" [cancel]="false" [readonly]="true"></p-rating>
-                </div>
-                <div *ngIf="isUserStreamer" class="flex flex-column align-items-center gap-1">
-                    <div class="flex">
-                        <p-avatar [image]="twitchIconURL"
-                            styleClass="mr-2 avatar" shape="circle"></p-avatar>
-                        <p-rating formControlName="chatRating" [stars]="4" [cancel]="false"
-                            [readonly]="true"></p-rating>
-                    </div>
-                    <app-record-chat 
-                        *ngIf="streamerView && isInPreExpansionSeason"
-                        data-testid="record-chat-button"
-                        (onRecordChat)="onRecordChat()"
-                        (onStopRecording)="onStopRecording()"
-                    ></app-record-chat>
-                </div>
-            </div>
-        </form>
-        <div class="flex align-items-center justify-content-between">
-        </div>
+<div
+  *ngIf="!showSkeleton; else skeleton"
+  class="col-12 sm:col-6 lg:col-12 xl:col-4 p-2"
+  [style]="{ width: '360px' }"
+>
+  <div class="p-4 border-1 surface-border surface-card border-round">
+    <div
+      class="flex flex-wrap align-items-center justify-content-between gap-2"
+    >
+      <span class="font-semibold">{{ card.hsClass }}</span>
+      <span class="font-semibold">{{ card.type }}</span>
     </div>
+    <form [formGroup]="ratingForm">
+      <div class="flex flex-column align-items-center gap-1">
+        <img
+          class="w-9"
+          [alt]="card.name"
+          [src]="card.imageURL"
+          (click)="onImageClicked()"
+        />
+        <div class="text-2xl font-bold">{{ card.name }}</div>
+        <div class="card-description">{{ card.description }}</div>
+        <div class="flex">
+          <p-avatar
+            [image]="userImg"
+            styleClass="mr-2 avatar"
+            shape="circle"
+          ></p-avatar>
+          <p-rating
+            formControlName="userRating"
+            [stars]="4"
+            [cancel]="false"
+            [readonly]="!isLoggedUser || !isInPreExpansionSeason"
+            (onRate)="onChangedRate($event)"
+          ></p-rating>
+        </div>
+        <div class="flex" *ngIf="card.hsr_rating">
+          <a
+            [href]="'https://hsreplay.net/cards/' + card.dbf_id"
+            target="_blank"
+          >
+            <p-avatar
+              [image]="hsrIconURL"
+              styleClass="mr-2 avatar cursor-pointer"
+              shape="circle"
+              pTooltip="Rating based on HSReplay data from 28.2 patch"
+              tooltipPosition="bottom"
+            ></p-avatar>
+          </a>
+          <p-rating
+            formControlName="hsrRating"
+            [stars]="4"
+            [cancel]="false"
+            [readonly]="true"
+          ></p-rating>
+        </div>
+        <div
+          *ngIf="isUserStreamer"
+          class="flex flex-column align-items-center gap-1"
+        >
+          <div class="flex">
+            <p-avatar
+              [image]="twitchIconURL"
+              styleClass="mr-2 avatar"
+              shape="circle"
+            ></p-avatar>
+            <p-rating
+              formControlName="chatRating"
+              [stars]="4"
+              [cancel]="false"
+              [readonly]="true"
+            ></p-rating>
+          </div>
+          <app-record-chat
+            *ngIf="streamerView && isInPreExpansionSeason"
+            data-testid="record-chat-button"
+            (onRecordChat)="onRecordChat()"
+            (onStopRecording)="onStopRecording()"
+          ></app-record-chat>
+        </div>
+      </div>
+    </form>
+    <div class="flex align-items-center justify-content-between"></div>
+  </div>
 </div>
+
+<ng-template #skeleton>
+  <app-card-grid-skeleton></app-card-grid-skeleton>
+</ng-template>

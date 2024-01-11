@@ -14,6 +14,7 @@ import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.co
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
 import { ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
+import { RATED_CARDS_MOCK } from './card-view-data.mock';
 
 @Component({
   selector: 'app-card-view',
@@ -72,6 +73,7 @@ export class CardViewPage {
     this.route.params
       .pipe(
         tap(() => (this.loading = true)),
+        tap(() => (this.cards = RATED_CARDS_MOCK)),
         switchMap(({ username }) =>
           this.userService.getUserByUsername(username).pipe(
             switchMap((pageUser) => {
