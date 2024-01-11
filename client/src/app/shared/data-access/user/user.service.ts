@@ -57,6 +57,7 @@ export class UserService {
 
     this.getUser$.subscribe({
       next: (user) => {
+        this.setUserToken(user.userToken);
         this.state.next({
           ...this.state.value,
           loggedUser: user,

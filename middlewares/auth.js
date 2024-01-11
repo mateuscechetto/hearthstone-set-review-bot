@@ -32,7 +32,6 @@ module.exports = (req, res, next) => {
             return res.status(status.UNAUTHORIZED).send({ error: "Token invalid"});
         }
 
-        console.log("Valid token", token);
         req.userName = decoded.name;
         return next();
     });
