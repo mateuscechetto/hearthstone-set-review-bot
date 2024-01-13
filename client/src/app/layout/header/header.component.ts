@@ -8,9 +8,12 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
-import { UserService } from 'src/app/shared/data-access/user/user.service';
-import { User } from 'src/app/shared/models/user';
-import { EXPANSIONS, ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
+import { UserService } from '@shared/data-access/user/user.service';
+import { User } from '@shared/models/user';
+import {
+  EXPANSIONS,
+  ExpansionService,
+} from '@shared/data-access/expansion/expansion.service';
 
 @Component({
   selector: 'app-header',
@@ -29,9 +32,8 @@ import { EXPANSIONS, ExpansionService } from 'src/app/shared/data-access/expansi
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  
   router = inject(Router);
-  expansionService= inject(ExpansionService);
+  expansionService = inject(ExpansionService);
   userService = inject(UserService);
 
   expansions = EXPANSIONS;
@@ -66,5 +68,4 @@ export class HeaderComponent {
   logout() {
     this.userService.logout();
   }
-
 }

@@ -1,4 +1,4 @@
-import { CardRarity, HearthstonCardType, HearthstoneClass, RatedCard } from "../shared/models/hs-card";
+import { CardRarity, HearthstonCardType, HearthstoneClass, RatedCard } from "@shared/models/hs-card";
 
 export const cardsMock: RatedCard[] = [
   {

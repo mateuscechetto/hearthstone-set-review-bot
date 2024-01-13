@@ -3,7 +3,7 @@ import {
   HearthstonCardType,
   HearthstoneClass,
   RatedCard,
-} from 'src/app/shared/models/hs-card';
+} from '@shared/models/hs-card';
 
 // Those mocks are used so we know how many skeletons need to be rendered
 

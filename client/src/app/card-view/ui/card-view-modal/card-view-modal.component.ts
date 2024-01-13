@@ -6,8 +6,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { DialogModule } from 'primeng/dialog';
 import { RatingModule } from 'primeng/rating';
 import { TooltipModule } from 'primeng/tooltip';
-import { HearthstoneCard, RatedCard } from '../../../shared/models/hs-card';
-import { RecordChatComponent } from '../record-chat/record-chat.component';
+import { HearthstoneCard, RatedCard } from '@shared/models/hs-card';
+import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.component';
 
 @Component({
     selector: 'app-card-view-modal',

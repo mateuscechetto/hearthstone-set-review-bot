@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
-import { User } from '../../../shared/models/user';
-import { environment } from '../../../../environments/environment';
+import { User } from '@shared/models/user';
+import { environment } from '@environment/environment';
 import {
-  CURRENT_EXPANSION,
   ExpansionService,
 } from '../expansion/expansion.service';
 

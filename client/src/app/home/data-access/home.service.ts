@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
-import { HotCards } from '../../shared/models/hs-card';
-import { User } from '../../shared/models/user';
-import { environment } from '../../../environments/environment';
-import { ExpansionService } from '../../shared/data-access/expansion/expansion.service';
+import { HotCards } from '@shared/models/hs-card';
+import { User } from '@shared/models/user';
+import { environment } from '@environment/environment';
+import { ExpansionService } from '@shared/data-access/expansion/expansion.service';
 
 export type HomeApiReturn = {
   bestCards: HotCards[];

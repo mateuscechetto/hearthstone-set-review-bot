@@ -4,20 +4,20 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
-import { map, switchMap, tap } from 'rxjs';
-import { RatingService } from '../../data-access/rating/rating.service';
-import { UserService } from '../../../shared/data-access/user/user.service';
-import { User } from '../../../shared/models/user';
-import { HearthstoneClass, RatedCard } from '../../../shared/models/hs-card';
-import { CardService } from '../../data-access/card/card.service';
-import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
-import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
-import { EnvironmentService } from '../../../shared/environment/environment.service';
+import { switchMap, tap } from 'rxjs';
+import { RatingService } from '@card-view/data-access/rating/rating.service';
+import { UserService } from '@shared/data-access/user/user.service';
+import { User } from '@shared/models/user';
+import { HearthstoneClass, RatedCard } from '@shared/models/hs-card';
+import { CardService } from '@card-view/data-access/card/card.service';
+import { CardGridItemComponent } from '@card-view/ui/card-grid-item/card-grid-item.component';
+import { CardViewModalComponent } from '@card-view/ui/card-view-modal/card-view-modal.component';
+import { EnvironmentService } from '@shared/environment/environment.service';
 import {
   CURRENT_EXPANSION,
   ExpansionService,
-} from 'src/app/shared/data-access/expansion/expansion.service';
-import { RATED_CARDS_MOCK } from './card-view-data.mock';
+} from '@shared/data-access/expansion/expansion.service';
+import { RATED_CARDS_MOCK } from '@card-view/feature/card-view/card-view-data.mock';
 
 @Component({
   selector: 'app-card-view',

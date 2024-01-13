@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
-import { UserService } from '../data-access/user/user.service';
-import { EnvironmentService } from '../environment/environment.service';
+import { UserService } from '@shared/data-access/user/user.service';
+import { EnvironmentService } from '@shared/environment/environment.service';
 
 export const userGuard: CanActivateFn = (route, state) => {
   const service = inject(UserService);

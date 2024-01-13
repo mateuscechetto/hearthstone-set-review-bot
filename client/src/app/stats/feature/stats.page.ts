@@ -14,13 +14,16 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-import { combineLatest, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { HotCards } from '../../shared/models/hs-card';
 import {
   AverageRatingByClass,
   StatsService,
-} from '../data-access/stats.service';
-import { ALL_CARDS_TABLE_MOCK, BEST_CLASSES_MOCK } from './stats-data.mock';
+} from '@stats/data-access/stats.service';
+import {
+  ALL_CARDS_TABLE_MOCK,
+  BEST_CLASSES_MOCK,
+} from '@stats/feature/stats-data.mock';
 import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({

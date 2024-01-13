@@ -13,13 +13,13 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-import { HotCards } from '../../../shared/models/hs-card';
-import { User } from '../../../shared/models/user';
-import { HomeService } from '../../data-access/home.service';
+import { HotCards } from '@shared/models/hs-card';
+import { User } from '@shared/models/user';
+import { HomeService } from '@home/data-access/home.service';
 import { SkeletonModule } from 'primeng/skeleton';
-import { CARDS_MOCK, USERS_MOCK } from './home-data.mock';
+import { CARDS_MOCK, USERS_MOCK } from '@home/feature/home/home-data.mock';
 import { tap } from 'rxjs';
-import { ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
+import { ExpansionService } from '@shared/data-access/expansion/expansion.service';
 
 @Component({
   selector: 'app-home',

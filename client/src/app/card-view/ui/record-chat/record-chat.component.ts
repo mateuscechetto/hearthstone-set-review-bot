@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Subscription, interval } from 'rxjs';
 import { NgIf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 
@@ -19,11 +18,6 @@ export class RecordChatComponent implements OnInit {
 
   recordChatButtonLabel: 'Record Chat' | 'Recording...' = 'Record Chat';
 
-  // counter: number = 6;
-  // counterString: string = '0:06';
-
-  // counterSubscription!: Subscription;
-
   ngOnInit(): void {
   }
 
@@ -32,7 +26,6 @@ export class RecordChatComponent implements OnInit {
     this.updateChatButtonLabel();
     this.onRecordChat.emit(true);
 
-    // this.resetCounter();
   }
 
   stopRecording() {
@@ -40,42 +33,10 @@ export class RecordChatComponent implements OnInit {
     this.updateChatButtonLabel();
     this.onStopRecording.emit(true);
 
-    // if (this.counterSubscription) {
-    //   this.counterSubscription.unsubscribe();
-    // }
   }
 
   private updateChatButtonLabel() {
     this.recordChatButtonLabel = this.isRecording ? 'Recording...' : 'Record Chat';
   }
-
-  // private resetCounter() {
-  //   this.counter = 6;
-  //   this.updateCounter();
-  //   if (this.counterSubscription) {
-  //     this.counterSubscription.unsubscribe();
-  //   }
-  //   this.counterSubscription = interval(1000).subscribe(
-  //     () =>  this.updateCounter()
-  //   );
-  // }
-
-  // private updateCounter() {
-  //   this.counterString = this.stringfyTime(this.counter);
-  //   if (this.counter > 0) {
-  //     this.counter--;
-  //   } else if (this.counter == 0) {
-  //     this.stopRecording();
-  //   }
-  // }
-
-  // private stringfyTime(seconds: number): string{
-  //   let remainder = seconds % 60;
-  //   return `${(seconds / 60) >> 0}:${remainder < 10 ? '0'+ remainder : remainder}`;
-  // }
-
-  // ngOnDestroy(): void {
-  //   this.counterSubscription.unsubscribe();
-  // }
 
 }

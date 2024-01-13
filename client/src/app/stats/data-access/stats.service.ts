@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
-import { HearthstoneClass, HotCards } from '../../shared/models/hs-card';
-import { environment } from '../../../environments/environment';
-import { ExpansionService } from '../../shared/data-access/expansion/expansion.service';
+import { HearthstoneClass, HotCards } from '@shared/models/hs-card';
+import { environment } from '@environment/environment';
+import { ExpansionService } from '@shared/data-access/expansion/expansion.service';
 
 export type StatsApiReturn = {
   bestCards: HotCards[];

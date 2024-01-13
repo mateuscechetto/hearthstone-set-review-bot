@@ -1,5 +1,5 @@
-import { User } from 'src/app/shared/models/user';
-import { HearthstoneClass, HotCards } from '../../../shared/models/hs-card';
+import { User } from '@shared/models/user';
+import { HearthstoneClass, HotCards } from '@shared/models/hs-card';
 
 // Those mocks are used so we know how many skeletons need to be rendered
 

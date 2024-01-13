@@ -1,9 +1,9 @@
+import { environment } from '@environment/environment';
 import { Injectable } from '@angular/core';
-import { RatedCardAPIReturn } from '../../../shared/models/hs-card';
+import { RatedCardAPIReturn } from '@shared/models/hs-card';
 import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { ExpansionService } from '../../../shared/data-access/expansion/expansion.service';
+import { ExpansionService } from '@shared/data-access/expansion/expansion.service';
 
 export interface CardLoadingState {
   loading: boolean;

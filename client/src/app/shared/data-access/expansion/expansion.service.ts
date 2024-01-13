@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export const CURRENT_EXPANSION = 'Delve into Deepholm';
 
