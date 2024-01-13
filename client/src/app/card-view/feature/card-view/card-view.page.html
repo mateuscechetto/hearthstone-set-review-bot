@@ -47,7 +47,7 @@
   <p-dataView #dv [value]="cards" [layout]="layout">
     <ng-template let-card pTemplate="gridItem">
       <app-card-grid-item
-        [showSkeleton]="loading"
+        [showSkeleton]="!!(loadingCards$ | async)"
         [card]="card"
         [userImg]="pageUser?.image ?? ''"
         [isLoggedUser]="pageUser?.name == loggedUser?.name"

@@ -13,7 +13,10 @@ import { CardService } from '../../data-access/card/card.service';
 import { CardGridItemComponent } from '../../ui/card-grid-item/card-grid-item.component';
 import { CardViewModalComponent } from '../../ui/card-view-modal/card-view-modal.component';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
-import { CURRENT_EXPANSION, ExpansionService } from 'src/app/shared/data-access/expansion/expansion.service';
+import {
+  CURRENT_EXPANSION,
+  ExpansionService,
+} from 'src/app/shared/data-access/expansion/expansion.service';
 import { RATED_CARDS_MOCK } from './card-view-data.mock';
 
 @Component({
@@ -40,13 +43,20 @@ export class CardViewPage {
   cards!: RatedCard[];
   loggedUser: User | null = null;
   pageUser: User | undefined;
-  loading: boolean = false;
 
   CURRENT_EXPANSION = CURRENT_EXPANSION;
 
   activeExpansion = this.expansionService.activeExpansion;
 
   loggedUser$ = this.userService.loggedUser;
+
+  loadingCards$ = this.service.loading.pipe(
+    tap((loading) => {
+      if (loading) {
+        this.cards = RATED_CARDS_MOCK;
+      }
+    })
+  );
 
   get name() {
     const username = this.pageUser?.name;
@@ -71,30 +81,27 @@ export class CardViewPage {
 
   ngOnInit() {
     this.isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
+    this.cards = RATED_CARDS_MOCK;
 
     this.route.params
       .pipe(
-        tap(() => (this.loading = true)),
-        tap(() => (this.cards = RATED_CARDS_MOCK)),
         switchMap(({ username }) =>
-          this.userService.getUserByUsername(username).pipe(
-            switchMap((pageUser) => {
-              this.pageUser = pageUser;
-              return this.service.getCards(pageUser.name);
-            })
-          )
+          this.userService.getUserByUsername(username)
+        ),
+        tap((pageUser) => (this.pageUser = pageUser)),
+        switchMap((pageUser) => this.service.getCards(pageUser.name)),
+        tap(
+          (cards) =>
+            (this.cards = this.sortCardsByClassAndMana(
+              cards.map((card) => ({
+                ...card.card,
+                rating: card.rating,
+                chatRating: card.chatRating,
+              }))
+            ))
         )
       )
-      .subscribe((cards) => {
-        this.loading = false;
-        this.cards = this.sortCardsByClassAndMana(
-          cards.map((card) => ({
-            ...card.card,
-            rating: card.rating,
-            chatRating: card.chatRating,
-          }))
-        );
-      });
+      .subscribe();
 
     this.loggedUser$.subscribe({
       next: (user) => {
