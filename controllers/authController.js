@@ -89,49 +89,49 @@ passport.use('twitch', new OAuth2Strategy({
         await Rating.insertMany(ratings);
 
     } else {
-        Card.aggregate([
-            {
-                $match: { rarity: { $ne: 'Extra' } } // Exclude cards with rarity 'Extra'
-            },
-            {
-                $lookup: {
-                    from: 'ratings', // The name of the ratings collection
-                    let: { cardId: '$_id' },
-                    pipeline: [
-                        {
-                            $match: {
-                                $expr: {
-                                    $and: [
-                                        { $eq: ['$user', mongoose.Types.ObjectId(user._id)] }, // Match by user ID
-                                        { $eq: ['$card', '$$cardId'] }, // Check if the user has rated the card
-                                    ],
+        try {
+            const unratedCards = await Card.aggregate([
+                {
+                    $match: { rarity: { $ne: 'Extra' } } // Exclude cards with rarity 'Extra'
+                },
+                {
+                    $lookup: {
+                        from: 'ratings', // The name of the ratings collection
+                        let: { cardId: '$_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ['$user', mongoose.Types.ObjectId(user._id)] }, // Match by user ID
+                                            { $eq: ['$card', '$$cardId'] }, // Check if the user has rated the card
+                                        ],
+                                    },
                                 },
                             },
-                        },
-                    ],
-                    as: 'ratings',
+                        ],
+                        as: 'ratings',
+                    },
                 },
-            },
-            {
-                $match: {
-                    ratings: { $size: 0 }, // Filter cards with no ratings from the user
+                {
+                    $match: {
+                        ratings: { $size: 0 }, // Filter cards with no ratings from the user
+                    },
                 },
-            },
-        ])
-            .exec(async (err, unratedCards) => {
-                if (err) {
-                    // Handle error
-                } else {
-                    // unratedCards contains cards that the user hasn't rated yet
-                    const ratings = unratedCards.map(card => ({
-                        user: user._id,
-                        card: card._id,
-                        rating: 0
-                    }));
-
-                    await Rating.insertMany(ratings);
-                }
-            });
+            ]);
+        
+            // unratedCards contains cards that the user hasn't rated yet
+            const ratings = unratedCards.map(card => ({
+                user: user._id,
+                card: card._id,
+                rating: 0
+            }));
+        
+            await Rating.insertMany(ratings);
+        } catch (err) {
+            // Handle error
+            console.log('Error on finding unrated cards');
+        }
     }
 
     user = await User.findOneAndUpdate({ name: display_name }, update, { new: true });
