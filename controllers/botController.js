@@ -41,17 +41,10 @@ router.get('/ratedCards', async (req, res) => {
             $match: { 'cardData.expansion': activeExpansion },
         },
         {
-            $lookup: {
-                from: 'hearthstonecards',
-                localField: 'cardData.extraCards',
-                foreignField: '_id',
-                as: 'cardData.extraCards',
-            },
-        },
-        {
             $project: {
                 _id: 0,
                 card: '$cardData',
+                extraCards: '$cardData.extraCards',
                 rating: 1,
                 createdAt: 1,
             },
@@ -107,7 +100,7 @@ router.get('/users', async (req, res) => {
             },
             {
                 $lookup: {
-                    from: 'users', 
+                    from: 'users',
                     localField: '_id',
                     foreignField: '_id',
                     as: 'userData',
@@ -125,8 +118,8 @@ router.get('/users', async (req, res) => {
                     isStreamer: '$userData.isStreamer',
                     sheetLink: '$userData.sheetLink',
                     followers: '$userData.followers',
-                    totalDeviation: '$totalDeviation', 
-                    score: { $subtract: [9, {$divide: ['$totalDeviation' , '$count']}] },
+                    totalDeviation: '$totalDeviation',
+                    score: { $subtract: [9, { $divide: ['$totalDeviation', '$count'] }] },
                     rated: '$countRated',
                 },
             },
