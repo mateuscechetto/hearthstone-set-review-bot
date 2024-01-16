@@ -65,12 +65,15 @@ export class HomePage {
     })
   );
 
-  constructor(private homeService: HomeService, private expansionService: ExpansionService) {}
+  constructor(
+    private homeService: HomeService,
+    private expansionService: ExpansionService
+  ) {}
 
   ngOnInit() {
     this.homeService.getUsers().subscribe({
       next: (users) => {
-        this.usersWithRating = users.sort((a, b) => b.followers - a.followers);
+        this.usersWithRating = users.sort(this.sortUsers);
       },
     });
 
@@ -82,5 +85,15 @@ export class HomePage {
         this.standardDeviationCards = standardDeviationCards;
       },
     });
+  }
+
+  private sortUsers(a: User, b: User): number {
+    if (!a.image) {
+      return 1;
+    }
+    if (!b.image) {
+      return -1;
+    }
+    return b.followers - a.followers;
   }
 }
