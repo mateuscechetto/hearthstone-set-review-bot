@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: false,
     },
+    hasUpdatedFollowersCount: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const User = mongoose.model("User", UserSchema);
