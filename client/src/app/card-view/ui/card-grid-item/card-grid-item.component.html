@@ -33,6 +33,7 @@
             [readonly]="!isLoggedUser || !isInPreExpansionSeason"
             (onRate)="onChangedRate($event)"
           ></p-rating>
+          <span class="ml-2 w-1rem"></span>
         </div>
         <div class="flex" *ngIf="card.hsr_rating">
           <a
@@ -53,6 +54,7 @@
             [cancel]="false"
             [readonly]="true"
           ></p-rating>
+          <span class="ml-2 w-1rem"></span>
         </div>
         <div
           *ngIf="isUserStreamer"
@@ -70,6 +72,9 @@
               [cancel]="false"
               [readonly]="true"
             ></p-rating>
+            <span class="ml-2 w-1rem"
+              >{{ card.chatRating | number : "1.0-2" }}
+            </span>
           </div>
           <app-record-chat
             *ngIf="streamerView && isInPreExpansionSeason"

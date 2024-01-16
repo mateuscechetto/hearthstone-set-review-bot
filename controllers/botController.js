@@ -46,6 +46,7 @@ router.get('/ratedCards', async (req, res) => {
                 card: '$cardData',
                 extraCards: '$cardData.extraCards',
                 rating: 1,
+                chatRating: 1,
                 createdAt: 1,
             },
         },

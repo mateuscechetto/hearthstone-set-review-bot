@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { DecimalPipe, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -28,6 +28,7 @@ import { CardGridSkeletonComponent } from '@card-view/ui/card-grid-skeleton/card
     RecordChatComponent,
     TooltipModule,
     CardGridSkeletonComponent,
+    DecimalPipe,
   ],
 })
 export class CardGridItemComponent implements OnChanges {
@@ -62,7 +63,7 @@ export class CardGridItemComponent implements OnChanges {
     if (changes.card?.currentValue) {
       this.ratingForm.patchValue({
         userRating: this.card.rating,
-        chatRating: this.card.chatRating,
+        chatRating: Math.round(this.card.chatRating || 0),
         hsrRating: this.card.hsr_rating,
       });
     }

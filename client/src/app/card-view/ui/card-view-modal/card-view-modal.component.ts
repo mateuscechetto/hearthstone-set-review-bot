@@ -1,5 +1,12 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
+import { DecimalPipe, NgFor, NgIf } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
@@ -10,11 +17,23 @@ import { HearthstoneCard, RatedCard } from '@shared/models/hs-card';
 import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.component';
 
 @Component({
-    selector: 'app-card-view-modal',
-    templateUrl: './card-view-modal.component.html',
-    styleUrls: ['./card-view-modal.component.scss'],
-    standalone: true,
-    imports: [DialogModule, SharedModule, FormsModule, ReactiveFormsModule, AvatarModule, RatingModule, NgIf, RecordChatComponent, NgFor, TooltipModule]
+  selector: 'app-card-view-modal',
+  templateUrl: './card-view-modal.component.html',
+  styleUrls: ['./card-view-modal.component.scss'],
+  standalone: true,
+  imports: [
+    DialogModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AvatarModule,
+    RatingModule,
+    NgIf,
+    RecordChatComponent,
+    NgFor,
+    TooltipModule,
+    DecimalPipe,
+  ],
 })
 export class CardViewModalComponent implements OnChanges {
   private _shouldShowModal: any;
@@ -29,18 +48,21 @@ export class CardViewModalComponent implements OnChanges {
     this._shouldShowModal = value;
     this.shouldShowModalChange.emit(this._shouldShowModal);
   }
-  @Output() shouldShowModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() shouldShowModalChange: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
 
-  @Input({required: true}) card!: RatedCard;
+  @Input({ required: true }) card!: RatedCard;
   @Input() userImg: string = '';
   @Input() isLoggedUser: boolean = false;
   @Input() isUserStreamer: boolean = false;
   @Input() streamerView: boolean = false;
   @Input() isInPreExpansionSeason: boolean = true;
   @Output() changedCard: EventEmitter<number> = new EventEmitter<number>();
-  @Output() changedRate: EventEmitter<{ rating: number, card: RatedCard }> = new EventEmitter<{ rating: number, card: RatedCard }>();
+  @Output() changedRate: EventEmitter<{ rating: number; card: RatedCard }> =
+    new EventEmitter<{ rating: number; card: RatedCard }>();
   @Output() recordChat: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
-  @Output() stopRecording: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
+  @Output() stopRecording: EventEmitter<RatedCard> =
+    new EventEmitter<RatedCard>();
 
   ratingForm = this.fb.group({
     userRating: [0],
@@ -50,8 +72,10 @@ export class CardViewModalComponent implements OnChanges {
 
   cardToDisplay: HearthstoneCard = this.card;
 
-  twitchIconURL = 'https://cdn.pixabay.com/photo/2021/12/10/16/38/twitch-6860918_1280.png';
-  hsrIconURL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvw2ri47mehC08Q5LKf4SamN5ayk7Fzof00j2O2yCbHw&s';
+  twitchIconURL =
+    'https://cdn.pixabay.com/photo/2021/12/10/16/38/twitch-6860918_1280.png';
+  hsrIconURL =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvw2ri47mehC08Q5LKf4SamN5ayk7Fzof00j2O2yCbHw&s';
 
   @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -63,15 +87,13 @@ export class CardViewModalComponent implements OnChanges {
     }
   }
 
-  constructor(
-    private fb: FormBuilder,
-  ) { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: any) {
     if (changes.card.currentValue) {
       this.ratingForm.patchValue({
         userRating: this.card.rating,
-        chatRating: this.card.chatRating,
+        chatRating: Math.round(this.card.chatRating || 0),
         hsrRating: this.card.hsr_rating,
       });
 
@@ -87,12 +109,11 @@ export class CardViewModalComponent implements OnChanges {
     this.cardToDisplay = this.card;
   }
 
-
   onChangedRate(event: any) {
     this.card.rating = event.value;
     this.changedRate.emit({
       rating: event.value,
-      card: this.card
+      card: this.card,
     });
   }
 
@@ -103,5 +124,4 @@ export class CardViewModalComponent implements OnChanges {
   onStopRecording() {
     this.stopRecording.emit(this.card);
   }
-
 }

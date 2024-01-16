@@ -1,52 +1,106 @@
-<p-dialog [(visible)]="shouldShowModal" [modal]="true" [style]="{ width: '66vw', height: '90%' }" [draggable]="false"
-    [resizable]="false" [dismissableMask]="true">
-    <ng-template pTemplate="header">
-    </ng-template>
-    <div class="grid overflow-hidden">
-        <div class="col-7 fixed-image-container flex justify-content-center">
-            <img class="card-image"  [alt]="cardToDisplay.name" [src]="cardToDisplay.imageURL" />
-        </div>
-        <div class="col-5 flex flex-column align-items-center gap-3 text-container">
-            <div class="text-2xl font-bold">{{ card.name }}</div>
-            <form [formGroup]="ratingForm">
-                <div class="flex flex-column align-items-center gap-3">
-                    <div class="flex">
-                        <p-avatar [image]="userImg" styleClass="mr-2 avatar" shape="circle"></p-avatar>
-                        <p-rating formControlName="userRating" [stars]="4" [cancel]="false" [readonly]="!isLoggedUser || !isInPreExpansionSeason"
-                            (onRate)="onChangedRate($event)"></p-rating>
-                    </div>
-                    <div class="flex"  *ngIf="card.hsr_rating">
-                        <a [href]="'https://hsreplay.net/cards/' + card.dbf_id" target="_blank">
-                            <p-avatar [image]="hsrIconURL" styleClass="mr-2 avatar cursor-pointer" shape="circle"></p-avatar>
-                        </a>
-                        <p-rating formControlName="hsrRating" [stars]="4" [cancel]="false" [readonly]="true"></p-rating>
-                    </div>
-                    <div *ngIf="isUserStreamer" class="flex flex-column align-items-center gap-3">
-                        <div class="flex">
-                            <p-avatar [image]="twitchIconURL"
-                                styleClass="mr-2 avatar" shape="circle"></p-avatar>
-                            <p-rating formControlName="chatRating" [stars]="4" [cancel]="false"
-                                [readonly]="true"></p-rating>
-                        </div>
-                        <app-record-chat 
-                            *ngIf="streamerView && isInPreExpansionSeason"
-                            data-testid="record-chat-button"
-                            (onRecordChat)="onRecordChat()"
-                            (onStopRecording)="onStopRecording()"
-                        ></app-record-chat>
-                    </div>
-                </div>
-            </form>
-            <div class="grid">
-                <div *ngFor="let extraCard of card.extraCards" class="col">
-                    <img [alt]="extraCard.name" [src]="extraCard.imageURL" width="150"
-                        (mouseover)="onExtraCardHover(extraCard)" (mouseleave)="onExtraCardLeave()" />
-                </div>
-            </div>
-        </div>
+<p-dialog
+  [(visible)]="shouldShowModal"
+  [modal]="true"
+  [style]="{ width: '66vw', height: '90%' }"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+>
+  <ng-template pTemplate="header"> </ng-template>
+  <div class="grid overflow-hidden">
+    <div class="col-7 fixed-image-container flex justify-content-center">
+      <img
+        class="card-image"
+        [alt]="cardToDisplay.name"
+        [src]="cardToDisplay.imageURL"
+      />
     </div>
-    <ng-template pTemplate="footer">
-        <span class="pi pi-question-circle" pTooltip="Use keyboard arrows to navigate between cards"
-            tooltipPosition="left" style="font-size: 1.5rem"></span>
-    </ng-template>
+    <div class="col-5 flex flex-column align-items-center gap-3 text-container">
+      <div class="text-2xl font-bold">{{ card.name }}</div>
+      <form [formGroup]="ratingForm">
+        <div class="flex flex-column align-items-center gap-3">
+          <div class="flex">
+            <p-avatar
+              [image]="userImg"
+              styleClass="mr-2 avatar"
+              shape="circle"
+            ></p-avatar>
+            <p-rating
+              formControlName="userRating"
+              [stars]="4"
+              [cancel]="false"
+              [readonly]="!isLoggedUser || !isInPreExpansionSeason"
+              (onRate)="onChangedRate($event)"
+            ></p-rating>
+            <span class="ml-2 w-1rem"></span>
+          </div>
+          <div class="flex" *ngIf="card.hsr_rating">
+            <a
+              [href]="'https://hsreplay.net/cards/' + card.dbf_id"
+              target="_blank"
+            >
+              <p-avatar
+                [image]="hsrIconURL"
+                styleClass="mr-2 avatar cursor-pointer"
+                shape="circle"
+              ></p-avatar>
+            </a>
+            <p-rating
+              formControlName="hsrRating"
+              [stars]="4"
+              [cancel]="false"
+              [readonly]="true"
+            ></p-rating>
+            <span class="ml-2 w-1rem"></span>
+          </div>
+          <div
+            *ngIf="isUserStreamer"
+            class="flex flex-column align-items-center gap-3"
+          >
+            <div class="flex">
+              <p-avatar
+                [image]="twitchIconURL"
+                styleClass="mr-2 avatar"
+                shape="circle"
+              ></p-avatar>
+              <p-rating
+                formControlName="chatRating"
+                [stars]="4"
+                [cancel]="false"
+                [readonly]="true"
+              ></p-rating>
+              <span class="ml-2 w-1rem"
+                >{{ card.chatRating | number : "1.0-2" }}
+              </span>
+            </div>
+            <app-record-chat
+              *ngIf="streamerView && isInPreExpansionSeason"
+              data-testid="record-chat-button"
+              (onRecordChat)="onRecordChat()"
+              (onStopRecording)="onStopRecording()"
+            ></app-record-chat>
+          </div>
+        </div>
+      </form>
+      <div class="grid">
+        <div *ngFor="let extraCard of card.extraCards" class="col">
+          <img
+            [alt]="extraCard.name"
+            [src]="extraCard.imageURL"
+            width="150"
+            (mouseover)="onExtraCardHover(extraCard)"
+            (mouseleave)="onExtraCardLeave()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <span
+      class="pi pi-question-circle"
+      pTooltip="Use keyboard arrows to navigate between cards"
+      tooltipPosition="left"
+      style="font-size: 1.5rem"
+    ></span>
+  </ng-template>
 </p-dialog>
