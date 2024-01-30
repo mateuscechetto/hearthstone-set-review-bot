@@ -15,6 +15,11 @@ const isMessageRatingValid = (messageRating) => {
 const currentExpansion = "Delve into Deepholm";
 const minRatings = 1;
 
+const cardsPerExpansion = {
+    "Showdown in the Badlands": 145,
+    "Delve into Deepholm": 38,
+};
+
 router.get('/ratedCards', async (req, res) => {
     const { userName, expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
@@ -58,6 +63,7 @@ router.get('/ratedCards', async (req, res) => {
 router.get('/users', async (req, res) => {
     const { expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
+    const cardsCount = cardsPerExpansion[activeExpansion];
     try {
         const pipeline = [
             {
@@ -119,8 +125,8 @@ router.get('/users', async (req, res) => {
                     isStreamer: '$userData.isStreamer',
                     sheetLink: '$userData.sheetLink',
                     followers: '$userData.followers',
-                    totalDeviation: '$totalDeviation',
-                    score: { $subtract: [9, { $divide: ['$totalDeviation', '$count'] }] },
+                    totalDeviation: { $add: ['$totalDeviation', { $multiply: [9, { $subtract: [cardsCount, '$count'] }] }] },
+                    score: { $subtract: [9, { $divide: [{ $add: ['$totalDeviation', { $multiply: [9, { $subtract: [cardsCount, '$count'] }] }] }, cardsCount] }] },
                     rated: '$countRated',
                 },
             },
