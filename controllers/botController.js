@@ -466,10 +466,10 @@ router.post("/record", async (req, res) => {
                 let messageRating = parseInt(messageFirstChar);
                 if (isMessageRatingValid(messageRating)) {
                     const streamer = await User.findOne({ name: streamerName });
-                    let user = await User.findOne({ name: tags.username });
+                    let user = await User.findOne({ name: tags['display-name'] });
                     if (!user) {
-                        await User.create({ name: tags.username });
-                        user = await User.findOne({ name: tags.username });
+                        await User.create({ name: tags['display-name'] });
+                        user = await User.findOne({ name: tags['display-name'] });
                     }
                     const update = {
                         user: user._id,
