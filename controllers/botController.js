@@ -12,13 +12,20 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = "Delve into Deepholm";
+const currentExpansion = "Whizbang\'s Workshop";
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "Whizbang\'s Workshop": 145,
     "Showdown in the Badlands": 145,
     "Delve into Deepholm": 38,
 };
+
+const hasExpansionBeingRated = {
+    "Whizbang\'s Workshop": false,
+    "Showdown in the Badlands": true,
+    "Delve into Deepholm": true,
+}
 
 router.get('/ratedCards', async (req, res) => {
     const { userName, expansion } = req.query;
@@ -64,6 +71,7 @@ router.get('/users', async (req, res) => {
     const { expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
     const cardsCount = cardsPerExpansion[activeExpansion];
+    const expansionHasHSRRatings = hasExpansionBeingRated[activeExpansion];
     try {
         const pipeline = [
             {
@@ -125,8 +133,20 @@ router.get('/users', async (req, res) => {
                     isStreamer: '$userData.isStreamer',
                     sheetLink: '$userData.sheetLink',
                     followers: '$userData.followers',
-                    totalDeviation: { $add: ['$totalDeviation', { $multiply: [9, { $subtract: [cardsCount, '$count'] }] }] },
-                    score: { $subtract: [9, { $divide: [{ $add: ['$totalDeviation', { $multiply: [9, { $subtract: [cardsCount, '$count'] }] }] }, cardsCount] }] },
+                    totalDeviation: {
+                        $cond: [
+                            expansionHasHSRRatings,
+                            { $add: ['$totalDeviation', { $multiply: [9, { $subtract: [cardsCount, '$count'] }] }] },
+                            0
+                        ]
+                    },
+                    score: {
+                        $cond: [
+                            expansionHasHSRRatings,
+                            { $subtract: [9, { $divide: [{ $add: ['$totalDeviation', { $multiply: [9, { $subtract: [cardsCount, '$count'] }] }] }, cardsCount] }] },
+                            0
+                        ]
+                    },
                     rated: '$countRated',
                 },
             },

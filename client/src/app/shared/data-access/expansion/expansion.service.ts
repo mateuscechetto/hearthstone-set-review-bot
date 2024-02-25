@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-export const CURRENT_EXPANSION = 'Delve into Deepholm';
+export const CURRENT_EXPANSION = 'Whizbang\'s Workshop';
 
-export const EXPANSIONS = ['Delve into Deepholm', 'Showdown in the Badlands'];
+export const EXPANSIONS = ['Whizbang\'s Workshop', 'Delve into Deepholm', 'Showdown in the Badlands'];
 
 @Injectable({
   providedIn: 'root',
