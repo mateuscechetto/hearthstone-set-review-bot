@@ -1,3 +1,9 @@
+/**
+ * Transforms Blizzard API data from https://hearthstone.blizzard.com/en-us/cards to the format used on the application.
+ * Extra cards need to be added manually after running this script.
+ * Input: -i Path to the API JSON file
+ */
+
 const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs');
@@ -12,20 +18,16 @@ const argv = yargs
   .alias('help', 'h')
   .argv;
 
-// const inputFile = 'from-api.json'; 
-// const inputFilePath = path.join(__dirname, inputFile);
-
-// const originalData = JSON.parse(fs.readFileSync(inputFilePath, 'utf8'));
-
 const inputFile = path.resolve(argv.input);
 const originalData = JSON.parse(fs.readFileSync(inputFile, 'utf8'));
 
 const transformedData = {
   cards: originalData.cards.map(card => ({
+    dbf_id: card.id,
     name: card.name,
     description: stripHtmlTags(card.text),
     imageURL: card.image,
-    expansion: 'Showdown in the Badlands', 
+    expansion: 'Whizbang\'s Workshop', 
     mana: card.manaCost,
     type: transformType(card.cardTypeId), 
     hsClass: transformClass(card.classId), 
@@ -35,7 +37,7 @@ const transformedData = {
 };
 
 const formattedDate = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '_');
-const outputFile = `output_${formattedDate}.json`;
+const outputFile = `output_ww_${formattedDate}.json`;
 const outputFilePath = path.join(__dirname, outputFile);
 
 fs.writeFileSync(outputFilePath, JSON.stringify(transformedData, null, 2), 'utf8');
