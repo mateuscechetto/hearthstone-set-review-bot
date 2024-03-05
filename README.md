@@ -9,7 +9,6 @@ Home page:
 Review page:
 ![Review page](https://github.com/mateuscechetto/hearthstone-set-review-bot/assets/32515099/c942527c-7b76-4601-add4-fe41ece9299b)
 
-
 ## Technologies
 
 ### Backend
@@ -19,7 +18,6 @@ Review page:
 - OAuth2 (passport)
 - JWT
 - MongoDB (mongoose)
-
 
 ### Frontend
 
@@ -82,7 +80,7 @@ The backend will be served at http://localhost:5000
 In another terminal run the frontend:
 
     cd client
-    ng serve
+    npm start
 
 The frontend will be served at http://localhost:4200
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Observable, filter } from 'rxjs';
 
 export const CURRENT_EXPANSION = 'Whizbang\'s Workshop';
 
@@ -15,17 +16,27 @@ export class ExpansionService {
   );
 
   // selectors
-  activeExpansion: Observable<string> = this.state;
+  activeExpansion: Observable<string> = this.state.asObservable();
 
-  // sources
-  changeActiveExpansion$ = new Subject<string>();
-
-  constructor() {
+  constructor(private route: ActivatedRoute, private router: Router) {
     // reducers
-    this.changeActiveExpansion$.subscribe({
-      next: (expansion) => {
-        this.state.next(expansion);
-      },
+    this.route.queryParams.pipe(
+      filter(params => params['expansion'])
+    ).subscribe(params => {
+      this.state.next(params['expansion']);
+    });
+  }
+
+  setActiveExpansion(expansion: string) {
+    this.state.next(expansion);
+    this.updateQueryParam();
+  }
+
+  private updateQueryParam() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { expansion: this.state.value },
+      queryParamsHandling: 'merge'
     });
   }
 }

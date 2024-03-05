@@ -15,6 +15,12 @@ const userServiceMock = {
 const statsServiceMock = {
   getCards: jest.fn(() => of([])),
   getAverageRatingsByClass: jest.fn(() => of([])),
+  loadingCards: {
+    pipe: jest.fn(() => of(true))
+  },
+  loadingAvgRatingByClass: {
+    pipe: jest.fn(() => of(true))
+  }
 }
 
 const activatedRouteMock = {
@@ -22,8 +28,6 @@ const activatedRouteMock = {
     params: { username: of('molino_hs') }
   },
 }
-
-
 
 describe('StatsPage', () => {
   let component: StatsPage;
@@ -33,8 +37,8 @@ describe('StatsPage', () => {
     TestBed.configureTestingModule({
       providers:[
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        {provide: UserService, useValue: userServiceMock },
-        {provide: StatsService, useValue: statsServiceMock },
+        { provide: UserService, useValue: userServiceMock },
+        { provide: StatsService, useValue: statsServiceMock },
       ]
     });
     fixture = TestBed.createComponent(StatsPage);

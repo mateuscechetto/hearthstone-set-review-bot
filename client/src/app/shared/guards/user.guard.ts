@@ -12,7 +12,7 @@ export const userGuard: CanActivateFn = (route, state) => {
       if (hasUser) {
         return true;
       } else {
-        router.navigate(['/not-found']);
+        router.navigate(['/not-found'], { queryParamsHandling: 'merge' });
         return false;
       }
     })
@@ -31,12 +31,12 @@ export const loginGuard: CanActivateFn = (route, state) => {
       ) {
         return true;
       } else {
-        router.navigate(['/review', route.params['username'], 'view-only']);
+        router.navigate(['/review', route.params['username'], 'view-only'], { queryParamsHandling: 'merge' });
         return false;
       }
     }),
     catchError(() => {
-      router.navigate(['/review', route.params['username'], 'view-only']);
+      router.navigate(['/review', route.params['username'], 'view-only'], { queryParamsHandling: 'merge' });
       return of(false);
     })
   );
@@ -47,7 +47,7 @@ export const redirectGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   return service.getUser().pipe(
     map((user) => {
-      router.navigate(['/review', user.name.toLowerCase()]);
+      router.navigate(['/review', user.name.toLowerCase()], { queryParamsHandling: 'merge' });
       return false;
     })
   );

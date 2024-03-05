@@ -147,7 +147,7 @@ export class CardViewPage {
       });
   }
 
-  onUserIsStreamer(): void {
+  onShowChatRatings(): void {
     if (this.loggedUser) {
       this.userService.userIsStreamer(this.loggedUser.name).subscribe({
         next: (loggedUser) => {
@@ -162,7 +162,7 @@ export class CardViewPage {
     }
   }
 
-  onUserIsNOTStreamer(): void {
+  onHideChatRatings(): void {
     if (this.loggedUser) {
       this.userService.userIsNOTStreamer(this.loggedUser.name).subscribe({
         next: (loggedUser) => {

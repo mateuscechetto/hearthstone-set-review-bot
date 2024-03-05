@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RecordChatComponent } from './record-chat.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('RecordChatComponent', () => {
   let component: RecordChatComponent;
@@ -8,6 +9,7 @@ describe('RecordChatComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule]
     });
     fixture = TestBed.createComponent(RecordChatComponent);
     component = fixture.componentInstance;
