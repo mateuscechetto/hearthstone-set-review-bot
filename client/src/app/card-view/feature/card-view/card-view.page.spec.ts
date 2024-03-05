@@ -22,21 +22,13 @@ const userServiceMock = {
   getUserByUsername: jest.fn((username) => of({ name: 'molino_hs', image: '', isStreamer: true })),
   getUser: jest.fn(() => of({ name: 'molino_hs', image: '', isStreamer: true })),
   userIsStreamer: jest.fn(() => of(true)),
-  loggedUser: {
-    name: 'molino_hs',
-    image: '',
-    isStreamer: true,
-    subscribe: jest.fn()
-  },
+  loggedUser: of({ name: 'molino_hs', image: '',  isStreamer: true }),
 }
 
 const ratingServiceMock = {}
 
 const activatedRouteMock = {
-  params: { 
-    username: of('molino_hs'),
-    pipe: jest.fn(() => of('molino_hs'))
-  },
+  params: of({ username: 'molino_hs'}),
   queryParams: of({ expansion: 'mock_expansion' })
 }
 
@@ -63,6 +55,7 @@ describe('CardViewComponent', () => {
         { provide: ExpansionService, useValue: expansionServiceMock }
       ]
     });
+    userServiceMock.loggedUser = of({ name: 'molino_hs', image: '', isStreamer: true });
     fixture = TestBed.createComponent(CardViewPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -89,7 +82,7 @@ describe('CardViewComponent', () => {
   });
 
   it('should show record chat ratings button when it is pre-expansion season and user is NOT a streamer', () => {
-    jest.spyOn(userServiceMock, 'getUser').mockReturnValueOnce(of({ name: 'molino_hs', image: '', isStreamer: false }));
+    userServiceMock.loggedUser = of({ name: 'molino_hs', image: '', isStreamer: false });
     fixture = TestBed.createComponent(CardViewPage);
     fixture.detectChanges();
 

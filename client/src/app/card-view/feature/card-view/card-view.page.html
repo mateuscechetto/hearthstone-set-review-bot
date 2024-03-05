@@ -16,11 +16,11 @@
       *ngIf="isInPreExpansionSeason && context.activeExpansion == CURRENT_EXPANSION; else notPreExpansionSeason"
     >
       <p-button
-        *ngIf="loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name; else notStreamer"
+        *ngIf="loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name; else hideChatRatings"
         class="col-6 col-offset-6 flex-order-1 md:flex-order-1 md:col-2 md:col-offset-0 mt-4"
         data-testid="record-chat-ratings-button"
         label="Record chat ratings"
-        (onClick)="onUserIsStreamer()"
+        (onClick)="onShowChatRatings()"
       ></p-button>
     </ng-container>
     <ng-template #notPreExpansionSeason>
@@ -32,14 +32,14 @@
         ratings.
       </b>
     </ng-template>
-    <ng-template #notStreamer>
+    <ng-template #hideChatRatings>
       <p-button
         *ngIf="loggedUser && loggedUser.name == pageUser?.name"
         class="col-6 flex-order-0 md:flex-order-0 md:col-2 mt-4"
         styleClass="p-button-danger"
         data-testid="hide-chat-ratings-button"
         label="Hide chat ratings"
-        (onClick)="onUserIsNOTStreamer()"
+        (onClick)="onHideChatRatings()"
       ></p-button>
     </ng-template>
   </div>
