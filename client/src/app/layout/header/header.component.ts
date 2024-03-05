@@ -54,11 +54,11 @@ export class HeaderComponent {
   }
 
   selectUser(streamer: string) {
-    this.router.navigate(['review', streamer]);
+    this.router.navigate(['review', streamer], { queryParamsHandling: 'merge' });
   }
 
   changeExpansion(event: DropdownChangeEvent) {
-    this.expansionService.changeActiveExpansion$.next(event.value);
+    this.expansionService.setActiveExpansion(event.value);
   }
 
   login() {

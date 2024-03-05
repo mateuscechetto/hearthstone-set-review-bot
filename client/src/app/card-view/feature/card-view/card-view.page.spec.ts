@@ -9,30 +9,44 @@ import { CardService } from '../../data-access/card/card.service';
 import { UserService } from '../../../shared/data-access/user/user.service';
 import { RatingService } from '../../data-access/rating/rating.service';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
-
+import { CURRENT_EXPANSION, ExpansionService } from '@app/shared/data-access/expansion/expansion.service';
 
 const serviceMock = {
   getCards: jest.fn(() => of(cardsMock.map(card => ({ ...card, rating: 2 })))),
+  loading: {
+    pipe: jest.fn(() => of(false))
+  }
 }
 
 const userServiceMock = {
   getUserByUsername: jest.fn((username) => of({ name: 'molino_hs', image: '', isStreamer: true })),
   getUser: jest.fn(() => of({ name: 'molino_hs', image: '', isStreamer: true })),
   userIsStreamer: jest.fn(() => of(true)),
+  loggedUser: {
+    name: 'molino_hs',
+    image: '',
+    isStreamer: true,
+    subscribe: jest.fn()
+  },
 }
 
 const ratingServiceMock = {}
 
 const activatedRouteMock = {
-  snapshot: {
-    params: { username: of('molino_hs') }
+  params: { 
+    username: of('molino_hs'),
+    pipe: jest.fn(() => of('molino_hs'))
   },
+  queryParams: of({ expansion: 'mock_expansion' })
 }
 
 const environmentServiceMock = {
   isInPreExpansionSeason: jest.fn(() => true),
 }
 
+const expansionServiceMock = {
+  activeExpansion: of(CURRENT_EXPANSION),
+}
 
 describe('CardViewComponent', () => {
   let component: CardViewPage;
@@ -45,7 +59,8 @@ describe('CardViewComponent', () => {
         { provide: CardService, useValue: serviceMock },
         { provide: UserService, useValue: userServiceMock },
         { provide: RatingService, useValue: ratingServiceMock },
-        { provide: EnvironmentService, useValue: environmentServiceMock}
+        { provide: EnvironmentService, useValue: environmentServiceMock },
+        { provide: ExpansionService, useValue: expansionServiceMock }
       ]
     });
     fixture = TestBed.createComponent(CardViewPage);
@@ -69,17 +84,15 @@ describe('CardViewComponent', () => {
     );
 
     expect(recordChatButton).toBeFalsy();
-    
     expect(hideChatButton).toBeTruthy();
-
     expect(message).toBeFalsy();
-
   });
 
   it('should show record chat ratings button when it is pre-expansion season and user is NOT a streamer', () => {
     jest.spyOn(userServiceMock, 'getUser').mockReturnValueOnce(of({ name: 'molino_hs', image: '', isStreamer: false }));
     fixture = TestBed.createComponent(CardViewPage);
     fixture.detectChanges();
+
     const recordChatButton = fixture.debugElement.query(
       By.css('[data-testid="record-chat-ratings-button"]')
     );
@@ -91,16 +104,15 @@ describe('CardViewComponent', () => {
     );
 
     expect(recordChatButton).toBeTruthy();
-    
     expect(hideChatButton).toBeFalsy();
     expect(message).toBeFalsy();
-
   });
 
   it('should NOT show record chat ratings button when it is not pre-expansion season', () => {
     jest.spyOn(environmentServiceMock, 'isInPreExpansionSeason').mockReturnValueOnce(false);
     fixture = TestBed.createComponent(CardViewPage);
     fixture.detectChanges();
+
     const recordChatButton = fixture.debugElement.query(
       By.css('[data-testid="record-chat-ratings-button"]')
     );
@@ -113,9 +125,7 @@ describe('CardViewComponent', () => {
 
     expect(recordChatButton).toBeFalsy();
     expect(hideChatButton).toBeFalsy();
-
     expect(message).toBeTruthy();
-
   });
 
 });

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardGridSkeletonComponent } from './card-grid-skeleton.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CardGridSkeletonComponent', () => {
   let component: CardGridSkeletonComponent;
@@ -8,7 +9,7 @@ describe('CardGridSkeletonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CardGridSkeletonComponent]
+      imports: [CardGridSkeletonComponent, RouterTestingModule]
     });
     fixture = TestBed.createComponent(CardGridSkeletonComponent);
     component = fixture.componentInstance;
