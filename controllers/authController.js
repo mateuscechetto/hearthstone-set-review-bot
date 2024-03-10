@@ -164,16 +164,14 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/hasUser', async (req, res) => {
-    const regex = new RegExp(["^", req.query.username.toLowerCase(), "$"].join(""), "i");
-    const hasUser = !!await User.exists({ name: regex });
+    const hasUser = !!await User.exists({ name: req.query.username });
     res.status(status.OK).send(
         hasUser
     );
 });
 
 router.get('/user', async (req, res) => {
-    const regex = new RegExp(["^", req.query.username.toLowerCase(), "$"].join(""), "i");
-    const user = await User.findOne({ name: regex });
+    const user = await User.findOne({ name: req.query.username });
     res.status(status.OK).send(
         user
     );
