@@ -62,8 +62,18 @@
     </p-table>
   </div>
   <div class="col-12 lg:col-10 lg:col-offset-1 flex-order-1">
-    <p-table [value]="hotCards" [rows]="10" [paginator]="true">
-      <ng-template pTemplate="caption">All Cards </ng-template>
+    <p-table [value]="filteredHotCards" [rows]="10" [paginator]="true">
+      <ng-template pTemplate="caption">
+        <div class="allCardsHeader">
+          All Cards
+          <input
+            placeholder="Find a Card"
+            [style]="{ width: '80%' }"
+            (input)="filterHotCards($event)"
+            class="searchInput"
+          />
+        </div>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="hsClass" style="width: 16.6%">
@@ -73,7 +83,7 @@
             Name <p-sortIcon field="name"></p-sortIcon>
           </th>
           <th
-            *ngIf="hotCards[0]?.hsr_rating"
+            *ngIf="filteredHotCards[0]?.hsr_rating"
             pSortableColumn="hsr_rating"
             style="width: 16.6%"
             pTooltip="Rating calculated using HSReplay data from the the first patch after expansion"
@@ -120,7 +130,7 @@
           >
             <td>{{card.hsClass}}</td>
             <td>{{card.name}}</td>
-            <td *ngIf="hotCards[0]?.hsr_rating">{{ card.hsr_rating }}</td>
+            <td *ngIf="filteredHotCards[0]?.hsr_rating">{{ card.hsr_rating }}</td>
             <td>{{card.avgRating | number: '1.0-2' }}</td>
             <td>± {{(card.standardDeviation | number: '1.0-2') || 0  }}</td>
             <td>{{card.ratings.length}}</td>

@@ -41,7 +41,6 @@ export class HeaderComponent {
 
   loggedUser = this.userService.loggedUser;
 
-  userSearchValue: any;
   options = this.userService.users.pipe();
   suggestions: string[] = [];
 
