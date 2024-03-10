@@ -47,7 +47,7 @@ export const redirectGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   return service.getUser().pipe(
     map((user) => {
-      router.navigate(['/review', user.name.toLowerCase()], { queryParamsHandling: 'merge' });
+      router.navigate(['/review', user.name], { queryParamsHandling: 'merge' });
       return false;
     })
   );
