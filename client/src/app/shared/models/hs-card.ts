@@ -60,6 +60,7 @@ export interface RatedCardAPIReturn {
 
 export interface HotCards {
     name: string;
+    description: string;
     hsClass: HearthstoneClass;
     imageURL: string;
     avgRating: number;

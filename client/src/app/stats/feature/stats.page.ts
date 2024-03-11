@@ -51,7 +51,6 @@ import { InputTextModule } from 'primeng/inputtext';
   standalone: true,
 })
 export class StatsPage {
-  title = 'Showdown in the Badlands Card Review';
   hotCards: HotCards[] = [];
   filteredHotCards: HotCards[] = [];
   ratingsByClass: AverageRatingByClass[] = [];
@@ -95,7 +94,7 @@ export class StatsPage {
     if (searchQuery === '') {
       this.filteredHotCards = this.hotCards;
     } else {
-      this.filteredHotCards = this.hotCards.filter(card => card.name.toLowerCase().includes(searchQuery));
+      this.filteredHotCards = this.hotCards.filter(card => card.name.toLowerCase().includes(searchQuery) || card.description.toLowerCase().includes(searchQuery));
     }
   }
 

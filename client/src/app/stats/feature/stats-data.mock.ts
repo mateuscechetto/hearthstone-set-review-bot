@@ -19,16 +19,16 @@ export const BEST_CLASSES_MOCK: AverageRatingByClass[] = [
 ];
 
 export const ALL_CARDS_TABLE_MOCK: HotCards[] = [
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
-    {avgRating: 1, hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
+    {avgRating: 1, description: '', hsClass: HearthstoneClass.DEATH_KNIGHT, imageURL: '', name: '', ratings: [], standardDeviation: 0},
 ]
 
 

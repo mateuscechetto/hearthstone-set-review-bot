@@ -193,6 +193,7 @@ router.get('/hotCards', async (req, res) => {
                 $group: {
                     _id: '$_id',
                     name: { $first: '$name' },
+                    description: {$first: '$description'},
                     hsClass: { $first: '$hsClass' },
                     imageURL: { $first: '$imageURL' },
                     ratings: { $push: '$ratings.rating' },
@@ -203,6 +204,7 @@ router.get('/hotCards', async (req, res) => {
                 $project: {
                     _id: 0,
                     name: 1,
+                    description: 1,
                     hsClass: 1,
                     imageURL: 1,
                     ratings: {
@@ -218,6 +220,7 @@ router.get('/hotCards', async (req, res) => {
             {
                 $project: {
                     name: 1,
+                    description: 1,
                     hsClass: 1,
                     imageURL: 1,
                     ratings: 1,

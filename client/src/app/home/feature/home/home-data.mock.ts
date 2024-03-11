@@ -6,6 +6,7 @@ import { HearthstoneClass, HotCards } from '@shared/models/hs-card';
 export const CARDS_MOCK: HotCards[] = [
   {
     avgRating: 1,
+    description: '',
     hsClass: HearthstoneClass.DEATH_KNIGHT,
     imageURL: '',
     name: '',
@@ -14,6 +15,7 @@ export const CARDS_MOCK: HotCards[] = [
   },
   {
     avgRating: 1,
+    description: '',
     hsClass: HearthstoneClass.DEATH_KNIGHT,
     imageURL: '',
     name: '',
@@ -22,6 +24,7 @@ export const CARDS_MOCK: HotCards[] = [
   },
   {
     avgRating: 1,
+    description: '',
     hsClass: HearthstoneClass.DEATH_KNIGHT,
     imageURL: '',
     name: '',
@@ -30,6 +33,7 @@ export const CARDS_MOCK: HotCards[] = [
   },
   {
     avgRating: 1,
+    description: '',
     hsClass: HearthstoneClass.DEATH_KNIGHT,
     imageURL: '',
     name: '',
@@ -38,6 +42,7 @@ export const CARDS_MOCK: HotCards[] = [
   },
   {
     avgRating: 1,
+    description: '',
     hsClass: HearthstoneClass.DEATH_KNIGHT,
     imageURL: '',
     name: '',
