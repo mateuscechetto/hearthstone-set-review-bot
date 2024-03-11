@@ -11,10 +11,9 @@
   </div>
   <div class="col-12 flex-order-1 md:col-4 md:flex-order-0" *ngIf="options | async as users">
     <p-autoComplete
-      [(ngModel)]="userSearchValue"
       [suggestions]="suggestions"
       [showClear]="true"
-      placeholder="Find a Review"
+      placeholder="Find a Reviewer"
       [style]="{ width: '100%' }"
       [inputStyle]="{ width: '100%' }"
       (completeMethod)="searchUser($event, users)"

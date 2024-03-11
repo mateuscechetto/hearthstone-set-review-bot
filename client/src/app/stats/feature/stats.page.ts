@@ -25,6 +25,7 @@ import {
   BEST_CLASSES_MOCK,
 } from '@stats/feature/stats-data.mock';
 import { SkeletonModule } from 'primeng/skeleton';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-Stats',
@@ -45,19 +46,21 @@ import { SkeletonModule } from 'primeng/skeleton';
     AsyncPipe,
     SkeletonModule,
     NgTemplateOutlet,
+    InputTextModule
   ],
   standalone: true,
 })
 export class StatsPage {
   title = 'Showdown in the Badlands Card Review';
   hotCards: HotCards[] = [];
+  filteredHotCards: HotCards[] = [];
   ratingsByClass: AverageRatingByClass[] = [];
   cardsByClass: { [key: string]: HotCards[] } = {};
 
   loadingCards = this.statsService.loadingCards.pipe(
     tap((loading) => {
       if (loading) {
-        this.hotCards = ALL_CARDS_TABLE_MOCK;
+        this.filteredHotCards = ALL_CARDS_TABLE_MOCK;
       }
     })
   );
@@ -75,6 +78,7 @@ export class StatsPage {
     this.statsService.getCards().subscribe({
       next: (cards) => {
         this.hotCards = cards;
+        this.filteredHotCards = cards;
         this.setClassesCards(cards);
       },
     });
@@ -84,6 +88,15 @@ export class StatsPage {
         this.ratingsByClass = ratingsByClass;
       },
     });
+  }
+
+  filterHotCards(event: Event) {
+    const searchQuery = (event.target as HTMLInputElement).value.toLowerCase();
+    if (searchQuery === '') {
+      this.filteredHotCards = this.hotCards;
+    } else {
+      this.filteredHotCards = this.hotCards.filter(card => card.name.toLowerCase().includes(searchQuery));
+    }
   }
 
   setClassesCards(cards: HotCards[]) {
