@@ -60,15 +60,19 @@ export class CardService {
   }
 
   getCompareReviewersCards(
-    reviewers: string[]
+    reviewers: string[] | string
   ): Observable<CompareCardAPIReturn[][]> {
     if (!reviewers || reviewers.length === 0) {
       return of([]);
     }
+    if (typeof reviewers === 'string') {
+      return combineLatest([this.getCompareReviewer(reviewers, true)]);
+    }
+
     const requests = reviewers.map((reviewer) =>
       this.getCompareReviewer(reviewer, true)
     );
-    return combineLatest(requests) as Observable<CompareCardAPIReturn[][]>;
+    return combineLatest(requests);
   }
 
   private getCompareReviewer(

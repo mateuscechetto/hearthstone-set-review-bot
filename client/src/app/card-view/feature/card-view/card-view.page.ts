@@ -96,7 +96,11 @@ export class CardViewPage {
 
   reviewersToCompare$ = this.route.queryParams.pipe(
     tap((params: Params) => {
-      this.compareReviewsForm.patchValue({reviewers: params['compareTo']}, {emitEvent: false})
+      let reviewers = params['compareTo'];
+      if (typeof reviewers === 'string') {
+        reviewers = [reviewers];
+      }
+      this.compareReviewsForm.patchValue({reviewers: reviewers}, {emitEvent: false})
     }),
     switchMap((params: Params) => {
       const reviewers = params['compareTo'];
