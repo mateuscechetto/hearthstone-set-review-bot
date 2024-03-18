@@ -34,6 +34,27 @@
             ></p-rating>
             <span class="ml-2 w-1rem"></span>
           </div>
+          <ng-container *ngIf="reviewersToCompare.length > 0">
+            <div class="flex" *ngFor="let reviewToCompare of reviewersToCompare; index as i">
+              <a
+                [href]="'https://twitch.tv/' + reviewToCompare[i].user.name"
+                target="_blank"
+              >
+                <p-avatar
+                  [image]="reviewToCompare[i].user.image"
+                  styleClass="mr-2 avatar cursor-pointer"
+                  shape="circle"
+                ></p-avatar>
+              </a>
+              <p-rating
+                [formControlName]="reviewToCompare[i].user.name"
+                [stars]="4"
+                [cancel]="false"
+                [readonly]="true"
+              ></p-rating>
+              <span class="ml-2 w-1rem"></span>
+            </div>
+          </ng-container>
           <div class="flex" *ngIf="card.hsr_rating">
             <a
               [href]="'https://hsreplay.net/cards/' + card.dbf_id"

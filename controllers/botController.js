@@ -67,6 +67,70 @@ router.get('/ratedCards', async (req, res) => {
     return res.status(status.OK).send(cards);
 });
 
+router.get('/compareRatings', async (req, res) => {
+    const { userName, expansion } = req.query;
+    const activeExpansion = expansion || currentExpansion;
+    
+    try {
+        const user = await User.findOne({ name: userName });
+        if (!user) {
+            return res.status(status.BAD_REQUEST).send({ error: "Invalid user" });
+        }
+
+        const pipeline = [
+            {
+                $match: { user: user._id },
+            },
+            {
+                $lookup: {
+                    from: 'hearthstonecards',
+                    localField: 'card',
+                    foreignField: '_id',
+                    as: 'cardData',
+                },
+            },
+            {
+                $unwind: '$cardData',
+            },
+            {
+                $match: { 'cardData.expansion': activeExpansion },
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'userData',
+                },
+            },
+            {
+                $unwind: '$userData',
+            },
+            {
+                $project: {
+                    _id: 0,
+                    user: {
+                        name: '$userData.name',
+                        image: '$userData.image',
+                    },
+                    card: '$cardData',
+                    extraCards: '$cardData.extraCards',
+                    rating: 1,
+                    chatRating: 1,
+                    createdAt: 1,
+                },
+            },
+        ];
+
+        const cards = await Rating.aggregate(pipeline);
+
+        return res.status(status.OK).send(cards);
+    } catch (err) {
+        console.error(err);
+        return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching ratings', err });
+    }
+});
+
 router.get('/users', async (req, res) => {
     const { expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
@@ -193,7 +257,7 @@ router.get('/hotCards', async (req, res) => {
                 $group: {
                     _id: '$_id',
                     name: { $first: '$name' },
-                    description: {$first: '$description'},
+                    description: { $first: '$description' },
                     hsClass: { $first: '$hsClass' },
                     imageURL: { $first: '$imageURL' },
                     ratings: { $push: '$ratings.rating' },
@@ -452,7 +516,7 @@ router.post("/record", async (req, res) => {
                     Rating.aggregate([
                         {
                             $match: {
-                                card: currentCard.get(streamerName)._id,
+                                card: currentCard.get(streamerName)?._id,
                                 streamer: streamer._id
                             }
                         },
@@ -468,7 +532,7 @@ router.post("/record", async (req, res) => {
                                 console.error('Error calculating average rating:', err);
                             } else {
                                 avg = result.length > 0 ? result[0].averageRating : 0;
-                                const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName).name} ended! \n Chat average: ${avg} __________________________________________________`;
+                                const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName)?.name} ended! \n Chat average: ${avg} __________________________________________________`;
                                 tmiClient.say(channel, stopRecordingMessage);
                                 sentStopRecordingMessage.set(streamerName, true);
                             }
@@ -477,16 +541,17 @@ router.post("/record", async (req, res) => {
                 }
             } else {
                 if (!sentStartRecordingMessage.get(streamerName)) {
-                    const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName).name} started! Give your rating by typing a number from 1 to 4 __________________________________________________`;
+                    const stopRecordingMessage = `__________________________________________________ The ratings for ${currentCard.get(streamerName)?.name} started! Give your rating by typing a number from 1 to 4 __________________________________________________`;
                     tmiClient.say(channel, stopRecordingMessage);
                     sentStartRecordingMessage.set(streamerName, true);
                 }
 
+                if (message.length > 1) return;
+
                 const isBot = botNames.includes(tags.username.toLowerCase());
                 if (isBot) return;
 
-                let messageFirstChar = message.slice(0, 1);
-                let messageRating = parseInt(messageFirstChar);
+                let messageRating = parseInt(message);
                 if (isMessageRatingValid(messageRating)) {
                     const streamer = await User.findOne({ name: streamerName });
                     let user = await User.findOne({ name: tags['display-name'] });
@@ -497,10 +562,10 @@ router.post("/record", async (req, res) => {
                     const update = {
                         user: user._id,
                         streamer: streamer._id,
-                        card: currentCard.get(streamerName)._id,
+                        card: currentCard.get(streamerName)?._id,
                         rating: messageRating,
                     };
-                    await Rating.findOneAndUpdate({ user: user._id, card: currentCard.get(streamerName)._id }, update, { upsert: true });
+                    await Rating.findOneAndUpdate({ user: user._id, card: currentCard.get(streamerName)?._id }, update, { upsert: true });
                 }
             }
         });
@@ -521,7 +586,7 @@ router.post("/stop", async (req, res) => {
     Rating.aggregate([
         {
             $match: {
-                card: currentCard.get(streamerName)._id,
+                card: currentCard.get(streamerName)?._id,
                 streamer: streamer._id
             }
         },
@@ -538,7 +603,7 @@ router.post("/stop", async (req, res) => {
                 res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error calculating average rating', err });
             } else {
                 avg = result.length > 0 ? result[0].averageRating : 0;
-                const streamerChatRating = await Rating.findOneAndUpdate({ user: streamer._id, card: currentCard.get(streamerName)._id }, { chatRating: avg }, { new: true }).populate({
+                const streamerChatRating = await Rating.findOneAndUpdate({ user: streamer._id, card: currentCard.get(streamerName)?._id }, { chatRating: avg }, { new: true }).populate({
                     path: 'card',
                     populate: {
                         path: 'extraCards',

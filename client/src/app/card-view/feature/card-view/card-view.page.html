@@ -44,38 +44,59 @@
     </ng-template>
   </div>
 
-  <p-dataView #dv [value]="cards" [layout]="layout">
-    <ng-template let-card pTemplate="gridItem">
-      <app-card-grid-item
-        [showSkeleton]="!!(loadingCards$ | async)"
-        [card]="card"
+  <div *ngIf="options | async as users">
+    <form [formGroup]="compareReviewsForm" class="flex align-items-center ml-2 md:ml-7 gap-2">
+      <label for="CompareReviews">Compare reviews:</label>
+      <p-autoComplete
+        id="CompareReviews"
+        [suggestions]="suggestions"
+        [showClear]="true"
+        placeholder="Find a Reviewer"
+        [multiple]="true"
+        formControlName="reviewers"
+        (completeMethod)="searchUser($event, users)"
+      ></p-autoComplete>
+    </form>
+  </div>
+
+  <ng-container
+    *ngIf="{reviewers: (reviewersToCompare$ | async) || []} as reviewersContext"
+  >
+    <p-dataView #dv [value]="cards" [layout]="layout">
+      <ng-template let-card pTemplate="gridItem">
+        <app-card-grid-item
+          [showSkeleton]="!!(loadingCards$ | async)"
+          [card]="card"
+          [userImg]="pageUser?.image ?? ''"
+          [isLoggedUser]="pageUser?.name == loggedUser?.name"
+          [isUserStreamer]="!!pageUser?.isStreamer"
+          [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
+          [isInPreExpansionSeason]="isInPreExpansionSeason && context.activeExpansion == CURRENT_EXPANSION"
+          [reviewersToCompare]="reviewersContext.reviewers"
+          (imageClick)="showModal($event)"
+          (changedRate)="onChangedRate($event)"
+          (recordChat)="onRecordChat($event)"
+          (stopRecording)="onStopRecording($event)"
+        ></app-card-grid-item>
+      </ng-template>
+    </p-dataView>
+
+    <div *ngIf="shouldShowModal && modalCard">
+      <app-card-view-modal
+        [card]="modalCard"
+        [(shouldShowModal)]="shouldShowModal"
         [userImg]="pageUser?.image ?? ''"
         [isLoggedUser]="pageUser?.name == loggedUser?.name"
         [isUserStreamer]="!!pageUser?.isStreamer"
         [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
         [isInPreExpansionSeason]="isInPreExpansionSeason && context.activeExpansion == CURRENT_EXPANSION"
-        (imageClick)="showModal($event)"
+        [reviewersToCompare]="reviewersContext.reviewers"
+        (changedCard)="changeCard($event)"
         (changedRate)="onChangedRate($event)"
         (recordChat)="onRecordChat($event)"
         (stopRecording)="onStopRecording($event)"
-      ></app-card-grid-item>
-    </ng-template>
-  </p-dataView>
-
-  <div *ngIf="shouldShowModal && modalCard">
-    <app-card-view-modal
-      [card]="modalCard"
-      [(shouldShowModal)]="shouldShowModal"
-      [userImg]="pageUser?.image ?? ''"
-      [isLoggedUser]="pageUser?.name == loggedUser?.name"
-      [isUserStreamer]="!!pageUser?.isStreamer"
-      [streamerView]="!!loggedUser && loggedUser.isStreamer && pageUser?.name == loggedUser.name"
-      [isInPreExpansionSeason]="isInPreExpansionSeason && context.activeExpansion == CURRENT_EXPANSION"
-      (changedCard)="changeCard($event)"
-      (changedRate)="onChangedRate($event)"
-      (recordChat)="onRecordChat($event)"
-      (stopRecording)="onStopRecording($event)"
-    >
-    </app-card-view-modal>
-  </div>
+      >
+      </app-card-view-modal>
+    </div>
+  </ng-container>
 </ng-container>
