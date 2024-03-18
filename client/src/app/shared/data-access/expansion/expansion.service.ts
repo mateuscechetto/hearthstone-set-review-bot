@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, filter } from 'rxjs';
+import { BehaviorSubject, Observable, distinctUntilChanged, filter, map, pluck } from 'rxjs';
 
 export const CURRENT_EXPANSION = 'Whizbang\'s Workshop';
 
@@ -21,9 +21,11 @@ export class ExpansionService {
   constructor(private route: ActivatedRoute, private router: Router) {
     // reducers
     this.route.queryParams.pipe(
-      filter(params => params['expansion'])
-    ).subscribe(params => {
-      this.state.next(params['expansion']);
+      map(params => params['expansion']), // Extract 'expansion' query parameter
+      distinctUntilChanged(), // Ensure the value changes before triggering the next action
+      filter(expansion => !!expansion) // Filter out falsy values (optional)
+    ).subscribe(expansion => {
+      this.state.next(expansion);
     });
   }
 

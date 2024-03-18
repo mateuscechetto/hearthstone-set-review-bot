@@ -1,7 +1,18 @@
 import { environment } from '@environment/environment';
 import { Injectable } from '@angular/core';
-import { RatedCardAPIReturn } from '@shared/models/hs-card';
-import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
+import {
+  CompareCardAPIReturn,
+  RatedCardAPIReturn,
+} from '@shared/models/hs-card';
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ExpansionService } from '@shared/data-access/expansion/expansion.service';
 
@@ -21,6 +32,8 @@ export class CardService {
 
   // selectors
   loading = this.loadingState.pipe(map((v) => v.loading));
+
+  private cardsCache: { [key: string]: CompareCardAPIReturn[] } = {};
 
   constructor(
     private http: HttpClient,
@@ -43,6 +56,47 @@ export class CardService {
         )
       ),
       tap(() => this.loadingState.next({ loading: false }))
+    );
+  }
+
+  getCompareReviewersCards(
+    reviewers: string[] | string
+  ): Observable<CompareCardAPIReturn[][]> {
+    if (!reviewers || reviewers.length === 0) {
+      return of([]);
+    }
+    if (typeof reviewers === 'string') {
+      return combineLatest([this.getCompareReviewer(reviewers, true)]);
+    }
+
+    const requests = reviewers.map((reviewer) =>
+      this.getCompareReviewer(reviewer, true)
+    );
+    return combineLatest(requests);
+  }
+
+  private getCompareReviewer(
+    userName: string,
+    useCachedValue: boolean = false
+  ): Observable<CompareCardAPIReturn[]> {
+    if (useCachedValue && this.cardsCache[userName]) {
+      return of(this.cardsCache[userName]);
+    }
+
+    return this.expansionService.activeExpansion.pipe(
+      switchMap((expansion) =>
+        this.http.get<CompareCardAPIReturn[]>(
+          `${environment.apiUrl}/api/compareRatings`,
+          {
+            withCredentials: true,
+            params: {
+              userName,
+              expansion,
+            },
+          }
+        )
+      ),
+      tap((cards) => (this.cardsCache[userName] = cards))
     );
   }
 }

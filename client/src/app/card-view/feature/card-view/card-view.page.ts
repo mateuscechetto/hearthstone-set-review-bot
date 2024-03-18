@@ -1,6 +1,6 @@
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
@@ -18,6 +18,15 @@ import {
   ExpansionService,
 } from '@shared/data-access/expansion/expansion.service';
 import { RATED_CARDS_MOCK } from '@card-view/feature/card-view/card-view-data.mock';
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteModule,
+} from 'primeng/autocomplete';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-card-view',
@@ -34,6 +43,9 @@ import { RATED_CARDS_MOCK } from '@card-view/feature/card-view/card-view-data.mo
     NgClass,
     RouterLink,
     AsyncPipe,
+    AutoCompleteModule,
+    ReactiveFormsModule,
+    JsonPipe,
   ],
 })
 export class CardViewPage {
@@ -50,13 +62,7 @@ export class CardViewPage {
 
   loggedUser$ = this.userService.loggedUser;
 
-  loadingCards$ = this.service.loading.pipe(
-    tap((loading) => {
-      if (loading) {
-        this.cards = RATED_CARDS_MOCK;
-      }
-    })
-  );
+  loadingCards$ = this.service.loading.pipe();
 
   get name() {
     const username = this.pageUser?.name;
@@ -70,18 +76,54 @@ export class CardViewPage {
 
   isInPreExpansionSeason: boolean = false;
 
+  options = this.userService.users.pipe();
+  suggestions: string[] = [];
+  compareReviewsForm: FormGroup = this.fb.group({
+    reviewers: [],
+  });
+
+  compareReviewersFormChanges$ = this.compareReviewsForm.controls[
+    'reviewers'
+  ].valueChanges.pipe(
+    tap((reviewers) =>
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { compareTo: reviewers },
+        queryParamsHandling: 'merge',
+      })
+    ),
+  );
+
+  reviewersToCompare$ = this.route.queryParams.pipe(
+    tap((params: Params) => {
+      let reviewers = params['compareTo'];
+      if (typeof reviewers === 'string') {
+        reviewers = [reviewers];
+      }
+      this.compareReviewsForm.patchValue({reviewers: reviewers}, {emitEvent: false})
+    }),
+    switchMap((params: Params) => {
+      const reviewers = params['compareTo'];
+      return this.service.getCompareReviewersCards(reviewers);
+    })
+  );
+
   constructor(
     private service: CardService,
     private userService: UserService,
     private route: ActivatedRoute,
+    private router: Router,
     private ratingService: RatingService,
     private environment: EnvironmentService,
-    private expansionService: ExpansionService
+    private expansionService: ExpansionService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.isInPreExpansionSeason = this.environment.isInPreExpansionSeason();
     this.cards = RATED_CARDS_MOCK;
+
+    this.compareReviewersFormChanges$.subscribe();
 
     this.route.params
       .pipe(
@@ -109,6 +151,15 @@ export class CardViewPage {
       },
       error: (_) => (this.loggedUser = null),
     });
+
+  }
+
+  searchUser(event: AutoCompleteCompleteEvent, users: User[]) {
+    this.suggestions = users
+      .filter((user) =>
+        user.name.toLowerCase().includes(event.query.toLowerCase())
+      )
+      .map((u) => u.name);
   }
 
   showModal(card: RatedCard) {

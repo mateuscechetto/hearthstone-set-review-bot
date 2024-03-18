@@ -58,6 +58,13 @@ export interface RatedCardAPIReturn {
     chatRating?: number;
 }
 
+export interface CompareCardAPIReturn extends RatedCardAPIReturn {
+    user: {
+        name: string;
+        image: string;
+    }
+}
+
 export interface HotCards {
     name: string;
     description: string;

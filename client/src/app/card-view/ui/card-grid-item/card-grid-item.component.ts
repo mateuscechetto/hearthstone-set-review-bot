@@ -1,4 +1,4 @@
-import { DecimalPipe, NgIf } from '@angular/common';
+import { DecimalPipe, NgFor, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,10 +6,14 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';
-import { RatedCard } from '@shared/models/hs-card';
+import { CompareCardAPIReturn, RatedCard } from '@shared/models/hs-card';
 import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { CardGridSkeletonComponent } from '@card-view/ui/card-grid-skeleton/card-grid-skeleton.component';
@@ -25,6 +29,7 @@ import { CardGridSkeletonComponent } from '@card-view/ui/card-grid-skeleton/card
     AvatarModule,
     RatingModule,
     NgIf,
+    NgFor,
     RecordChatComponent,
     TooltipModule,
     CardGridSkeletonComponent,
@@ -39,6 +44,7 @@ export class CardGridItemComponent implements OnChanges {
   @Input() streamerView: boolean = false;
   @Input() isInPreExpansionSeason: boolean = true;
   @Input() showSkeleton: boolean = false;
+  @Input() reviewersToCompare: CompareCardAPIReturn[][] = [];
   @Output() imageClick: EventEmitter<RatedCard> = new EventEmitter<RatedCard>();
   @Output() changedRate: EventEmitter<{ rating: number; card: RatedCard }> =
     new EventEmitter<{ rating: number; card: RatedCard }>();
@@ -57,6 +63,8 @@ export class CardGridItemComponent implements OnChanges {
   hsrIconURL =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvw2ri47mehC08Q5LKf4SamN5ayk7Fzof00j2O2yCbHw&s';
 
+  compareRatings: any[] = [];
+
   constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: any) {
@@ -65,6 +73,18 @@ export class CardGridItemComponent implements OnChanges {
         userRating: this.card.rating,
         chatRating: Math.round(this.card.chatRating || 0),
         hsrRating: this.card.hsr_rating,
+      });
+    }
+    if (changes.reviewersToCompare?.currentValue) {
+      this.compareRatings = [];
+      this.reviewersToCompare.forEach((review, index) => {
+        //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
+        if (!this.ratingForm.controls[review[index].user.name]) {
+          const reviewedCard = review.find(c => c.card.dbf_id === this.card.dbf_id);
+          //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
+          this.ratingForm.addControl(review[index].user.name, this.fb.control(reviewedCard?.rating || 0));
+        }
+        this.compareRatings.push(review[index].user.name);
       });
     }
   }
