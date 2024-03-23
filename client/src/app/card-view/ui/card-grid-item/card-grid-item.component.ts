@@ -78,11 +78,14 @@ export class CardGridItemComponent implements OnChanges {
     if (changes.reviewersToCompare?.currentValue) {
       this.compareRatings = [];
       this.reviewersToCompare.forEach((review) => {
+        const reviewedCard = review.cards.find(c => c.card.dbf_id === this.card.dbf_id);
         //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
         if (!this.ratingForm.controls[review.user.name]) {
-          const reviewedCard = review.cards.find(c => c.card.dbf_id === this.card.dbf_id);
           //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
           this.ratingForm.addControl(review.user.name, this.fb.control(reviewedCard?.rating || 0));
+        } else {
+          //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
+          this.ratingForm.patchValue({[review.user.name]: reviewedCard?.rating || 0});
         }
         this.compareRatings.push(review.user.name);
       });
