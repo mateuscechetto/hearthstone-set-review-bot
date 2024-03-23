@@ -68,7 +68,7 @@ export class CardViewPage {
 
   isInPreExpansionSeason: boolean = false;
 
-  options = this.userService.users.pipe();
+  compareReviewOptions = this.userService.users.pipe();
   suggestions: string[] = [];
   compareReviewsForm: FormGroup = this.fb.group({
     reviewers: [],

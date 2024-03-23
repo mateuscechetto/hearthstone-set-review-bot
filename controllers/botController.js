@@ -70,7 +70,7 @@ router.get('/ratedCards', async (req, res) => {
 router.get('/compareRatings', async (req, res) => {
     const { userName, expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
-    
+
     try {
         const user = await User.findOne({ name: userName });
         if (!user) {
@@ -96,23 +96,8 @@ router.get('/compareRatings', async (req, res) => {
                 $match: { 'cardData.expansion': activeExpansion },
             },
             {
-                $lookup: {
-                    from: 'users',
-                    localField: 'user',
-                    foreignField: '_id',
-                    as: 'userData',
-                },
-            },
-            {
-                $unwind: '$userData',
-            },
-            {
                 $project: {
                     _id: 0,
-                    user: {
-                        name: '$userData.name',
-                        image: '$userData.image',
-                    },
                     card: '$cardData',
                     extraCards: '$cardData.extraCards',
                     rating: 1,
@@ -120,11 +105,16 @@ router.get('/compareRatings', async (req, res) => {
                     createdAt: 1,
                 },
             },
-        ];
+        ]
 
         const cards = await Rating.aggregate(pipeline);
 
-        return res.status(status.OK).send(cards);
+        const cardsWithUser = {
+            user: { name: user.name, image: user.image },
+            cards: cards
+        }
+
+        return res.status(status.OK).send(cardsWithUser);
     } catch (err) {
         console.error(err);
         return res.status(status.INTERNAL_SERVER_ERROR).send({ error: 'Error fetching ratings', err });

@@ -23,7 +23,7 @@ export class ExpansionService {
     this.route.queryParams.pipe(
       map(params => params['expansion']), // Extract 'expansion' query parameter
       distinctUntilChanged(), // Ensure the value changes before triggering the next action
-      filter(expansion => !!expansion) // Filter out falsy values (optional)
+      filter(expansion => !!expansion) // Filter out falsy values
     ).subscribe(expansion => {
       this.state.next(expansion);
     });

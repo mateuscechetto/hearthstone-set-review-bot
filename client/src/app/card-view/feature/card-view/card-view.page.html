@@ -44,7 +44,7 @@
     </ng-template>
   </div>
 
-  <div *ngIf="options | async as users">
+  <div *ngIf="compareReviewOptions | async as users">
     <form
       [formGroup]="compareReviewsForm"
       class="flex align-items-center ml-2 md:ml-7 gap-2"
