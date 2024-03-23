@@ -23,6 +23,7 @@ const userServiceMock = {
   getUser: jest.fn(() => of({ name: 'molino_hs', image: '', isStreamer: true })),
   userIsStreamer: jest.fn(() => of(true)),
   loggedUser: of({ name: 'molino_hs', image: '',  isStreamer: true }),
+  users: of([]),
 }
 
 const ratingServiceMock = {}
