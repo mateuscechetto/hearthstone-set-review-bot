@@ -27,6 +27,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { PossessivePipe } from '@app/shared/pipes/possessive.pipe';
 
 @Component({
   selector: 'app-card-view',
@@ -46,6 +47,7 @@ import {
     AutoCompleteModule,
     ReactiveFormsModule,
     JsonPipe,
+    PossessivePipe,
   ],
 })
 export class CardViewPage {
@@ -63,16 +65,6 @@ export class CardViewPage {
   loggedUser$ = this.userService.loggedUser;
 
   loadingCards$ = this.service.loading.pipe();
-
-  get name() {
-    const username = this.pageUser?.name;
-    if (!username) return '';
-    if (username.toLocaleLowerCase().endsWith('s')) {
-      return `${username}' `;
-    } else {
-      return `${username}'s `;
-    }
-  }
 
   isInPreExpansionSeason: boolean = false;
 
