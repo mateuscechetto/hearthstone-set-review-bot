@@ -6,9 +6,9 @@
  *        -n: Path to the newer JSON file.
  */
 
-
 const fs = require('fs');
-const path = require('path');const yargs = require('yargs');
+const path = require('path');
+const yargs = require('yargs');
 
 const argv = yargs
     .option('old', {

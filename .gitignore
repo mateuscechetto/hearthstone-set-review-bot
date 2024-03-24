@@ -1,4 +1,6 @@
 node_modules
+backup
+new-data
 credentials.json
 archive.json
 .env

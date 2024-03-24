@@ -1,6 +1,6 @@
-const Rating = require("../models/rating");
-const Card = require("../models/card");
-const User = require("../models/user");
+const Rating = require("../../models/rating");
+const Card = require("../../models/card");
+const User = require("../../models/user");
 
 Rating.deleteMany({}, (err) => {
     if (err) {

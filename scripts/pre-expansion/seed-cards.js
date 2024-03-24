@@ -3,7 +3,7 @@
  * Input: -i Path to the transformed data JSON file.
  */
 
-const Card = require("../models/card");
+const Card = require("../../models/card");
 
 const fs = require("fs");
 const path = require("path");
@@ -25,9 +25,9 @@ const data = JSON.parse(fs.readFileSync(inputFile, 'utf8'));
 
 
 Card.insertMany(data.cards, (err) => {
-    if (err) {
-        console.error("Error saving HearthstoneCard objects:", err);
-    } else {
-        console.log("HearthstoneCard objects saved successfully.");
-    }
+  if (err) {
+    console.error("Error saving HearthstoneCard objects:", err);
+  } else {
+    console.log("HearthstoneCard objects saved successfully.");
+  }
 });

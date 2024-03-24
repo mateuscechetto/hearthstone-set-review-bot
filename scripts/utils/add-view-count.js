@@ -1,10 +1,18 @@
-const User = require("../models/user");
+/**
+ * Adds the view count of all twitch accounts logged into the platform.
+ * Run every day during pre expansion season.
+ * Skips accounts that had their view count added already.
+ * Skips accounts with non-Latin alphabet letters.
+ */
+
+const User = require("../../models/user");
+const mongoose = require('../../database/database');
+
 const axios = require('axios');
 
 
 async function addFollowersToUser() {
     const users = await User.find().lean();
-
 
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -37,6 +45,8 @@ async function addFollowersToUser() {
     }
 
     console.log("finished");
+    // Disconnect from MongoDB
+    await mongoose.disconnect();
 
 };
 
