@@ -57,7 +57,7 @@ export class CardViewModalComponent implements OnChanges {
   @Input() isUserStreamer: boolean = false;
   @Input() streamerView: boolean = false;
   @Input() isInPreExpansionSeason: boolean = true;
-  @Input() reviewersToCompare: CompareCardAPIReturn[][] = [];
+  @Input() reviewersToCompare: CompareCardAPIReturn[] = [];
   @Output() changedCard: EventEmitter<number> = new EventEmitter<number>();
   @Output() changedRate: EventEmitter<{ rating: number; card: RatedCard }> =
     new EventEmitter<{ rating: number; card: RatedCard }>();
@@ -103,31 +103,31 @@ export class CardViewModalComponent implements OnChanges {
       this.cardToDisplay = this.card;
 
       this.compareRatings = [];
-      this.reviewersToCompare.forEach((review, index) => {
-        const reviewedCard = review.find(c => c.card.dbf_id === this.cardToDisplay.dbf_id);
+      this.reviewersToCompare.forEach((review) => {
+        const reviewedCard = review.cards.find(c => c.card.dbf_id === this.cardToDisplay.dbf_id);
         //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
-        if (!this.ratingForm.controls[review[index].user.name]) {
+        if (!this.ratingForm.controls[review.user.name]) {
           //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
-          this.ratingForm.addControl(review[index].user.name, this.fb.control(reviewedCard?.rating || 0));
+          this.ratingForm.addControl(review.user.name, this.fb.control(reviewedCard?.rating || 0));
         } else {
           //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
-          this.ratingForm.patchValue({[review[index].user.name]: reviewedCard?.rating || 0});
+          this.ratingForm.patchValue({[review.user.name]: reviewedCard?.rating || 0});
         }
-        this.compareRatings.push(review[index].user.name);
+        this.compareRatings.push(review.user.name);
       });
 
     }
     
     if (changes.reviewersToCompare?.currentValue) {      
       this.compareRatings = [];
-      this.reviewersToCompare.forEach((review, index) => {
+      this.reviewersToCompare.forEach((review) => {
         //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
-        if (!this.ratingForm.controls[review[index].user.name]) {
-          const reviewedCard = review.find(c => c.card.dbf_id === this.card.dbf_id);
+        if (!this.ratingForm.controls[review.user.name]) {
+          const reviewedCard = review.cards.find(c => c.card.dbf_id === this.card.dbf_id);
           //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
-          this.ratingForm.addControl(review[index].user.name, this.fb.control(reviewedCard.rating));
+          this.ratingForm.addControl(review.user.name, this.fb.control(reviewedCard.rating));
         }
-        this.compareRatings.push(review[index].user.name);
+        this.compareRatings.push(review.user.name);
       });
     }
   }

@@ -33,7 +33,7 @@ export class CardService {
   // selectors
   loading = this.loadingState.pipe(map((v) => v.loading));
 
-  private cardsCache: { [key: string]: CompareCardAPIReturn[] } = {};
+  private cardsCache: { [key: string]: CompareCardAPIReturn } = {};
 
   constructor(
     private http: HttpClient,
@@ -61,7 +61,7 @@ export class CardService {
 
   getCompareReviewersCards(
     reviewers: string[] | string
-  ): Observable<CompareCardAPIReturn[][]> {
+  ): Observable<CompareCardAPIReturn[]> {
     if (!reviewers || reviewers.length === 0) {
       return of([]);
     }
@@ -78,25 +78,33 @@ export class CardService {
   private getCompareReviewer(
     userName: string,
     useCachedValue: boolean = false
-  ): Observable<CompareCardAPIReturn[]> {
-    if (useCachedValue && this.cardsCache[userName]) {
-      return of(this.cardsCache[userName]);
-    }
-
+  ): Observable<CompareCardAPIReturn> {
     return this.expansionService.activeExpansion.pipe(
-      switchMap((expansion) =>
-        this.http.get<CompareCardAPIReturn[]>(
-          `${environment.apiUrl}/api/compareRatings`,
-          {
-            withCredentials: true,
-            params: {
-              userName,
-              expansion,
-            },
-          }
-        )
-      ),
-      tap((cards) => (this.cardsCache[userName] = cards))
+      switchMap((expansion) => {
+        const cacheKey = `${userName}-${expansion}`;
+        if (useCachedValue && this.cardsCache[cacheKey]) {
+          return of(this.cardsCache[cacheKey]);
+        }
+
+        return this.http
+          .get<CompareCardAPIReturn>(
+            `${environment.apiUrl}/api/compareRatings`,
+            {
+              withCredentials: true,
+              params: {
+                userName,
+                expansion,
+              },
+            }
+          )
+          .pipe(
+            tap((cards) => {
+              if (cards.cards.length > 0) {
+                this.cardsCache[cacheKey] = cards;
+              }
+            })
+          );
+      })
     );
   }
 }
