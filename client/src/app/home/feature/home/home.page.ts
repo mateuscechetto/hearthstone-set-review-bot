@@ -47,14 +47,17 @@ export class HomePage {
   worstCards: HotCards[] = [];
   standardDeviationCards: HotCards[] = [];
   usersWithRating: User[] = [];
+  filteredUsersWithRating: User[] = [];
   activeExpansion = this.expansionService.activeExpansion;
+
   loadingUsers = this.homeService.loadingUsers.pipe(
     tap((loading) => {
       if (loading) {
-        this.usersWithRating = USERS_MOCK;
+        this.filteredUsersWithRating = USERS_MOCK;
       }
     })
   );
+
   loadingStats = this.homeService.loadingStats.pipe(
     tap((loading) => {
       if (loading) {
@@ -74,6 +77,7 @@ export class HomePage {
     this.homeService.getUsers().subscribe({
       next: (users) => {
         this.usersWithRating = users.sort(this.sortUsers);
+        this.filteredUsersWithRating = users.sort(this.sortUsers);
       },
     });
 
@@ -85,6 +89,15 @@ export class HomePage {
         this.standardDeviationCards = standardDeviationCards;
       },
     });
+  }
+
+  filterUsers(event: Event) {
+    const searchQuery = (event.target as HTMLInputElement).value.toLowerCase();
+    if (searchQuery === '') {
+      this.filteredUsersWithRating = this.usersWithRating;
+    } else {
+      this.filteredUsersWithRating = this.usersWithRating.filter(user => user.name.toLowerCase().includes(searchQuery));
+    }
   }
 
   private sortUsers(a: User, b: User): number {

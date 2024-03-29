@@ -167,12 +167,22 @@
   <div class="col-12 flex-order-1 lg:flex-order-2">
     <ng-container *ngIf="{loadingUsers: loadingUsers | async} as context">
       <p-table
-        *ngIf="usersWithRating[0]?.totalDeviation"
-        [value]="usersWithRating"
+        *ngIf="filteredUsersWithRating[0]?.totalDeviation"
+        [value]="filteredUsersWithRating"
         [rows]="10"
         [paginator]="true"
       >
-        <ng-template pTemplate="caption"> Reviewers </ng-template>
+        <ng-template pTemplate="caption">
+          <div class="reviewersHeader">
+            Reviewers
+            <input
+              placeholder="Find a Reviewer"
+              [style]="{ width: '80%' }"
+              (input)="filterUsers($event)"
+              class="searchInput"
+            />
+          </div>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name" style="width: 60%">
