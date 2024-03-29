@@ -1,3 +1,22 @@
+.searchInput {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: #495057;
+    background: #ffffff;
+    padding: 0.75rem 0.75rem;
+    border: 1px solid #ced4da;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    border-radius: 6px;
+}
+
+.reviewersHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .listItem {
     border: solid #dee2e6;
     border-width: 0 0 1px 0;
@@ -9,6 +28,16 @@
         cursor: pointer;
     }
 }
+
+// Remove table layout shift when filtering results
+.reviewers-container ::ng-deep .p-dataview-content {
+    min-height: 480px;
+}
+
+.reviewers-container ::ng-deep .p-datatable-wrapper {
+    min-height: 517px;
+}
+// --------------------------------------------------
 
 .remove-link-appearance {
     color: inherit;

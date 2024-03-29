@@ -1,7 +1,7 @@
 <h1
   class="col-12 flex-order-1 md:flex-order-0 md:col-6 md:col-offset-3 text-center"
 >
-{{ activeExpansion | async }} Card Review
+  {{ activeExpansion | async }} Card Review
 </h1>
 
 <div class="grid md:ml-1">
@@ -164,15 +164,25 @@
   <div class="col-12 hidden flex-order-0 lg:flex-order-1 lg:flex banner">
     <h2>See who reviewed the cards</h2>
   </div>
-  <div class="col-12 flex-order-1 lg:flex-order-2">
+  <div class="col-12 flex-order-1 lg:flex-order-2 reviewers-container">
     <ng-container *ngIf="{loadingUsers: loadingUsers | async} as context">
       <p-table
         *ngIf="usersWithRating[0]?.totalDeviation"
-        [value]="usersWithRating"
+        [value]="filteredUsersWithRating"
         [rows]="10"
         [paginator]="true"
       >
-        <ng-template pTemplate="caption"> Reviewers </ng-template>
+        <ng-template pTemplate="caption">
+          <div class="reviewersHeader">
+            Reviewers
+            <input
+              placeholder="Find a Reviewer"
+              [style]="{ width: '80%' }"
+              (input)="filterUsers($event)"
+              class="searchInput"
+            />
+          </div>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name" style="width: 60%">
@@ -220,15 +230,21 @@
         </ng-template>
       </p-table>
       <p-dataView
-        [value]="usersWithRating"
+        [value]="filteredUsersWithRating"
         [layout]="'list'"
         [rows]="10"
         [paginator]="true"
         *ngIf="!usersWithRating[0]?.totalDeviation"
       >
         <ng-template pTemplate="header">
-          <div class="flex flex-column md:flex-row md:justify-content-between">
+          <div class="reviewersHeader">
             Reviewers
+            <input
+              placeholder="Find a Reviewer"
+              [style]="{ width: '80%' }"
+              (input)="filterUsers($event)"
+              class="searchInput"
+            />
           </div>
         </ng-template>
         <ng-template let-user pTemplate="listItem">
