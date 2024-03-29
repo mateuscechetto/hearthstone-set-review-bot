@@ -77,7 +77,7 @@ export class HomePage {
     this.homeService.getUsers().subscribe({
       next: (users) => {
         this.usersWithRating = users.sort(this.sortUsers);
-        this.filteredUsersWithRating = users.sort(this.sortUsers);
+        this.filteredUsersWithRating = this.usersWithRating;
       },
     });
 
@@ -96,7 +96,7 @@ export class HomePage {
     if (searchQuery === '') {
       this.filteredUsersWithRating = this.usersWithRating;
     } else {
-      this.filteredUsersWithRating = this.usersWithRating.filter(user => user.name.toLowerCase().includes(searchQuery));
+      this.filteredUsersWithRating = this.usersWithRating.filter(user => user.name.toLowerCase().includes(searchQuery)) || [];
     }
   }
 

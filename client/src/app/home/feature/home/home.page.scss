@@ -29,6 +29,16 @@
     }
 }
 
+// Remove table layout shift when filtering results
+.reviewers-container ::ng-deep .p-dataview-content {
+    min-height: 480px;
+}
+
+.reviewers-container ::ng-deep .p-datatable-wrapper {
+    min-height: 517px;
+}
+// --------------------------------------------------
+
 .remove-link-appearance {
     color: inherit;
     text-decoration: inherit;
