@@ -22,7 +22,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "Whizbang\'s Workshop": false,
+    "Whizbang\'s Workshop": true,
     "Showdown in the Badlands": true,
     "Delve into Deepholm": true,
 }
