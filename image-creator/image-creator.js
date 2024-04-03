@@ -11,10 +11,10 @@ const CARD_HEIGHT = 300;
 const CARD_WIDTH = 415;
 
 const MOLINO_IMAGES = [
-    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/10af4751cf3157f5e0cf1511eb1c2761cead802117caecc338435187843861c6.png',
-    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/725a4e77942e9b3957e3da7858248ee560912ffb13046d801d47c63ba2058532.png',
-    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/4b9bd28c0c0816f4dcc4696b8f9cd05277a81c1896013f8eebb456534163e222.png',
-    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/3213d26ac9d19d6f47093290410823febf91d8e5e3d66491ef3cb4287d62dbfa.png'
+    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/10af4751cf3157f5e0cf1511eb1c2761cead802117caecc338435187843861c6.png', // Favorite
+    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/725a4e77942e9b3957e3da7858248ee560912ffb13046d801d47c63ba2058532.png', // Underrated
+    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/4b9bd28c0c0816f4dcc4696b8f9cd05277a81c1896013f8eebb456534163e222.png', // Best
+    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/3213d26ac9d19d6f47093290410823febf91d8e5e3d66491ef3cb4287d62dbfa.png'  // Overrated
 ]
 
 async function getImageFromURL(url) {
@@ -26,7 +26,13 @@ async function getImageFromURL(url) {
     }
 }
 
-async function main(images = MOLINO_IMAGES) {
+/**
+ * Generates a image to be shared on Twitter with card images and text.
+ * @param {string} username
+ * @param {string[]} [cardsImages] URLs of 4 card images to include in the Twitter image. They must foollow the order: - Favorite - Underrated - Best - Overrated
+ * @returns {Promise<Jimp>} Promise resolving to the generated image.
+ */
+async function createTwitterImage(username = TEXT_USERNAME, cardsImages = MOLINO_IMAGES) {
     try {
         // Load the background image
         const background = await Jimp.read(BACKGROUND_PATH);
@@ -34,7 +40,7 @@ async function main(images = MOLINO_IMAGES) {
         for (var i = 0; i < 4; i++) {
 
             // Load the image to place from URL
-            const imageBuffer = await getImageFromURL(images[i]);
+            const imageBuffer = await getImageFromURL(cardsImages[i]);
             const image = await Jimp.read(imageBuffer);
 
             image.resize(CARD_HEIGHT, Jimp.AUTO);
@@ -51,9 +57,9 @@ async function main(images = MOLINO_IMAGES) {
         // Load a font
         const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
 
-        const textUsernameWidth = Jimp.measureText(font, TEXT_USERNAME);
+        const textUsernameWidth = Jimp.measureText(font, username);
         const TEXT_USERNAME_X = (background.bitmap.width - textUsernameWidth) / 2;
-        background.print(font, TEXT_USERNAME_X, MARGIN_TOP, TEXT_USERNAME);
+        background.print(font, TEXT_USERNAME_X, MARGIN_TOP, username);
 
         const textExpansionWidth = Jimp.measureText(font, TEXT_EXPANSION);
         const TEXT_EXPANSION_X = (background.bitmap.width - textExpansionWidth) / 2;
@@ -61,12 +67,11 @@ async function main(images = MOLINO_IMAGES) {
 
 
         // Save the result
-        await background.writeAsync('./image-creator/output/output.png');
-
-        console.log('Image created successfully!');
+        // await background.writeAsync('./image-creator/output/output.png');
+        return background;
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
-main();
+module.exports = createTwitterImage;

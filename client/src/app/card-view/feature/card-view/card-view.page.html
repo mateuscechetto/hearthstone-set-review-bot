@@ -44,22 +44,32 @@
     </ng-template>
   </div>
 
-  <div *ngIf="compareReviewOptions | async as users">
-    <form
-      [formGroup]="compareReviewsForm"
-      class="flex align-items-center ml-2 md:ml-7 gap-2"
+  <div class="flex gap-3 md:gap-0 flex-column md:flex-row justify-content-between mr-8">
+    <ng-container *ngIf="compareReviewOptions | async as users">
+      <form
+        [formGroup]="compareReviewsForm"
+        class="flex align-items-center ml-2 md:ml-7 gap-2"
+      >
+        <label for="CompareReviews">Compare reviews:</label>
+        <p-autoComplete
+          id="CompareReviews"
+          [suggestions]="suggestions"
+          [showClear]="true"
+          placeholder="Find a Reviewer"
+          [multiple]="true"
+          formControlName="reviewers"
+          (completeMethod)="searchUser($event, users)"
+        ></p-autoComplete>
+      </form>
+    </ng-container>
+    <div
+      *ngIf=" isInPreExpansionSeason && context.activeExpansion == CURRENT_EXPANSION && loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name"
     >
-      <label for="CompareReviews">Compare reviews:</label>
-      <p-autoComplete
-        id="CompareReviews"
-        [suggestions]="suggestions"
-        [showClear]="true"
-        placeholder="Find a Reviewer"
-        [multiple]="true"
-        formControlName="reviewers"
-        (completeMethod)="searchUser($event, users)"
-      ></p-autoComplete>
-    </form>
+      <p-button
+        (click)="shouldShowShareModal = true"
+        label="Generate summary image"
+      ></p-button>
+    </div>
   </div>
 
   <ng-container
@@ -117,5 +127,10 @@
       >
       </app-card-view-modal>
     </div>
+    <app-share-summary-modal *ngIf="loggedUser"
+      [(shouldShowModal)]="shouldShowShareModal"
+      [cards]="cards"
+      [username]="loggedUser.name"
+    ></app-share-summary-modal>
   </ng-container>
 </ng-container>

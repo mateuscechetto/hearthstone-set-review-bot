@@ -22,12 +22,9 @@ import {
   AutoCompleteCompleteEvent,
   AutoCompleteModule,
 } from 'primeng/autocomplete';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PossessivePipe } from '@app/shared/pipes/possessive.pipe';
+import { ShareSummaryModalComponent } from '@app/card-view/ui/share-summary-modal/share-summary-modal.component';
 
 @Component({
   selector: 'app-card-view',
@@ -48,6 +45,7 @@ import { PossessivePipe } from '@app/shared/pipes/possessive.pipe';
     ReactiveFormsModule,
     JsonPipe,
     PossessivePipe,
+    ShareSummaryModalComponent,
   ],
 })
 export class CardViewPage {
@@ -57,6 +55,7 @@ export class CardViewPage {
   cards!: RatedCard[];
   loggedUser: User | null = null;
   pageUser: User | undefined;
+  shouldShowShareModal = false;
 
   CURRENT_EXPANSION = CURRENT_EXPANSION;
 
@@ -83,7 +82,7 @@ export class CardViewPage {
         queryParams: { compareTo: reviewers },
         queryParamsHandling: 'merge',
       })
-    ),
+    )
   );
 
   reviewersToCompare$ = this.route.queryParams.pipe(
@@ -92,7 +91,10 @@ export class CardViewPage {
       if (typeof reviewers === 'string') {
         reviewers = [reviewers];
       }
-      this.compareReviewsForm.patchValue({reviewers: reviewers}, {emitEvent: false})
+      this.compareReviewsForm.patchValue(
+        { reviewers: reviewers },
+        { emitEvent: false }
+      );
     }),
     switchMap((params: Params) => {
       const reviewers = params['compareTo'];
@@ -143,7 +145,6 @@ export class CardViewPage {
       },
       error: (_) => (this.loggedUser = null),
     });
-
   }
 
   searchUser(event: AutoCompleteCompleteEvent, users: User[]) {

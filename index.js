@@ -31,6 +31,7 @@ app.get("/api/botStats", async (req, res) => {
     res.status(200).send(payload);
 });
 
+require("./controllers/imageController")(app);
 require("./controllers/authController")(app);
 require("./controllers/botController")(app);
 
