@@ -2,7 +2,6 @@ const Jimp = require('jimp');
 const axios = require('axios');
 
 const BACKGROUND_PATH = './image-creator/background/background-text.png';
-const IMAGE_URL = 'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/9f154e6312ca424381c374ca09e2972b184a02e9afcb0bf2b12970cf53655197.png';
 const TEXT_USERNAME = 'molino_hs';
 const TEXT_EXPANSION = 'Whizbang\'s Workshop Review';
 const MARGIN_TOP = 50;

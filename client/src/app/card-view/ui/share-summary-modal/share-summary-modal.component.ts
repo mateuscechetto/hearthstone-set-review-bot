@@ -1,12 +1,9 @@
 import { ReviewSummaryService } from '@app/card-view/data-access/review-summary/review-summary.service';
-import { DecimalPipe, NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
-import { AvatarModule } from 'primeng/avatar';
 import { DialogModule } from 'primeng/dialog';
-import { RatingModule } from 'primeng/rating';
-import { TooltipModule } from 'primeng/tooltip';
 import { RatedCard } from '@shared/models/hs-card';
 import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.component';
 import { DropdownModule } from 'primeng/dropdown';
@@ -22,13 +19,8 @@ import { ButtonModule } from 'primeng/button';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    AvatarModule,
-    RatingModule,
     NgIf,
     RecordChatComponent,
-    NgFor,
-    TooltipModule,
-    DecimalPipe,
     DropdownModule,
     ButtonModule,
   ],
