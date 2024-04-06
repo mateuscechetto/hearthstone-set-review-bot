@@ -63,7 +63,7 @@
       </form>
     </ng-container>
     <div
-      *ngIf=" isInPreExpansionSeason && context.activeExpansion == CURRENT_EXPANSION && loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name"
+      *ngIf="context.activeExpansion == CURRENT_EXPANSION && loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name"
     >
       <p-button
         (click)="shouldShowShareModal = true"
