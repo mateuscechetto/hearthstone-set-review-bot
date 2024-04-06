@@ -36,7 +36,7 @@ async function createTwitterImage(username = TEXT_USERNAME, cardsImages = MOLINO
         // Load the background image
         const background = await Jimp.read(BACKGROUND_PATH);
 
-        for (var i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
 
             // Load the image to place from URL
             const imageBuffer = await getImageFromURL(cardsImages[i]);
