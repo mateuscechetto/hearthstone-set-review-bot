@@ -13,24 +13,25 @@ export type HomeApiReturn = {
 };
 
 export interface HomeLoadingState {
-  users: boolean,
-  stats: boolean,
-  cards: boolean,
+  users: boolean;
+  stats: boolean;
+  cards: boolean;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class HomeService {
-  private loadingState: BehaviorSubject<HomeLoadingState> = new BehaviorSubject<HomeLoadingState>({
-    users: false,
-    stats: false,
-    cards: false,
-  });
+  private loadingState: BehaviorSubject<HomeLoadingState> =
+    new BehaviorSubject<HomeLoadingState>({
+      users: false,
+      stats: false,
+      cards: false,
+    });
 
-  loadingUsers = this.loadingState.pipe(map(v => v.users));
-  loadingStats = this.loadingState.pipe(map(v => v.stats));
-  loadingCards = this.loadingState.pipe(map(v => v.cards));
+  loadingUsers = this.loadingState.pipe(map((v) => v.users));
+  loadingStats = this.loadingState.pipe(map((v) => v.stats));
+  loadingCards = this.loadingState.pipe(map((v) => v.cards));
 
   constructor(
     private http: HttpClient,
@@ -39,7 +40,9 @@ export class HomeService {
 
   getCards(): Observable<HotCards[]> {
     return this.expansionService.activeExpansion.pipe(
-      tap(() => this.loadingState.next({ ...this.loadingState.value, cards: true})),
+      tap(() =>
+        this.loadingState.next({ ...this.loadingState.value, cards: true })
+      ),
       switchMap((expansion) =>
         this.http.get<HotCards[]>(`${environment.apiUrl}/api/hotCards`, {
           withCredentials: true,
@@ -48,13 +51,17 @@ export class HomeService {
           },
         })
       ),
-      tap(() => this.loadingState.next({ ...this.loadingState.value, cards: false})),
+      tap(() =>
+        this.loadingState.next({ ...this.loadingState.value, cards: false })
+      )
     );
   }
 
   getStats(): Observable<HomeApiReturn> {
     return this.expansionService.activeExpansion.pipe(
-      tap(() => this.loadingState.next({ ...this.loadingState.value, stats: true})),
+      tap(() =>
+        this.loadingState.next({ ...this.loadingState.value, stats: true })
+      ),
       switchMap((expansion) =>
         this.http.get<HomeApiReturn>(`${environment.apiUrl}/api/homeStats`, {
           withCredentials: true,
@@ -63,13 +70,17 @@ export class HomeService {
           },
         })
       ),
-      tap(() => this.loadingState.next({ ...this.loadingState.value, stats: false})),
+      tap(() =>
+        this.loadingState.next({ ...this.loadingState.value, stats: false })
+      )
     );
   }
 
   getUsers(): Observable<User[]> {
     return this.expansionService.activeExpansion.pipe(
-      tap(() => this.loadingState.next({ ...this.loadingState.value, users: true})),
+      tap(() =>
+        this.loadingState.next({ ...this.loadingState.value, users: true })
+      ),
       switchMap((expansion) =>
         this.http.get<User[]>(`${environment.apiUrl}/api/users`, {
           withCredentials: true,
@@ -78,7 +89,9 @@ export class HomeService {
           },
         })
       ),
-      tap(() => this.loadingState.next({ ...this.loadingState.value, users: false})),
+      tap(() =>
+        this.loadingState.next({ ...this.loadingState.value, users: false })
+      )
     );
   }
 }

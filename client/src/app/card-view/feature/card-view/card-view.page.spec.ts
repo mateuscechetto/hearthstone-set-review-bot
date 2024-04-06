@@ -10,6 +10,7 @@ import { UserService } from '../../../shared/data-access/user/user.service';
 import { RatingService } from '../../data-access/rating/rating.service';
 import { EnvironmentService } from '../../../shared/environment/environment.service';
 import { CURRENT_EXPANSION, ExpansionService } from '@app/shared/data-access/expansion/expansion.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const serviceMock = {
   getCards: jest.fn(() => of(cardsMock.map(card => ({ ...card, rating: 2 })))),
@@ -54,7 +55,8 @@ describe('CardViewComponent', () => {
         { provide: RatingService, useValue: ratingServiceMock },
         { provide: EnvironmentService, useValue: environmentServiceMock },
         { provide: ExpansionService, useValue: expansionServiceMock }
-      ]
+      ],
+      imports: [HttpClientTestingModule]
     });
     userServiceMock.loggedUser = of({ name: 'molino_hs', image: '', isStreamer: true });
     fixture = TestBed.createComponent(CardViewPage);

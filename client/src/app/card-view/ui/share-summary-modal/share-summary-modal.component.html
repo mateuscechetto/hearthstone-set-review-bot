@@ -1,0 +1,87 @@
+<p-dialog
+  [(visible)]="shouldShowModal"
+  [modal]="true"
+  [style]="{ width: '66vw', height: '90%' }"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+>
+  <div class="grid">
+    <div class="col-12 md:col-6 flex flex-column gap-4">
+      <div class="flex flex-column gap-2">
+        <label for="bestCard">Best Card:</label>
+        <p-dropdown
+          [options]="cards"
+          [(ngModel)]="bestCard"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          placeholder="Select a Card"
+          id="bestCard"
+        ></p-dropdown>
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="bestCard">Favorite Card:</label>
+        <p-dropdown
+          [options]="cards"
+          [(ngModel)]="favoriteCard"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          placeholder="Select a Card"
+          id="favoriteCard"
+        ></p-dropdown>
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="bestCard">Most Underrated Card:</label>
+        <p-dropdown
+          [options]="cards"
+          [(ngModel)]="mostUnderratedCard"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          placeholder="Select a Card"
+          id="mostUnderratedCard"
+        ></p-dropdown>
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="bestCard">Most Overrated Card:</label>
+        <p-dropdown
+          [options]="cards"
+          [(ngModel)]="mostOverratedCard"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          placeholder="Select a Card"
+          id="mostOverratedCard"
+        ></p-dropdown>
+      </div>
+      <p-button
+        [disabled]="
+          !this.favoriteCard ||
+          !this.mostUnderratedCard ||
+          !this.bestCard ||
+          !this.mostOverratedCard
+        "
+        (click)="generateImage()"
+      >
+        Generate Image
+      </p-button>
+    </div>
+    <div class="col-12 md:col-6 flex flex-column align-items-center gap-4" *ngIf="generatedImageURL">
+      <img
+        [src]="generatedImageURL"
+        alt="Generated"
+        [width]="400"
+        [height]="500"
+      />
+        <a pButton pRipple [href]="generatedImageURL" download="generated_image.png" class="download-button"
+          >Download Image</a
+        >
+    </div>
+  </div>
+</p-dialog>

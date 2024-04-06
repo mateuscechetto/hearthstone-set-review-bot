@@ -19,6 +19,7 @@
     "fs": "^0.0.1-security",
     "google-spreadsheet": "^3.3.0",
     "http-status": "^1.6.2",
+    "jimp": "^0.22.12",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.2",
     "nodemon": "^2.0.20",

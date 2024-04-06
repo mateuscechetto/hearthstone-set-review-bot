@@ -1,0 +1,15 @@
+:host ::ng-deep .p-dropdown {
+    width: 100%;
+}
+
+.download-button {
+    width: 165px;
+    text-decoration: none;
+}
+
+@media (max-width: 576px) {
+    :host ::ng-deep .p-dialog {
+        width: 95% !important;
+        height: 90% !important;
+    }
+}
