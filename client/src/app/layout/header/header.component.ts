@@ -14,6 +14,7 @@ import {
   EXPANSIONS,
   ExpansionService,
 } from '@shared/data-access/expansion/expansion.service';
+import { AnalyticsService } from '@shared/analytics/analytics.service';
 
 @Component({
   selector: 'app-header',
@@ -35,6 +36,7 @@ export class HeaderComponent {
   router = inject(Router);
   expansionService = inject(ExpansionService);
   userService = inject(UserService);
+  analyticsService = inject(AnalyticsService)
 
   expansions = EXPANSIONS;
   selectedExpansion = this.expansionService.activeExpansion;
@@ -43,6 +45,10 @@ export class HeaderComponent {
 
   options = this.userService.users.pipe();
   suggestions: string[] = [];
+
+  ngOnInit() {
+    this.analyticsService.trackEvent('User entered', 'Header component loaded to the view', 'USER_ENTER')
+  }
 
   searchUser(event: AutoCompleteCompleteEvent, users: User[]) {
     this.suggestions = users

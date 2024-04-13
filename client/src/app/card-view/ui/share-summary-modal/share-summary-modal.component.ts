@@ -1,6 +1,6 @@
 import { ReviewSummaryService } from '@app/card-view/data-access/review-summary/review-summary.service';
 import { NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
@@ -8,6 +8,7 @@ import { RatedCard } from '@shared/models/hs-card';
 import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
+import { AnalyticsService } from '@shared/analytics/analytics.service';
 
 @Component({
   selector: 'app-share-summary-modal',
@@ -51,7 +52,13 @@ export class ShareSummaryModalComponent {
 
   generatedImageURL: string = '';
 
-  constructor(private summaryService: ReviewSummaryService) {}
+  summaryService = inject(ReviewSummaryService);
+  analyticsService = inject(AnalyticsService);
+
+  ngOnInit() {
+    this.analyticsService.trackEvent('Opened share modal', 'User opened share image modal', 'OPEN_MODAL');
+  }
+
 
   generateImage() {
     if (
@@ -63,6 +70,7 @@ export class ShareSummaryModalComponent {
       return;
     }
 
+    this.analyticsService.trackEvent('Generated image', 'User clicked button to generate image', 'GENERATE_IMAGE');
     this.summaryService
       .generateImage(this.username, [
         this.favoriteCard.imageURL,
