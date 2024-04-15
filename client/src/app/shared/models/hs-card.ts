@@ -54,6 +54,7 @@ export interface RatedCard extends HearthstoneCard {
 
 export interface RatedCardAPIReturn {
   card: HearthstoneCard;
+  hsClass: HearthstoneClass;
   rating: number;
   chatRating?: number;
 }

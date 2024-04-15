@@ -2,9 +2,16 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { ChartData, ChartOptions } from 'chart.js';
-import { HearthstoneClass, HotCards } from '@app/shared/models/hs-card';
+import { HearthstoneClass } from '@app/shared/models/hs-card';
 
-type RatingField = 'ratings' | 'hsr_rating';
+type RatingField = 'ratings' | 'hsr_rating' | 'rating';
+
+export interface Card {
+  hsClass: HearthstoneClass;
+  ratings?: number[];
+  hsr_rating?: number;
+  rating?: number;
+}
 
 @Component({
   selector: 'app-votes-per-rating-chart',
@@ -14,8 +21,8 @@ type RatingField = 'ratings' | 'hsr_rating';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VotesPerRatingChartComponent {
-  @Input({ required: true }) cards: HotCards[] = [];
-  @Input() field: RatingField = 'ratings';
+  @Input({ required: true }) cards: Card[] = [];
+  @Input({ required: true }) field: RatingField = 'ratings';
   @Input() showClasses: boolean = false;
 
   data!: ChartData;
@@ -29,14 +36,23 @@ export class VotesPerRatingChartComponent {
     }
   }
 
-  setConfigsNormalGraph(cards: HotCards[], field: RatingField) {
+  setConfigsNormalGraph(cards: Card[], field: RatingField) {
     let votes = [0, 0, 0, 0];
     if (field === 'ratings') {
       votes = cards.reduce(
         (acc, card) => {
-          card[field].forEach((rating) => {
-            acc[rating - 1]++;
-          });
+          if (field in card && card[field])
+            card[field]!.forEach((rating) => {
+              acc[rating - 1]++;
+            });
+          return acc;
+        },
+        [0, 0, 0, 0]
+      );
+    } else if (field === 'hsr_rating') {
+      votes = cards.reduce(
+        (acc, card) => {
+          if (field in card) acc[(card[field] || 1) - 1]++;
           return acc;
         },
         [0, 0, 0, 0]
@@ -44,7 +60,7 @@ export class VotesPerRatingChartComponent {
     } else {
       votes = cards.reduce(
         (acc, card) => {
-          acc[(card.hsr_rating! || 1) - 1]++;
+          if (field in card) acc[(card[field] || 1) - 1]++;
           return acc;
         },
         [0, 0, 0, 0]
@@ -77,7 +93,7 @@ export class VotesPerRatingChartComponent {
     };
   }
 
-  setConfigsGraphWithClasses(cards: HotCards[], field: RatingField) {
+  setConfigsGraphWithClasses(cards: Card[], field: RatingField) {
     const votesPerClass = this.countRatingsByClass(cards, field);
     const datasets = Object.values(HearthstoneClass).map(
       (hsClass: HearthstoneClass) => {
@@ -110,7 +126,7 @@ export class VotesPerRatingChartComponent {
   }
 
   private countRatingsByClass(
-    cards: HotCards[],
+    cards: Card[],
     field: RatingField
   ): Record<HearthstoneClass, { counts: number[]; color: string }> {
     const result: Record<
@@ -139,16 +155,20 @@ export class VotesPerRatingChartComponent {
 
     if (field === 'ratings') {
       return cards.reduce((acc, card) => {
-        const { hsClass, ratings } = card;
-        ratings.forEach((rating) => {
-          acc[hsClass].counts[rating - 1]++;
-        });
+        if (field in card)
+          card.ratings!.forEach((rating) => {
+            acc[card.hsClass].counts[rating - 1]++;
+          });
+        return acc;
+      }, result);
+    } else if (field === 'hsr_rating') {
+      return cards.reduce((acc, card) => {
+        if (field in card) acc[card.hsClass].counts[(card[field] || 1) - 1]++;
         return acc;
       }, result);
     } else {
       return cards.reduce((acc, card) => {
-        const { hsClass, hsr_rating } = card;
-        acc[hsClass].counts[(hsr_rating || 1) - 1]++;
+        if (field in card) acc[card.hsClass].counts[(card[field] || 1) - 1]++;
         return acc;
       }, result);
     }
