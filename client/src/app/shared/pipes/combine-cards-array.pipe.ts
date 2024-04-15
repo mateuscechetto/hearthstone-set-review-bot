@@ -5,7 +5,6 @@ import { CompareCardAPIReturn } from '../models/hs-card';
 @Pipe({ name: 'combineCards', standalone: true })
 export class CombineCardsPipe implements PipeTransform {
   transform(cards: Card[], reviewers: CompareCardAPIReturn[]): Card[] {
-    console.log("batchest")
     return [
       ...cards,
       ...reviewers.reduce(

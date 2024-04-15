@@ -80,6 +80,12 @@
     <p-accordion [multiple]="true">
       <p-accordionTab [header]="pageUser?.name">
         <p-accordion>
+          <p-accordionTab header="Average by Class">
+            <app-avg-rating-table
+              [cards]="cards"
+              field="rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
           <p-accordionTab header="Ratings Distribution">
             <app-votes-per-rating-chart
               [cards]="cards"
@@ -101,6 +107,12 @@
         [header]="reviewToCompare.user.name"
       >
         <p-accordion>
+          <p-accordionTab header="Average by Class">
+            <app-avg-rating-table
+              [cards]="reviewToCompare.cards"
+              field="rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
           <p-accordionTab header="Ratings Distribution">
             <app-votes-per-rating-chart
               [cards]="reviewToCompare.cards"
@@ -121,6 +133,12 @@
         header="All"
       >
         <p-accordion>
+          <p-accordionTab header="Average by Class">
+            <app-avg-rating-table
+              [cards]="cards | combineCards:reviewersContext.reviewers"
+              field="rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
           <p-accordionTab header="Ratings Distribution">
             <app-votes-per-rating-chart
               [cards]="cards | combineCards:reviewersContext.reviewers"
@@ -139,6 +157,12 @@
 
       <p-accordionTab *ngIf="cards[0]?.hsr_rating" header="Final Rating">
         <p-accordion>
+          <p-accordionTab header="Final Average by Class">
+            <app-avg-rating-table
+              [cards]="cards"
+              field="hsr_rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
           <p-accordionTab header="Final Ratings Distribution">
             <app-votes-per-rating-chart
               [cards]="cards"

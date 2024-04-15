@@ -36,6 +36,7 @@ import {
 } from '@shared/ui/chart/votes-per-rating-chart/votes-per-rating-chart.component';
 import { AccordionModule } from 'primeng/accordion';
 import { CombineCardsPipe } from '@shared/pipes/combine-cards-array.pipe';
+import { AvgRatingTableComponent } from '@app/card-view/ui/avg-rating-table/avg-rating-table.component';
 
 @Component({
   selector: 'app-card-view',
@@ -61,6 +62,7 @@ import { CombineCardsPipe } from '@shared/pipes/combine-cards-array.pipe';
     VotesPerRatingChartComponent,
     AccordionModule,
     CombineCardsPipe,
+    AvgRatingTableComponent,
   ],
 })
 export class CardViewPage {

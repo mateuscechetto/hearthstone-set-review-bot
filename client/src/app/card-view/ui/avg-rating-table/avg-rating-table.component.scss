@@ -1,0 +1,53 @@
+tr {
+    td {
+        color: black;
+    }
+
+    &.Death {
+        background-color: #42606d71;
+    }
+
+    &.Druid {
+        background-color: #7036067a;
+    }
+
+    &.Hunter {
+        background-color: #016e0179;
+    }
+
+    &.Mage {
+        background-color: #006fde6b;
+    }
+
+    &.Paladin {
+        background-color: #aa8e0079;
+    }
+
+    &.Priest {
+        background-color: #ffffff75;
+    }
+
+    &.Rogue {
+        background-color: #4c4d48b0;
+    }
+
+    &.Shaman {
+        background-color: #00008071;
+    }
+
+    &.Warlock {
+        background-color: #7624ad6e;
+    }
+
+    &.Warrior {
+        background-color: #8e10025b;
+    }
+
+    &.Neutral {
+        background-color: #80808063;
+    }
+
+    &.Demon {
+        background-color: #105e26b9;
+    }
+}
