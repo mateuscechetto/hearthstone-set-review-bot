@@ -7,7 +7,7 @@ import { HearthstoneClass } from '@app/shared/models/hs-card';
 type RatingField = 'rating' | 'hsr_rating';
 
 interface RatingByClass {
-  hsClass: HearthstoneClass;
+  hsClass: HearthstoneClass | 'All';
   avgRating: number;
 }
 
@@ -30,7 +30,7 @@ export class AvgRatingTableComponent {
   }
 
   calculateAvgByClass(cards: Card[], field: RatingField): RatingByClass[] {
-    const dict: Record<HearthstoneClass, number[]> = {
+    const dict: Record<HearthstoneClass | 'All', number[]> = {
       [HearthstoneClass.DEATH_KNIGHT]: [0, 0],
       [HearthstoneClass.DEMON_HUNTER]: [0, 0],
       [HearthstoneClass.DRUID]: [0, 0],
@@ -43,19 +43,32 @@ export class AvgRatingTableComponent {
       [HearthstoneClass.WARLOCK]: [0, 0],
       [HearthstoneClass.WARRIOR]: [0, 0],
       [HearthstoneClass.NEUTRAL]: [0, 0],
+      All: [0, 0],
     };
 
     cards.forEach((card) => {
       const { hsClass } = card;
       dict[hsClass][0] += card[field] || 0;
       dict[hsClass][1]++;
+
+      dict['All'][0] += card[field] || 0;
+      dict['All'][1]++;
     });
 
-    return Object.values(HearthstoneClass).map((hsClass: HearthstoneClass) => {
-      return {
-        hsClass: hsClass,
-        avgRating: dict[hsClass][0] / dict[hsClass][1],
-      };
+    const avgByClass: RatingByClass[] = Object.values(HearthstoneClass).map(
+      (hsClass: HearthstoneClass) => {
+        return {
+          hsClass: hsClass,
+          avgRating: dict[hsClass][0] / dict[hsClass][1],
+        };
+      }
+    );
+
+    avgByClass.push({
+      hsClass: 'All',
+      avgRating: dict['All'][0] / dict['All'][1],
     });
+
+    return [...avgByClass];
   }
 }
