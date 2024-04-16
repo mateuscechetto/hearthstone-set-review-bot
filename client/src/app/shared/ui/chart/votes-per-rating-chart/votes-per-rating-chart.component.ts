@@ -37,7 +37,7 @@ export class VotesPerRatingChartComponent {
   }
 
   setConfigsNormalGraph(cards: Card[], field: RatingField) {
-    let votes = [0, 0, 0, 0];
+    let votes;
     if (field === 'ratings') {
       votes = cards.reduce(
         (acc, card) => {
@@ -49,18 +49,10 @@ export class VotesPerRatingChartComponent {
         },
         [0, 0, 0, 0]
       );
-    } else if (field === 'hsr_rating') {
-      votes = cards.reduce(
-        (acc, card) => {
-          if (field in card) acc[(card[field] || 1) - 1]++;
-          return acc;
-        },
-        [0, 0, 0, 0]
-      );
     } else {
       votes = cards.reduce(
         (acc, card) => {
-          if (field in card) acc[(card[field] || 1) - 1]++;
+          if (field in card) acc[(card[field] ?? 1) - 1]++;
           return acc;
         },
         [0, 0, 0, 0]
@@ -161,14 +153,9 @@ export class VotesPerRatingChartComponent {
           });
         return acc;
       }, result);
-    } else if (field === 'hsr_rating') {
-      return cards.reduce((acc, card) => {
-        if (field in card) acc[card.hsClass].counts[(card[field] || 1) - 1]++;
-        return acc;
-      }, result);
     } else {
       return cards.reduce((acc, card) => {
-        if (field in card) acc[card.hsClass].counts[(card[field] || 1) - 1]++;
+        if (field in card) acc[card.hsClass].counts[(card[field] ?? 1) - 1]++;
         return acc;
       }, result);
     }

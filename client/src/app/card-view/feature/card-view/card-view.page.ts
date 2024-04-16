@@ -8,12 +8,7 @@ import { switchMap, tap } from 'rxjs';
 import { RatingService } from '@card-view/data-access/rating/rating.service';
 import { UserService } from '@shared/data-access/user/user.service';
 import { User } from '@shared/models/user';
-import {
-  CompareCardAPIReturn,
-  HearthstoneClass,
-  RatedCard,
-  RatedCardAPIReturn,
-} from '@shared/models/hs-card';
+import { HearthstoneClass, RatedCard } from '@shared/models/hs-card';
 import { CardService } from '@card-view/data-access/card/card.service';
 import { CardGridItemComponent } from '@card-view/ui/card-grid-item/card-grid-item.component';
 import { CardViewModalComponent } from '@card-view/ui/card-view-modal/card-view-modal.component';
@@ -30,10 +25,7 @@ import {
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PossessivePipe } from '@app/shared/pipes/possessive.pipe';
 import { ShareSummaryModalComponent } from '@app/card-view/ui/share-summary-modal/share-summary-modal.component';
-import {
-  Card,
-  VotesPerRatingChartComponent,
-} from '@shared/ui/chart/votes-per-rating-chart/votes-per-rating-chart.component';
+import { VotesPerRatingChartComponent } from '@shared/ui/chart/votes-per-rating-chart/votes-per-rating-chart.component';
 import { AccordionModule } from 'primeng/accordion';
 import { CombineCardsPipe } from '@shared/pipes/combine-cards-array.pipe';
 import { AvgRatingTableComponent } from '@app/card-view/ui/avg-rating-table/avg-rating-table.component';

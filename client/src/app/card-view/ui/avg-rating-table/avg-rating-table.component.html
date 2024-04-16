@@ -1,13 +1,10 @@
 <p-table [value]="ratingsByClass">
   <ng-template pTemplate="header">
     <tr>
-      <th pSortableColumn="hsClass">
+      <th scope="col" pSortableColumn="hsClass">
         Class <p-sortIcon field="hsClass"></p-sortIcon>
       </th>
-      <th
-        pSortableColumn="avgRating"
-        tooltipPosition="top"
-      >
+      <th scope="col" pSortableColumn="avgRating" tooltipPosition="top">
         Avg. <p-sortIcon field="avgRating"></p-sortIcon>
       </th>
     </tr>
