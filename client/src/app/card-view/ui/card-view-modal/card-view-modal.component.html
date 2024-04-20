@@ -8,12 +8,38 @@
 >
   <ng-template pTemplate="header"> </ng-template>
   <div class="grid overflow-hidden">
-    <div class="col-7 fixed-image-container flex justify-content-center">
+    <div
+      class="col-7 fixed-image-container flex flex-column justify-content-center"
+    >
+      <span class="text-xl" [class.hide-text]="!isRecording"
+        ><b>Type a number 1-4 in chat to rate the card</b></span
+      >
+
       <img
         class="card-image"
         [alt]="cardToDisplay.name"
         [src]="cardToDisplay.imageURL"
       />
+      <form [formGroup]="ratingForm">
+        <div *ngIf="isUserStreamer" class="chat-ratings-container">
+          <div class="flex" *ngIf="ratingForm.controls.chatRating.value! > 0">
+            <p-avatar
+              [image]="twitchIconURL"
+              styleClass="mr-2 avatar"
+              shape="circle"
+            ></p-avatar>
+            <p-rating
+              formControlName="chatRating"
+              [stars]="4"
+              [cancel]="false"
+              [readonly]="true"
+            ></p-rating>
+            <span class="ml-2 w-1rem"
+              >{{ card.chatRating | number : "1.0-2" }}
+            </span>
+          </div>
+        </div>
+      </form>
     </div>
     <div class="col-5 flex flex-column align-items-center gap-3 text-container">
       <div class="text-2xl font-bold">{{ card.name }}</div>
@@ -35,7 +61,10 @@
             <span class="ml-2 w-1rem"></span>
           </div>
           <ng-container *ngIf="reviewersToCompare.length > 0">
-            <div class="flex" *ngFor="let reviewToCompare of reviewersToCompare">
+            <div
+              class="flex"
+              *ngFor="let reviewToCompare of reviewersToCompare"
+            >
               <a
                 [href]="'https://twitch.tv/' + reviewToCompare.user.name"
                 target="_blank"
@@ -74,33 +103,12 @@
             ></p-rating>
             <span class="ml-2 w-1rem"></span>
           </div>
-          <div
-            *ngIf="isUserStreamer"
-            class="flex flex-column align-items-center gap-3"
-          >
-            <div class="flex">
-              <p-avatar
-                [image]="twitchIconURL"
-                styleClass="mr-2 avatar"
-                shape="circle"
-              ></p-avatar>
-              <p-rating
-                formControlName="chatRating"
-                [stars]="4"
-                [cancel]="false"
-                [readonly]="true"
-              ></p-rating>
-              <span class="ml-2 w-1rem"
-                >{{ card.chatRating | number : "1.0-2" }}
-              </span>
-            </div>
-            <app-record-chat
-              *ngIf="streamerView && isInPreExpansionSeason"
-              data-testid="record-chat-button"
-              (onRecordChat)="onRecordChat()"
-              (onStopRecording)="onStopRecording()"
-            ></app-record-chat>
-          </div>
+          <app-record-chat
+            *ngIf="isUserStreamer && streamerView && isInPreExpansionSeason"
+            data-testid="record-chat-button"
+            (onRecordChat)="onRecordChat()"
+            (onStopRecording)="onStopRecording()"
+          ></app-record-chat>
         </div>
       </form>
       <div class="grid">

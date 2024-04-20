@@ -1,22 +1,31 @@
 .fixed-image-container {
-    flex: 0 0 auto;
-    /* Prevent the image from growing */
+  flex: 0 0 auto;
+  /* Prevent the image from growing */
 }
 
 .card-image {
-    height: 558px;
-    width: 404px;
+  height: 558px;
+  width: 404px;
 }
 
 .text-container {
-    flex: 1;
-    overflow-y: auto;
-    /* Enable scrolling for the text content */
-    max-height: 75vh;
-    /* Set a maximum height for scrolling */
+  flex: 1;
+  overflow-y: auto;
+  /* Enable scrolling for the text content */
+  max-height: 75vh;
+  /* Set a maximum height for scrolling */
 }
 
 :host ::ng-deep .p-dialog-content {
-    overflow-y: hidden;
-    flex-grow: 1;
+  overflow-y: hidden;
+  flex-grow: 1;
+}
+
+.chat-ratings-container {
+  position: relative;
+  left: 115px;
+}
+
+.hide-text {
+  visibility: hidden;
 }
