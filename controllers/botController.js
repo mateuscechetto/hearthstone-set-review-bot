@@ -7,6 +7,11 @@ const Card = require('../models/card');
 const Rating = require('../models/rating');
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth");
+const apicache = require('apicache');
+let cache = apicache.middleware;
+
+const CACHE_TIME = '5 minutes';
+
 
 const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
@@ -56,6 +61,7 @@ router.get('/ratedCards', async (req, res) => {
             $project: {
                 _id: 0,
                 card: '$cardData',
+                hsClass: '$cardData.hsClass',
                 extraCards: '$cardData.extraCards',
                 rating: 1,
                 chatRating: 1,
@@ -99,6 +105,7 @@ router.get('/compareRatings', async (req, res) => {
                 $project: {
                     _id: 0,
                     card: '$cardData',
+                    hsClass: '$cardData.hsClass',
                     extraCards: '$cardData.extraCards',
                     rating: 1,
                     chatRating: 1,
@@ -224,7 +231,7 @@ router.get('/users', async (req, res) => {
     }
 });
 
-router.get('/hotCards', async (req, res) => {
+router.get('/hotCards', cache(CACHE_TIME), async (req, res) => {
     const { expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
     try {
@@ -297,7 +304,7 @@ router.get('/hotCards', async (req, res) => {
     }
 });
 
-router.get('/homeStats', async (req, res) => {
+router.get('/homeStats', cache(CACHE_TIME), async (req, res) => {
     const { expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
     try {
@@ -382,7 +389,7 @@ router.get('/homeStats', async (req, res) => {
     }
 });
 
-router.get('/averageRatingsByClass', async (req, res) => {
+router.get('/averageRatingsByClass', cache(CACHE_TIME), async (req, res) => {
     const { expansion } = req.query;
     const activeExpansion = expansion || currentExpansion;
     try {

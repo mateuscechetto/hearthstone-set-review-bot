@@ -60,6 +60,42 @@
         </ng-template>
       </ng-template>
     </p-table>
+    <div class="card mt-5">
+      <p-accordion>
+        <p-accordionTab header="Ratings Distribution">
+          <app-votes-per-rating-chart
+            [cards]="hotCards"
+            field="ratings"
+          ></app-votes-per-rating-chart>
+        </p-accordionTab>
+        <p-accordionTab
+          header="Final Ratings Distribution"
+          *ngIf="ratingsByClass[0]?.avg_hsr_rating"
+        >
+          <app-votes-per-rating-chart
+            [cards]="hotCards"
+            field="hsr_rating"
+          ></app-votes-per-rating-chart>
+        </p-accordionTab>
+        <p-accordionTab header="Ratings Distribution by Class">
+          <app-votes-per-rating-chart
+            [cards]="hotCards"
+            [showClasses]="true"
+            field="ratings"
+          ></app-votes-per-rating-chart>
+        </p-accordionTab>
+        <p-accordionTab
+          header="Final Ratings Distribution by Class"
+          *ngIf="ratingsByClass[0]?.avg_hsr_rating"
+        >
+          <app-votes-per-rating-chart
+            [cards]="hotCards"
+            [showClasses]="true"
+            field="hsr_rating"
+          ></app-votes-per-rating-chart>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
   </div>
   <div class="col-12 lg:col-10 lg:col-offset-1 flex-order-1">
     <p-table [value]="filteredHotCards" [rows]="10" [paginator]="true">
@@ -130,9 +166,11 @@
           >
             <td>{{card.hsClass}}</td>
             <td>{{card.name}}</td>
-            <td *ngIf="filteredHotCards[0]?.hsr_rating">{{ card.hsr_rating }}</td>
+            <td *ngIf="filteredHotCards[0]?.hsr_rating">
+              {{ card.hsr_rating }}
+            </td>
             <td>{{card.avgRating | number: '1.0-2' }}</td>
-            <td>± {{(card.standardDeviation | number: '1.0-2') || 0  }}</td>
+            <td>± {{(card.standardDeviation | number: '1.0-2') || 0 }}</td>
             <td>{{card.ratings.length}}</td>
           </tr>
         </ng-template>
@@ -199,7 +237,7 @@
           <td>{{card.name}}</td>
           <td *ngIf="class.value[0]?.hsr_rating">{{ card.hsr_rating }}</td>
           <td>{{card.avgRating | number: '1.0-2' }}</td>
-          <td>± {{(card.standardDeviation | number: '1.0-2') || 0  }}</td>
+          <td>± {{(card.standardDeviation | number: '1.0-2') || 0 }}</td>
           <td *ngIf="!class.value[0]?.hsr_rating">{{card.ratings.length}}</td>
         </tr>
       </ng-template>

@@ -14,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
+import { AccordionModule } from 'primeng/accordion';
 import { tap } from 'rxjs';
 import { HotCards } from '../../shared/models/hs-card';
 import {
@@ -26,6 +27,7 @@ import {
 } from '@stats/feature/stats-data.mock';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
+import { VotesPerRatingChartComponent } from '@shared/ui/chart/votes-per-rating-chart/votes-per-rating-chart.component';
 
 @Component({
   selector: 'app-Stats',
@@ -46,7 +48,9 @@ import { InputTextModule } from 'primeng/inputtext';
     AsyncPipe,
     SkeletonModule,
     NgTemplateOutlet,
-    InputTextModule
+    InputTextModule,
+    VotesPerRatingChartComponent,
+    AccordionModule,
   ],
   standalone: true,
 })
@@ -94,7 +98,11 @@ export class StatsPage {
     if (searchQuery === '') {
       this.filteredHotCards = this.hotCards;
     } else {
-      this.filteredHotCards = this.hotCards.filter(card => card.name.toLowerCase().includes(searchQuery) || card.description.toLowerCase().includes(searchQuery));
+      this.filteredHotCards = this.hotCards.filter(
+        (card) =>
+          card.name.toLowerCase().includes(searchQuery) ||
+          card.description.toLowerCase().includes(searchQuery)
+      );
     }
   }
 

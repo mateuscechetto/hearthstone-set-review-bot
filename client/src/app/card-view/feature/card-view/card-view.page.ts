@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { SharedModule } from 'primeng/api';
@@ -25,6 +25,10 @@ import {
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PossessivePipe } from '@app/shared/pipes/possessive.pipe';
 import { ShareSummaryModalComponent } from '@app/card-view/ui/share-summary-modal/share-summary-modal.component';
+import { VotesPerRatingChartComponent } from '@shared/ui/chart/votes-per-rating-chart/votes-per-rating-chart.component';
+import { AccordionModule } from 'primeng/accordion';
+import { CombineCardsPipe } from '@shared/pipes/combine-cards-array.pipe';
+import { AvgRatingTableComponent } from '@app/card-view/ui/avg-rating-table/avg-rating-table.component';
 
 @Component({
   selector: 'app-card-view',
@@ -33,6 +37,7 @@ import { ShareSummaryModalComponent } from '@app/card-view/ui/share-summary-moda
   standalone: true,
   imports: [
     NgIf,
+    NgFor,
     ButtonModule,
     DataViewModule,
     SharedModule,
@@ -46,6 +51,10 @@ import { ShareSummaryModalComponent } from '@app/card-view/ui/share-summary-moda
     JsonPipe,
     PossessivePipe,
     ShareSummaryModalComponent,
+    VotesPerRatingChartComponent,
+    AccordionModule,
+    CombineCardsPipe,
+    AvgRatingTableComponent,
   ],
 })
 export class CardViewPage {

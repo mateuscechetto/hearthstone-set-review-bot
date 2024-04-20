@@ -44,7 +44,9 @@
     </ng-template>
   </div>
 
-  <div class="flex gap-3 md:gap-0 flex-column md:flex-row justify-content-between mr-8">
+  <div
+    class="flex gap-3 md:gap-0 flex-column md:flex-row justify-content-between mr-8"
+  >
     <ng-container *ngIf="compareReviewOptions | async as users">
       <form
         [formGroup]="compareReviewsForm"
@@ -75,6 +77,108 @@
   <ng-container
     *ngIf="{reviewers: (reviewersToCompare$ | async) || []} as reviewersContext"
   >
+    <p-accordion [multiple]="true">
+      <p-accordionTab [header]="pageUser?.name">
+        <p-accordion>
+          <p-accordionTab header="Average by Class">
+            <app-avg-rating-table
+              [cards]="cards"
+              field="rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
+          <p-accordionTab header="Ratings Distribution">
+            <app-votes-per-rating-chart
+              [cards]="cards"
+              field="rating"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+          <p-accordionTab header="Ratings Distribution by Class">
+            <app-votes-per-rating-chart
+              [cards]="cards"
+              field="rating"
+              [showClasses]="true"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+        </p-accordion>
+      </p-accordionTab>
+
+      <p-accordionTab
+        *ngFor="let reviewToCompare of reviewersContext.reviewers"
+        [header]="reviewToCompare.user.name"
+      >
+        <p-accordion>
+          <p-accordionTab header="Average by Class">
+            <app-avg-rating-table
+              [cards]="reviewToCompare.cards"
+              field="rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
+          <p-accordionTab header="Ratings Distribution">
+            <app-votes-per-rating-chart
+              [cards]="reviewToCompare.cards"
+              field="rating"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+          <p-accordionTab header="Ratings Distribution by Class">
+            <app-votes-per-rating-chart
+              [cards]="reviewToCompare.cards"
+              field="rating"
+              [showClasses]="true"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+        </p-accordion>
+      </p-accordionTab>
+      <p-accordionTab
+        *ngIf="reviewersContext.reviewers.length > 0"
+        header="Selected Reviewers Combined"
+      >
+        <p-accordion>
+          <p-accordionTab header="Average by Class">
+            <app-avg-rating-table
+              [cards]="cards | combineCards:reviewersContext.reviewers"
+              field="rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
+          <p-accordionTab header="Ratings Distribution">
+            <app-votes-per-rating-chart
+              [cards]="cards | combineCards:reviewersContext.reviewers"
+              field="rating"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+          <p-accordionTab header="Ratings Distribution by Class">
+            <app-votes-per-rating-chart
+              [cards]="cards | combineCards:reviewersContext.reviewers"
+              field="rating"
+              [showClasses]="true"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+        </p-accordion>
+      </p-accordionTab>
+
+      <p-accordionTab *ngIf="cards[0]?.hsr_rating" header="Final Rating">
+        <p-accordion>
+          <p-accordionTab header="Final Average by Class">
+            <app-avg-rating-table
+              [cards]="cards"
+              field="hsr_rating"
+            ></app-avg-rating-table>
+          </p-accordionTab>
+          <p-accordionTab header="Final Ratings Distribution">
+            <app-votes-per-rating-chart
+              [cards]="cards"
+              field="hsr_rating"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+          <p-accordionTab header="Final Ratings Distribution by Class">
+            <app-votes-per-rating-chart
+              [cards]="cards"
+              field="hsr_rating"
+              [showClasses]="true"
+            ></app-votes-per-rating-chart>
+          </p-accordionTab>
+        </p-accordion>
+      </p-accordionTab>
+    </p-accordion>
     <p-dataView #dv [value]="cards" [layout]="layout">
       <ng-template let-card pTemplate="gridItem">
         <!-- make not show modal on mobile -->
@@ -127,7 +231,8 @@
       >
       </app-card-view-modal>
     </div>
-    <app-share-summary-modal *ngIf="loggedUser"
+    <app-share-summary-modal
+      *ngIf="loggedUser"
       [(shouldShowModal)]="shouldShowShareModal"
       [cards]="cards"
       [username]="loggedUser.name"
