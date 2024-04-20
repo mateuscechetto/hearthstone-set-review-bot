@@ -16,6 +16,19 @@
     /* Set a maximum height for scrolling */
 }
 
+.navigation-arrow {
+  position: absolute;
+  top: 50%;
+
+  &.prev {
+    left: -120px;
+  }
+
+  &.next {
+    right: -120px;
+  }
+}
+
 :host ::ng-deep .p-dialog-content {
     overflow-y: hidden;
     flex-grow: 1;

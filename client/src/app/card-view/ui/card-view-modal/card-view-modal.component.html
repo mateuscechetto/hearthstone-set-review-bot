@@ -6,6 +6,16 @@
   [resizable]="false"
   [dismissableMask]="true"
 >
+  <p-button
+    class="navigation-arrow prev"
+    icon="pi pi-chevron-left"
+    (onClick)="changedCard.emit(-1)"
+  ></p-button>
+  <p-button
+    class="navigation-arrow next"
+    icon="pi pi-chevron-right"
+    (onClick)="changedCard.emit(1)"
+  ></p-button>
   <ng-template pTemplate="header"> </ng-template>
   <div class="grid overflow-hidden">
     <div class="col-7 fixed-image-container flex justify-content-center">
@@ -35,7 +45,10 @@
             <span class="ml-2 w-1rem"></span>
           </div>
           <ng-container *ngIf="reviewersToCompare.length > 0">
-            <div class="flex" *ngFor="let reviewToCompare of reviewersToCompare">
+            <div
+              class="flex"
+              *ngFor="let reviewToCompare of reviewersToCompare"
+            >
               <a
                 [href]="'https://twitch.tv/' + reviewToCompare.user.name"
                 target="_blank"

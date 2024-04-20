@@ -15,6 +15,7 @@ import { RatingModule } from 'primeng/rating';
 import { TooltipModule } from 'primeng/tooltip';
 import { CompareCardAPIReturn, HearthstoneCard, RatedCard } from '@shared/models/hs-card';
 import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-card-view-modal',
@@ -33,6 +34,7 @@ import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.compo
     NgFor,
     TooltipModule,
     DecimalPipe,
+    ButtonModule,
   ],
 })
 export class CardViewModalComponent implements OnChanges {
@@ -96,7 +98,7 @@ export class CardViewModalComponent implements OnChanges {
     if (changes.card.currentValue) {
       this.ratingForm.patchValue({
         userRating: this.card.rating,
-        chatRating: Math.round(this.card.chatRating || 0),
+        chatRating: Math.round(this.card.chatRating ?? 0),
         hsrRating: this.card.hsr_rating,
       });
 
@@ -108,10 +110,10 @@ export class CardViewModalComponent implements OnChanges {
         //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
         if (!this.ratingForm.controls[review.user.name]) {
           //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
-          this.ratingForm.addControl(review.user.name, this.fb.control(reviewedCard?.rating || 0));
+          this.ratingForm.addControl(review.user.name, this.fb.control(reviewedCard?.rating ?? 0));
         } else {
           //@ts-ignore added because angular 14 added typing to forms and our form is dynamic.
-          this.ratingForm.patchValue({[review.user.name]: reviewedCard?.rating || 0});
+          this.ratingForm.patchValue({[review.user.name]: reviewedCard?.rating ?? 0});
         }
         this.compareRatings.push(review.user.name);
       });
