@@ -75,6 +75,8 @@ export class CardViewModalComponent implements OnChanges {
 
   cardToDisplay: HearthstoneCard = this.card;
 
+  isRecording = false;
+
   compareRatings: any[] = [];
 
   twitchIconURL =
@@ -151,10 +153,12 @@ export class CardViewModalComponent implements OnChanges {
   }
 
   onRecordChat() {
+    this.isRecording = true;
     this.recordChat.emit(this.card);
   }
 
   onStopRecording() {
+    this.isRecording = false;
     this.stopRecording.emit(this.card);
   }
 }

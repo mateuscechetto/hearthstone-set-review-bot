@@ -36,7 +36,7 @@
           <span class="ml-2 w-1rem"></span>
         </div>
         <ng-container *ngIf="reviewersToCompare.length > 0">
-          <div class="flex" *ngFor="let reviewToCompare of reviewersToCompare;">
+          <div class="flex" *ngFor="let reviewToCompare of reviewersToCompare">
             <a
               [href]="'https://twitch.tv/' + reviewToCompare.user.name"
               target="_blank"
@@ -81,7 +81,7 @@
           *ngIf="isUserStreamer"
           class="flex flex-column align-items-center gap-1"
         >
-          <div class="flex">
+          <div class="flex" *ngIf="ratingForm.controls.chatRating.value! > 0">
             <p-avatar
               [image]="twitchIconURL"
               styleClass="mr-2 avatar"
