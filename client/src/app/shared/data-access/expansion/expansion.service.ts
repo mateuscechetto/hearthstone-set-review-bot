@@ -1,10 +1,21 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, distinctUntilChanged, filter, map, pluck } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  distinctUntilChanged,
+  filter,
+  map,
+} from 'rxjs';
 
-export const CURRENT_EXPANSION = 'Whizbang\'s Workshop';
+export const CURRENT_EXPANSION = "Dr. Boom's Incredible Inventions";
 
-export const EXPANSIONS = ['Whizbang\'s Workshop', 'Delve into Deepholm', 'Showdown in the Badlands'];
+export const EXPANSIONS = [
+  "Dr. Boom's Incredible Inventions",
+  "Whizbang's Workshop",
+  'Delve into Deepholm',
+  'Showdown in the Badlands',
+];
 
 @Injectable({
   providedIn: 'root',
@@ -20,13 +31,15 @@ export class ExpansionService {
 
   constructor(private route: ActivatedRoute, private router: Router) {
     // reducers
-    this.route.queryParams.pipe(
-      map(params => params['expansion']), // Extract 'expansion' query parameter
-      distinctUntilChanged(), // Ensure the value changes before triggering the next action
-      filter(expansion => !!expansion) // Filter out falsy values
-    ).subscribe(expansion => {
-      this.state.next(expansion);
-    });
+    this.route.queryParams
+      .pipe(
+        map((params) => params['expansion']), // Extract 'expansion' query parameter
+        distinctUntilChanged(), // Ensure the value changes before triggering the next action
+        filter((expansion) => !!expansion) // Filter out falsy values
+      )
+      .subscribe((expansion) => {
+        this.state.next(expansion);
+      });
   }
 
   setActiveExpansion(expansion: string) {
@@ -38,7 +51,7 @@ export class ExpansionService {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { expansion: this.state.value },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
   }
 }
