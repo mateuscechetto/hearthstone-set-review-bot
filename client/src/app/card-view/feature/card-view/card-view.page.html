@@ -65,10 +65,10 @@
       </form>
     </ng-container>
     <div
-      *ngIf="context.activeExpansion == CURRENT_EXPANSION && loggedUser && !loggedUser.isStreamer && pageUser?.name == loggedUser.name"
+      *ngIf="context.activeExpansion == CURRENT_EXPANSION && loggedUser && pageUser?.name == loggedUser.name"
     >
       <p-button
-        (click)="shouldShowShareModal = true"
+        (onClick)="shouldShowShareModal = true"
         label="Generate summary image"
       ></p-button>
     </div>

@@ -17,16 +17,18 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = "Whizbang\'s Workshop";
+const currentExpansion = 'Dr. Boom\'s Incredible Inventions';
 const minRatings = 1;
 
 const cardsPerExpansion = {
-    "Whizbang\'s Workshop": 145,
+    'Dr. Boom\'s Incredible Inventions': 38,
+    "Whizbang's Workshop": 145,
     "Showdown in the Badlands": 145,
     "Delve into Deepholm": 38,
 };
 
 const hasExpansionBeingRated = {
+    'Dr. Boom\'s Incredible Inventions': false,
     "Whizbang\'s Workshop": true,
     "Showdown in the Badlands": true,
     "Delve into Deepholm": true,

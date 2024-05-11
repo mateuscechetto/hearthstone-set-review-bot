@@ -2,6 +2,7 @@
  * Creates a diff file from 2 jsons from Blizzard API https://hearthstone.blizzard.com/en-us/cards.
  * Usually, expansion cards are revealed in different times, 
  * so this script is useful to add only the cards that were not added to the application yet.
+ * Also useful for minisets because Blizzard API treats miniset cards as expansion cards.
  * Input: -o: Path to the older JSON file.
  *        -n: Path to the newer JSON file.
  */

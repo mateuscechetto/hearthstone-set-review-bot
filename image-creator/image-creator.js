@@ -1,9 +1,9 @@
 const Jimp = require('jimp');
 const axios = require('axios');
 
-const BACKGROUND_PATH = './image-creator/background/background-text.png';
+const BACKGROUND_PATH = './image-creator/background/boom.png';
 const TEXT_USERNAME = 'molino_hs';
-const TEXT_EXPANSION = 'Whizbang\'s Workshop Review';
+const TEXT_EXPANSION = 'Dr. Boom\'s miniset Review';
 const MARGIN_TOP = 50;
 const MARGIN_LEFT = 182;
 const CARD_HEIGHT = 300;
