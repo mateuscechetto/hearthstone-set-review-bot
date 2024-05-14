@@ -160,6 +160,36 @@
       }
     },
     {
+      "id": 106063,
+      "collectible": 1,
+      "slug": "106063-toysnatching-geist",
+      "classId": 1,
+      "multiClassIds": [],
+      "minionTypeId": 11,
+      "cardTypeId": 4,
+      "cardSetId": 1897,
+      "rarityId": 1,
+      "artistName": "Grafit",
+      "health": 1,
+      "attack": 2,
+      "manaCost": 3,
+      "name": "Toysnatching Geist",
+      "text": "<b>Gigantify</b> <b>Battlecry:</b> <b>Discover</b> an Undead. Reduce its Cost by this minion's Attack.",
+      "image": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/2153025f3903729c4d4f7896c48fc240a82ae7399c3b8bd225b7c52245060062.png",
+      "imageGold": "",
+      "flavorText": "So THAT'S how the Geist stole Winterveil!",
+      "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/e0a8bc677f0ff28584ef3445d032e52812b8c831e7bd361bf2bba59913c8a282.png",
+      "childIds": [108614],
+      "keywordIds": [8, 21, 301],
+      "isZilliaxFunctionalModule": false,
+      "isZilliaxCosmeticModule": false,
+      "runeCost": {
+        "blood": 0,
+        "frost": 0,
+        "unholy": 1
+      }
+    },
+    {
       "id": 104634,
       "collectible": 1,
       "slug": "104634-darkthorn-quilter",
@@ -189,6 +219,32 @@
       }
     },
     {
+      "id": 105511,
+      "collectible": 1,
+      "slug": "105511-helm-of-humiliation",
+      "classId": 1,
+      "multiClassIds": [],
+      "spellSchoolId": 6,
+      "cardTypeId": 5,
+      "cardSetId": 1897,
+      "rarityId": 3,
+      "artistName": "Anton Zemskov",
+      "manaCost": 4,
+      "name": "Helm of Humiliation",
+      "text": "Give a minion -5/-5. Give a minion in your hand +5/+5.",
+      "image": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/be4a121be5d1bd5d04e4d61f1fdebcb2e452c5d1b28d307fd571643ee0b78630.png",
+      "imageGold": "",
+      "flavorText": "<whispers> \"...and your father was a Murloc too.\"",
+      "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/9ba61f853b812abe8d75c0547b396db55561f072e7c76b3eb67e97ff0b76eb67.png",
+      "isZilliaxFunctionalModule": false,
+      "isZilliaxCosmeticModule": false,
+      "runeCost": {
+        "blood": 2,
+        "frost": 0,
+        "unholy": 0
+      }
+    },
+    {
       "id": 104694,
       "collectible": 1,
       "slug": "104694-amateur-puppeteer",
@@ -214,6 +270,34 @@
       "isZilliaxCosmeticModule": false,
       "runeCost": {
         "blood": 1,
+        "frost": 0,
+        "unholy": 1
+      }
+    },
+    {
+      "id": 105512,
+      "collectible": 1,
+      "slug": "105512-foamrender",
+      "classId": 1,
+      "multiClassIds": [],
+      "cardTypeId": 7,
+      "cardSetId": 1897,
+      "rarityId": 3,
+      "artistName": "Guillaume Beauchêne",
+      "attack": 5,
+      "manaCost": 5,
+      "durability": 1,
+      "name": "Foamrender",
+      "text": "Whenever your hero attacks, spend 3 <b>Corpses</b> to gain +1 Durability.",
+      "image": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/bd13a94d472e395b0fdbb49197ffe63a483beba56973537ab10245809bac4589.png",
+      "imageGold": "",
+      "flavorText": "No honey, we have Shadowmourne at home.",
+      "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/77bd6d038814082af4045f13458912386a0d94f53a4296a342126c21a6f007de.png",
+      "keywordIds": [247],
+      "isZilliaxFunctionalModule": false,
+      "isZilliaxCosmeticModule": false,
+      "runeCost": {
+        "blood": 0,
         "frost": 0,
         "unholy": 1
       }
@@ -2614,6 +2698,26 @@
       "isZilliaxCosmeticModule": false
     },
     {
+      "id": 105539,
+      "collectible": 1,
+      "slug": "105539-mass-production",
+      "classId": 9,
+      "multiClassIds": [],
+      "cardTypeId": 5,
+      "cardSetId": 1897,
+      "rarityId": 1,
+      "artistName": "Mooncolony",
+      "manaCost": 1,
+      "name": "Mass Production",
+      "text": "Draw 2 cards. Deal 3 damage to your hero. Shuffle 2 copies of this into your deck.",
+      "image": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/35ce13d771d208a57e1baf482bff4c2f9928f4621dfe0982167d0e95f3a06191.png",
+      "imageGold": "",
+      "flavorText": "Whenever you cast this, we make a new Nemsy portrait.",
+      "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/b5c4a003e7d360b93d3dbe6841a34372a48fea82ca16f7b9e93b9ee4bf645f61.png",
+      "isZilliaxFunctionalModule": false,
+      "isZilliaxCosmeticModule": false
+    },
+    {
       "id": 106652,
       "collectible": 1,
       "slug": "106652-endgame",
@@ -2653,6 +2757,26 @@
       "flavorText": "Their group has been trying to schedule the next session since Kobolds and Catacombs came out.",
       "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/3b3daa89a66b7ac25c2bd2fe617777b8505d1f45fcba1a5445cf1b14a1a704e3.png",
       "keywordIds": [12],
+      "isZilliaxFunctionalModule": false,
+      "isZilliaxCosmeticModule": false
+    },
+    {
+      "id": 104853,
+      "collectible": 1,
+      "slug": "104853-domino-effect",
+      "classId": 9,
+      "multiClassIds": [],
+      "cardTypeId": 5,
+      "cardSetId": 1897,
+      "rarityId": 3,
+      "artistName": "Guillaume Beauchêne",
+      "manaCost": 3,
+      "name": "Domino Effect",
+      "text": "Deal 2 damage to a minion. Repeat to the left or right, dealing 1 more damage each time.",
+      "image": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/f5a0c7e1bce9023a290f5335f8569f4121bf2781a721d74f1d8b7e25035df3dc.png",
+      "imageGold": "",
+      "flavorText": "WHY DO THEY NEVER RUN TO THE SIDE?????",
+      "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/746f974c2b0d7c0bb587d6d3b896bcc3354605ea8fc9882c04495d80f3c0c258.png",
       "isZilliaxFunctionalModule": false,
       "isZilliaxCosmeticModule": false
     },
@@ -2700,6 +2824,30 @@
       "flavorText": "Never ask an artist how many pieces they've finished.",
       "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/4c764d57445fb4a1941d2da2a94925a87cd2ab9f1cfd07bc6dc4cfd7e5adba80.png",
       "keywordIds": [8],
+      "isZilliaxFunctionalModule": false,
+      "isZilliaxCosmeticModule": false
+    },
+    {
+      "id": 105502,
+      "collectible": 1,
+      "slug": "105502-infernal",
+      "classId": 9,
+      "multiClassIds": [],
+      "minionTypeId": 15,
+      "cardTypeId": 4,
+      "cardSetId": 1897,
+      "rarityId": 3,
+      "artistName": "Juan Calle",
+      "health": 6,
+      "attack": 6,
+      "manaCost": 4,
+      "name": "INFERNAL!",
+      "text": "<b>Taunt</b> <b>Battlecry:</b> Set your hero's remaining Health to 15.",
+      "image": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/6cc0d91fe0b4532aeecc5a6d7868b305975c14956e9204242af90183a5b8b6fa.png",
+      "imageGold": "",
+      "flavorText": "FLAVOR TEXT!",
+      "cropImage": "https://d15f34w2p8l1cc.cloudfront.net/hearthstone/f0e66d6b18c41e06fd40dcaa38ce1c7eea951777d38f050400021716f91dd884.png",
+      "keywordIds": [1, 8],
       "isZilliaxFunctionalModule": false,
       "isZilliaxCosmeticModule": false
     },
@@ -4080,7 +4228,7 @@
       "isZilliaxCosmeticModule": false
     }
   ],
-  "cardCount": 177,
+  "cardCount": 183,
   "pageCount": 1,
   "page": 1
 }
