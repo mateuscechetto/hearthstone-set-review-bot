@@ -28,7 +28,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    'Dr. Boom\'s Incredible Inventions': false,
+    'Dr. Boom\'s Incredible Inventions': true,
     "Whizbang\'s Workshop": true,
     "Showdown in the Badlands": true,
     "Delve into Deepholm": true,
