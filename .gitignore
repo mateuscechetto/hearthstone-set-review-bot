@@ -4,3 +4,4 @@ new-data
 credentials.json
 archive.json
 .env
+scripts/post-expansion/data
