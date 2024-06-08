@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
 import { HotCards } from '@shared/models/hs-card';
-import { User } from '@shared/models/user';
 import { environment } from '@environment/environment';
 import { ExpansionService } from '@shared/data-access/expansion/expansion.service';
 
@@ -13,7 +12,6 @@ export type HomeApiReturn = {
 };
 
 export interface HomeLoadingState {
-  users: boolean;
   stats: boolean;
   cards: boolean;
 }
@@ -24,12 +22,10 @@ export interface HomeLoadingState {
 export class HomeService {
   private loadingState: BehaviorSubject<HomeLoadingState> =
     new BehaviorSubject<HomeLoadingState>({
-      users: false,
       stats: false,
       cards: false,
     });
 
-  loadingUsers = this.loadingState.pipe(map((v) => v.users));
   loadingStats = this.loadingState.pipe(map((v) => v.stats));
   loadingCards = this.loadingState.pipe(map((v) => v.cards));
 
@@ -72,25 +68,6 @@ export class HomeService {
       ),
       tap(() =>
         this.loadingState.next({ ...this.loadingState.value, stats: false })
-      )
-    );
-  }
-
-  getUsers(): Observable<User[]> {
-    return this.expansionService.activeExpansion.pipe(
-      tap(() =>
-        this.loadingState.next({ ...this.loadingState.value, users: true })
-      ),
-      switchMap((expansion) =>
-        this.http.get<User[]>(`${environment.apiUrl}/api/users`, {
-          withCredentials: true,
-          params: {
-            expansion,
-          },
-        })
-      ),
-      tap(() =>
-        this.loadingState.next({ ...this.loadingState.value, users: false })
       )
     );
   }

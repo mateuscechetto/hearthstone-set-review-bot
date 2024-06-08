@@ -39,11 +39,11 @@ export class HeaderComponent {
   analyticsService = inject(AnalyticsService)
 
   expansions = EXPANSIONS;
-  selectedExpansion = this.expansionService.activeExpansion;
+  selectedExpansion$ = this.expansionService.activeExpansion;
 
-  loggedUser = this.userService.loggedUser;
+  loggedUser$ = this.userService.loggedUser;
 
-  options = this.userService.users.pipe();
+  options$ = this.userService.users;
   suggestions: string[] = [];
 
   ngOnInit() {

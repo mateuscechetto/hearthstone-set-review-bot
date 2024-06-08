@@ -6,20 +6,27 @@ import {
   NgIf,
   NgTemplateOutlet,
 } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
-import { HotCards } from '@shared/models/hs-card';
 import { User } from '@shared/models/user';
-import { HomeService } from '@home/data-access/home.service';
+import { HomeApiReturn, HomeService } from '@home/data-access/home.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CARDS_MOCK, USERS_MOCK } from '@home/feature/home/home-data.mock';
-import { tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  map,
+  shareReplay,
+  startWith,
+} from 'rxjs';
 import { ExpansionService } from '@shared/data-access/expansion/expansion.service';
+import { UserService } from '@app/shared/data-access/user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -41,63 +48,69 @@ import { ExpansionService } from '@shared/data-access/expansion/expansion.servic
     NgFor,
   ],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
-  bestCards: HotCards[] = [];
-  worstCards: HotCards[] = [];
-  standardDeviationCards: HotCards[] = [];
-  usersWithRating: User[] = [];
-  filteredUsersWithRating: User[] = [];
-  activeExpansion = this.expansionService.activeExpansion;
+  expansionService = inject(ExpansionService);
+  homeService = inject(HomeService);
+  userService = inject(UserService);
 
-  loadingUsers = this.homeService.loadingUsers.pipe(
-    tap((loading) => {
+  activeExpansion$ = this.expansionService.activeExpansion;
+  searchQuery$ = new BehaviorSubject<string>('');
+
+  loadingStats$ = this.homeService.loadingStats;
+  statsContext$: Observable<{ loadingStats: boolean; stats: HomeApiReturn }> =
+    combineLatest([
+      this.homeService.getStats().pipe(
+        startWith<HomeApiReturn>({
+          bestCards: CARDS_MOCK,
+          worstCards: CARDS_MOCK,
+          standardDeviationCards: CARDS_MOCK,
+        })
+      ),
+      this.loadingStats$.pipe(startWith(true)),
+    ]).pipe(
+      map(([cards, loading]) => {
+        if (loading) {
+          return {
+            stats: {
+              bestCards: CARDS_MOCK,
+              worstCards: CARDS_MOCK,
+              standardDeviationCards: CARDS_MOCK,
+            },
+            loadingStats: loading,
+          };
+        }
+        return { stats: cards, loadingStats: loading };
+      })
+    );
+
+  loadingUsers$ = this.userService.loading;
+  usersWithRating$: Observable<User[]> = this.userService.users.pipe(
+    map((users) => users.sort(this.sortUsers)),
+    shareReplay(1)
+  );
+  filteredUsersWithRating$: Observable<User[]> = combineLatest([
+    this.usersWithRating$.pipe(startWith<User[]>([])),
+    this.searchQuery$.pipe(startWith('')),
+    this.loadingUsers$.pipe(startWith(true)),
+  ]).pipe(
+    map(([users, query, loading]) => {
       if (loading) {
-        this.filteredUsersWithRating = USERS_MOCK;
+        return USERS_MOCK;
       }
+      if (query === '') {
+        return users;
+      }
+      return (
+        users.filter((user) => user.name.toLowerCase().includes(query)) ?? []
+      );
     })
   );
-
-  loadingStats = this.homeService.loadingStats.pipe(
-    tap((loading) => {
-      if (loading) {
-        this.bestCards = CARDS_MOCK;
-        this.worstCards = CARDS_MOCK;
-        this.standardDeviationCards = CARDS_MOCK;
-      }
-    })
-  );
-
-  constructor(
-    private homeService: HomeService,
-    private expansionService: ExpansionService
-  ) {}
-
-  ngOnInit() {
-    this.homeService.getUsers().subscribe({
-      next: (users) => {
-        this.usersWithRating = users.sort(this.sortUsers);
-        this.filteredUsersWithRating = this.usersWithRating;
-      },
-    });
-
-    this.homeService.getStats().subscribe({
-      next: (cards) => {
-        const { bestCards, worstCards, standardDeviationCards } = cards;
-        this.bestCards = bestCards;
-        this.worstCards = worstCards;
-        this.standardDeviationCards = standardDeviationCards;
-      },
-    });
-  }
 
   filterUsers(event: Event) {
     const searchQuery = (event.target as HTMLInputElement).value.toLowerCase();
-    if (searchQuery === '') {
-      this.filteredUsersWithRating = this.usersWithRating;
-    } else {
-      this.filteredUsersWithRating = this.usersWithRating.filter(user => user.name.toLowerCase().includes(searchQuery)) || [];
-    }
+    this.searchQuery$.next(searchQuery);
   }
 
   private sortUsers(a: User, b: User): number {

@@ -1,17 +1,17 @@
 <h1
   class="col-12 flex-order-1 md:flex-order-0 md:col-6 md:col-offset-3 text-center"
 >
-  {{ activeExpansion | async }} Card Review
+  {{ activeExpansion$ | async }} Card Review
 </h1>
 
 <div class="grid md:ml-1">
-  <ng-container *ngIf="{loadingStats: loadingStats | async} as context">
+  <ng-container *ngIf="statsContext$ | async as context">
     <div class="col-12 flex-order-2 lg:flex-order-0 grid">
       <div class="col-12 flex justify-content-end">
         <a [routerLink]="['/stats']" style="color: inherit"> See full stats </a>
       </div>
       <div class="col-12 mb-4 lg:col-4">
-        <p-table [value]="bestCards">
+        <p-table [value]="context.stats.bestCards">
           <ng-template pTemplate="caption">
             <span
               pTooltip="Best cards based on Users Ratings"
@@ -25,7 +25,7 @@
               <th>Class</th>
               <th>Name</th>
               <th
-                *ngIf="bestCards[0]?.hsr_rating"
+                *ngIf="context.stats?.bestCards?.[0]?.hsr_rating"
                 pTooltip="Rating calculated using HSReplay data from the the first patch after expansion"
                 tooltipPosition="top"
               >
@@ -59,7 +59,7 @@
         </p-table>
       </div>
       <div class="col-12 mb-4 lg:col-4">
-        <p-table [value]="standardDeviationCards" class="mb-1">
+        <p-table [value]="context.stats.standardDeviationCards" class="mb-1">
           <ng-template pTemplate="caption">
             <span
               pTooltip="Cards with highest User Ratings standard deviation"
@@ -104,7 +104,7 @@
         </p-table>
       </div>
       <div class="col-12 lg:col-4">
-        <p-table [value]="worstCards">
+        <p-table [value]="context.stats.worstCards">
           <ng-template pTemplate="caption">
             <span
               pTooltip="Worst cards based on Users Ratings"
@@ -118,7 +118,7 @@
               <th>Class</th>
               <th>Name</th>
               <th
-                *ngIf="worstCards[0]?.hsr_rating"
+                *ngIf="context.stats?.worstCards?.[0]?.hsr_rating"
                 pTooltip="Rating calculated using HSReplay data from the the first patch after expansion"
                 tooltipPosition="top"
               >
@@ -165,10 +165,12 @@
     <h2>See who reviewed the cards</h2>
   </div>
   <div class="col-12 flex-order-1 lg:flex-order-2 reviewers-container">
-    <ng-container *ngIf="{loadingUsers: loadingUsers | async} as context">
+    <ng-container
+      *ngIf="{loadingUsers: loadingUsers$ | async, usersWithRating: usersWithRating$ | async, filteredUsersWithRating: filteredUsersWithRating$ | async} as context"
+    >
       <p-table
-        *ngIf="usersWithRating[0]?.totalDeviation"
-        [value]="filteredUsersWithRating"
+        *ngIf="context.usersWithRating?.[0]?.totalDeviation"
+        [value]="context.filteredUsersWithRating ?? []"
         [rows]="10"
         [paginator]="true"
       >
@@ -230,11 +232,11 @@
         </ng-template>
       </p-table>
       <p-dataView
-        [value]="filteredUsersWithRating"
+        *ngIf="!context.usersWithRating?.[0]?.totalDeviation"
+        [value]="context.filteredUsersWithRating ?? []"
         [layout]="'list'"
         [rows]="10"
         [paginator]="true"
-        *ngIf="!usersWithRating[0]?.totalDeviation"
       >
         <ng-template pTemplate="header">
           <div class="reviewersHeader">
@@ -282,7 +284,6 @@
             size="2rem"
           ></p-skeleton>
           <p-skeleton class="col-9 md:col-2 mt-2"></p-skeleton>
-          <!-- <p-skeleton class="col-3 col-offset-1 md:col-1 md:col-offset-4 mt-2"></p-skeleton> -->
         </div>
       </ng-template>
     </ng-container>

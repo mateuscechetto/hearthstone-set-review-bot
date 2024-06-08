@@ -1,16 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  map,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { User } from '@shared/models/user';
 import { environment } from '@environment/environment';
-import {
-  ExpansionService,
-} from '../expansion/expansion.service';
+import { ExpansionService } from '../expansion/expansion.service';
 
 export interface UsersState {
   users: User[];
-  loaded: boolean;
+  loading: boolean;
   error: string | null;
   loggedUser: User | null;
 }
@@ -22,14 +27,14 @@ export class UserService {
   // state
   private state: BehaviorSubject<UsersState> = new BehaviorSubject<UsersState>({
     users: [],
-    loaded: false,
+    loading: false,
     error: null,
     loggedUser: null,
   });
 
   // selectors
   users = this.state.pipe(map((v) => v.users));
-  loaded = this.state.pipe(map((v) => v.loaded));
+  loading = this.state.pipe(map((v) => v.loading));
   error = this.state.pipe(map((v) => v.error));
   loggedUser = this.state.pipe(map((v) => v.loggedUser));
 
@@ -48,7 +53,7 @@ export class UserService {
         this.state.next({
           ...this.state.value,
           users,
-          loaded: true,
+          loading: false,
         });
       },
       error: (err) => this.state.next({ ...this.state.value, error: err }),
@@ -158,8 +163,9 @@ export class UserService {
     });
   }
 
-  public getUsers(): Observable<User[]> {
+  getUsers(): Observable<User[]> {
     return this.expansionService.activeExpansion.pipe(
+      tap(() => this.state.next({ ...this.state.value, loading: true })),
       switchMap((expansion) =>
         this.http.get<User[]>(`${environment.apiUrl}/api/users`, {
           withCredentials: true,
@@ -167,7 +173,8 @@ export class UserService {
             expansion,
           },
         })
-      )
+      ),
+      shareReplay(1)
     );
   }
 }
