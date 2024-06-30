@@ -27,7 +27,7 @@ const transformedData = {
     name: card.name,
     description: stripHtmlTags(card.text),
     imageURL: card.image,
-    expansion: 'Dr. Boom\'s Incredible Inventions',
+    expansion: 'Perils in Paradise',
     mana: card.manaCost,
     type: transformType(card.cardTypeId),
     hsClass: transformClass(card.classId),
