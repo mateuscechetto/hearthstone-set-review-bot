@@ -56,9 +56,12 @@ export class ShareSummaryModalComponent {
   analyticsService = inject(AnalyticsService);
 
   ngOnInit() {
-    this.analyticsService.trackEvent('Opened share modal', 'User opened share image modal', 'OPEN_MODAL');
+    this.analyticsService.trackEvent(
+      'Opened share modal',
+      'User opened share image modal',
+      'OPEN_MODAL'
+    );
   }
-
 
   generateImage() {
     if (
@@ -70,7 +73,11 @@ export class ShareSummaryModalComponent {
       return;
     }
 
-    this.analyticsService.trackEvent('Generated image', 'User clicked button to generate image', 'GENERATE_IMAGE');
+    this.analyticsService.trackEvent(
+      'Generated image',
+      'User clicked button to generate image',
+      'GENERATE_IMAGE'
+    );
     this.summaryService
       .generateImage(this.username, [
         this.favoriteCard.imageURL,

@@ -7,7 +7,21 @@
     <div
       class="flex flex-wrap align-items-center justify-content-between gap-2"
     >
-      <span class="font-semibold">{{ card.hsClass }}</span>
+      <div>
+        <span class="font-semibold">{{ card.hsClass }} </span>
+        <span
+          *ngIf="hasTourist"
+          class="font-semibold"
+          pTooltip="{{ card.hsClass }} cards can be played in {{
+            tourists[card.hsClass]
+          }} decks with Tourist"
+          tooltipPosition="top"
+        >
+          {{
+            tourists[card.hsClass] ? "(" + tourists[card.hsClass] + ")" : null
+          }}
+        </span>
+      </div>
       <span class="font-semibold">{{ card.type }}</span>
     </div>
     <form [formGroup]="ratingForm">

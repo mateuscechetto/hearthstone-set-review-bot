@@ -72,16 +72,24 @@
         Generate Image
       </p-button>
     </div>
-    <div class="col-12 md:col-6 flex flex-column align-items-center gap-4" *ngIf="generatedImageURL">
+    <div
+      class="col-12 md:col-6 flex flex-column align-items-center gap-4"
+      *ngIf="generatedImageURL"
+    >
       <img
         [src]="generatedImageURL"
         alt="Generated"
         [width]="400"
         [height]="500"
       />
-        <a pButton pRipple [href]="generatedImageURL" download="generated_image.png" class="download-button"
-          >Download Image</a
-        >
+      <a
+        pButton
+        pRipple
+        [href]="generatedImageURL"
+        download="generated_image.png"
+        class="download-button"
+        >Download Image</a
+      >
     </div>
   </div>
 </p-dialog>

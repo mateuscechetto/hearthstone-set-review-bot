@@ -30,6 +30,10 @@
         [alt]="cardToDisplay.name"
         [src]="cardToDisplay.imageURL"
       />
+      <span *ngIf="hasTourist" class="font-semibold text-xl">
+        can be played in
+        {{ tourists[card.hsClass] }} decks with Tourist
+      </span>
       <form [formGroup]="ratingForm">
         <div *ngIf="isUserStreamer" class="chat-ratings-container">
           <div class="flex" *ngIf="ratingForm.controls.chatRating.value! > 0">
