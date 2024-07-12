@@ -70,6 +70,8 @@ export class CardViewPage {
 
   activeExpansion = this.expansionService.activeExpansion;
 
+  touristExpansion = 'Perils in Paradise';
+
   loggedUser$ = this.userService.loggedUser;
 
   loadingCards$ = this.service.loading.pipe();

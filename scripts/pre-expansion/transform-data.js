@@ -27,7 +27,7 @@ const transformedData = {
     name: card.name,
     description: stripHtmlTags(card.text),
     imageURL: card.image,
-    expansion: 'Dr. Boom\'s Incredible Inventions',
+    expansion: 'Perils in Paradise',
     mana: card.manaCost,
     type: transformType(card.cardTypeId),
     hsClass: transformClass(card.classId),
@@ -37,7 +37,7 @@ const transformedData = {
 };
 
 const formattedDate = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '_');
-const outputFile = `output_boom_${formattedDate}.json`;
+const outputFile = `output_PiP_${formattedDate}.json`;
 const outputFilePath = path.join(__dirname, outputFile);
 
 fs.writeFileSync(outputFilePath, JSON.stringify(transformedData, null, 2), 'utf8');

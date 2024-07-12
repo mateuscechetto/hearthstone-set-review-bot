@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = 'Dr. Boom\'s Incredible Inventions';
+const currentExpansion = 'Perils in Paradise';
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "Perils in Paradise": 145,
     'Dr. Boom\'s Incredible Inventions': 38,
     "Whizbang's Workshop": 145,
     "Showdown in the Badlands": 145,
@@ -28,6 +29,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    "Perils in Paradise": false,
     'Dr. Boom\'s Incredible Inventions': true,
     "Whizbang\'s Workshop": true,
     "Showdown in the Badlands": true,

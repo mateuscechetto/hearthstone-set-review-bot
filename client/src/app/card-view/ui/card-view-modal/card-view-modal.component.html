@@ -30,6 +30,13 @@
         [alt]="cardToDisplay.name"
         [src]="cardToDisplay.imageURL"
       />
+      <span
+        *ngIf="hasTourist && tourists[card.hsClass]"
+        class="font-semibold text-xl"
+      >
+        can be played in
+        {{ tourists[card.hsClass] }} decks with Tourist
+      </span>
       <form [formGroup]="ratingForm">
         <div *ngIf="isUserStreamer" class="chat-ratings-container">
           <div class="flex" *ngIf="ratingForm.controls.chatRating.value! > 0">
@@ -131,6 +138,15 @@
             (mouseleave)="onExtraCardLeave()"
           />
         </div>
+        <ul *ngIf="card.name === 'Carress, Cabaret Star'" class="font-bold">
+          <li>Arcane: Draw 2 cards.</li>
+          <li>Fire: Deal 6 to the enemy hero.</li>
+          <li>Frost: Freeze three random enemy minions.</li>
+          <li>Nature: Gain +2/+2 and Taunt.</li>
+          <li>Holy: Restore 6 health to your hero.</li>
+          <li>Shadow: Destroy 2 random enemy minions.</li>
+          <li>Fel: Deal 2 damage to all enemy minions.</li>
+        </ul>
       </div>
     </div>
   </div>
