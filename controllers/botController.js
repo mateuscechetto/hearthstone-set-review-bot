@@ -29,7 +29,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "Perils in Paradise": false,
+    "Perils in Paradise": true,
     'Dr. Boom\'s Incredible Inventions': true,
     "Whizbang\'s Workshop": true,
     "Showdown in the Badlands": true,
