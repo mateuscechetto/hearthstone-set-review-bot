@@ -70,7 +70,7 @@ export class CardViewPage {
 
   activeExpansion = this.expansionService.activeExpansion;
 
-  touristExpansion = 'Perils in Paradise';
+  touristExpansions = ['Perils in Paradise', 'The Traveling Travel Agency'];
 
   loggedUser$ = this.userService.loggedUser;
 

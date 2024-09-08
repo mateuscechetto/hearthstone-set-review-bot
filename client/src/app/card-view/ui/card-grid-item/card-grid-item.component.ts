@@ -66,18 +66,21 @@ export class CardGridItemComponent implements OnChanges {
 
   compareRatings: any[] = [];
 
-  tourists: Record<HearthstoneClass, HearthstoneClass | null> = {
-    [HearthstoneClass.ROGUE]: HearthstoneClass.PALADIN,
-    [HearthstoneClass.WARLOCK]: HearthstoneClass.ROGUE,
-    [HearthstoneClass.DEATH_KNIGHT]: HearthstoneClass.WARLOCK,
-    [HearthstoneClass.SHAMAN]: HearthstoneClass.DEATH_KNIGHT,
-    [HearthstoneClass.DEMON_HUNTER]: HearthstoneClass.SHAMAN,
-    [HearthstoneClass.PRIEST]: HearthstoneClass.DEMON_HUNTER,
-    [HearthstoneClass.HUNTER]: HearthstoneClass.PRIEST,
-    [HearthstoneClass.WARRIOR]: HearthstoneClass.HUNTER,
-    [HearthstoneClass.DRUID]: HearthstoneClass.WARRIOR,
-    [HearthstoneClass.MAGE]: HearthstoneClass.DRUID,
-    [HearthstoneClass.PALADIN]: HearthstoneClass.MAGE,
+  tourists: Record<HearthstoneClass, HearthstoneClass[] | null> = {
+    [HearthstoneClass.ROGUE]: [HearthstoneClass.PALADIN, HearthstoneClass.MAGE],
+    [HearthstoneClass.WARLOCK]: [HearthstoneClass.ROGUE],
+    [HearthstoneClass.DEATH_KNIGHT]: [HearthstoneClass.WARLOCK],
+    [HearthstoneClass.SHAMAN]: [HearthstoneClass.DEATH_KNIGHT],
+    [HearthstoneClass.DEMON_HUNTER]: [HearthstoneClass.SHAMAN],
+    [HearthstoneClass.PRIEST]: [HearthstoneClass.DEMON_HUNTER],
+    [HearthstoneClass.HUNTER]: [
+      HearthstoneClass.PRIEST,
+      HearthstoneClass.SHAMAN,
+    ],
+    [HearthstoneClass.WARRIOR]: [HearthstoneClass.HUNTER],
+    [HearthstoneClass.DRUID]: [HearthstoneClass.WARRIOR],
+    [HearthstoneClass.MAGE]: [HearthstoneClass.DRUID],
+    [HearthstoneClass.PALADIN]: [HearthstoneClass.MAGE],
     [HearthstoneClass.NEUTRAL]: null,
   };
 

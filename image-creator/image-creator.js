@@ -1,9 +1,9 @@
 const Jimp = require('jimp');
 const axios = require('axios');
 
-const BACKGROUND_PATH = './image-creator/background/PiP.png';
+const BACKGROUND_PATH = './image-creator/background/zeph.png';
 const TEXT_USERNAME = 'molino_hs';
-const TEXT_EXPANSION = 'Perils in Paradise Review';
+const TEXT_EXPANSION = 'The Traveling Travel Agency Review';
 const MARGIN_TOP = 50;
 const MARGIN_LEFT = 182;
 const CARD_HEIGHT = 300;

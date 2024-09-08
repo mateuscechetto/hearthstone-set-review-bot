@@ -1,58 +1,23 @@
-<p-dialog
-  [(visible)]="shouldShowModal"
-  [modal]="true"
-  [style]="{ width: '66vw', height: '90%' }"
-  [draggable]="false"
-  [resizable]="false"
-  [dismissableMask]="true"
->
-  <p-button
-    class="navigation-arrow prev"
-    icon="pi pi-chevron-left"
-    (onClick)="changedCard.emit(-1)"
-  ></p-button>
-  <p-button
-    class="navigation-arrow next"
-    icon="pi pi-chevron-right"
-    (onClick)="changedCard.emit(1)"
-  ></p-button>
+<p-dialog [(visible)]="shouldShowModal" [modal]="true" [style]="{ width: '66vw', height: '90%' }" [draggable]="false"
+  [resizable]="false" [dismissableMask]="true">
+  <p-button class="navigation-arrow prev" icon="pi pi-chevron-left" (onClick)="changedCard.emit(-1)"></p-button>
+  <p-button class="navigation-arrow next" icon="pi pi-chevron-right" (onClick)="changedCard.emit(1)"></p-button>
   <ng-template pTemplate="header"> </ng-template>
   <div class="grid overflow-hidden">
-    <div
-      class="col-7 fixed-image-container flex flex-column justify-content-center"
-    >
-      <span class="text-xl" [class.hide-text]="!isRecording"
-        ><b>Type a number 1-4 in chat to rate the card</b></span
-      >
+    <div class="col-7 fixed-image-container flex flex-column justify-content-center">
+      <span class="text-xl" [class.hide-text]="!isRecording"><b>Type a number 1-4 in chat to rate the card</b></span>
 
-      <img
-        class="card-image"
-        [alt]="cardToDisplay.name"
-        [src]="cardToDisplay.imageURL"
-      />
-      <span
-        *ngIf="hasTourist && tourists[card.hsClass]"
-        class="font-semibold text-xl"
-      >
+      <img class="card-image" [alt]="cardToDisplay.name" [src]="cardToDisplay.imageURL" />
+      <span *ngIf="hasTourist && tourists[card.hsClass]" class="font-semibold text-xl">
         can be played in
-        {{ tourists[card.hsClass] }} decks with Tourist
+        {{ tourists[card.hsClass]?.join(', ') }} decks with Tourist
       </span>
       <form [formGroup]="ratingForm">
         <div *ngIf="isUserStreamer" class="chat-ratings-container">
           <div class="flex" *ngIf="ratingForm.controls.chatRating.value! > 0">
-            <p-avatar
-              [image]="twitchIconURL"
-              styleClass="mr-2 avatar"
-              shape="circle"
-            ></p-avatar>
-            <p-rating
-              formControlName="chatRating"
-              [stars]="4"
-              [cancel]="false"
-              [readonly]="true"
-            ></p-rating>
-            <span class="ml-2 w-1rem"
-              >{{ card.chatRating | number : "1.0-2" }}
+            <p-avatar [image]="twitchIconURL" styleClass="mr-2 avatar" shape="circle"></p-avatar>
+            <p-rating formControlName="chatRating" [stars]="4" [cancel]="false" [readonly]="true"></p-rating>
+            <span class="ml-2 w-1rem">{{ card.chatRating | number : "1.0-2" }}
             </span>
           </div>
         </div>
@@ -63,80 +28,38 @@
       <form [formGroup]="ratingForm">
         <div class="flex flex-column align-items-center gap-3">
           <div class="flex">
-            <p-avatar
-              [image]="userImg"
-              styleClass="mr-2 avatar"
-              shape="circle"
-            ></p-avatar>
-            <p-rating
-              formControlName="userRating"
-              [stars]="4"
-              [cancel]="false"
-              [readonly]="!isLoggedUser || !isInPreExpansionSeason"
-              (onRate)="onChangedRate($event)"
-            ></p-rating>
+            <p-avatar [image]="userImg" styleClass="mr-2 avatar" shape="circle"></p-avatar>
+            <p-rating formControlName="userRating" [stars]="4" [cancel]="false"
+              [readonly]="!isLoggedUser || !isInPreExpansionSeason" (onRate)="onChangedRate($event)"></p-rating>
             <span class="ml-2 w-1rem"></span>
           </div>
           <ng-container *ngIf="reviewersToCompare.length > 0">
-            <div
-              class="flex"
-              *ngFor="let reviewToCompare of reviewersToCompare"
-            >
-              <a
-                [href]="'https://twitch.tv/' + reviewToCompare.user.name"
-                target="_blank"
-              >
-                <p-avatar
-                  [image]="reviewToCompare.user.image"
-                  styleClass="mr-2 avatar cursor-pointer"
-                  shape="circle"
-                ></p-avatar>
+            <div class="flex" *ngFor="let reviewToCompare of reviewersToCompare">
+              <a [href]="'https://twitch.tv/' + reviewToCompare.user.name" target="_blank">
+                <p-avatar [image]="reviewToCompare.user.image" styleClass="mr-2 avatar cursor-pointer"
+                  shape="circle"></p-avatar>
               </a>
-              <p-rating
-                [formControlName]="reviewToCompare.user.name"
-                [stars]="4"
-                [cancel]="false"
-                [readonly]="true"
-              ></p-rating>
+              <p-rating [formControlName]="reviewToCompare.user.name" [stars]="4" [cancel]="false"
+                [readonly]="true"></p-rating>
               <span class="ml-2 w-1rem"></span>
             </div>
           </ng-container>
           <div class="flex" *ngIf="card.hsr_rating">
-            <a
-              [href]="'https://hsreplay.net/cards/' + card.dbf_id"
-              target="_blank"
-            >
-              <p-avatar
-                [image]="hsrIconURL"
-                styleClass="mr-2 avatar cursor-pointer"
-                shape="circle"
-              ></p-avatar>
+            <a [href]="'https://hsreplay.net/cards/' + card.dbf_id" target="_blank">
+              <p-avatar [image]="hsrIconURL" styleClass="mr-2 avatar cursor-pointer" shape="circle"></p-avatar>
             </a>
-            <p-rating
-              formControlName="hsrRating"
-              [stars]="4"
-              [cancel]="false"
-              [readonly]="true"
-            ></p-rating>
+            <p-rating formControlName="hsrRating" [stars]="4" [cancel]="false" [readonly]="true"></p-rating>
             <span class="ml-2 w-1rem"></span>
           </div>
-          <app-record-chat
-            *ngIf="isUserStreamer && streamerView && isInPreExpansionSeason"
-            data-testid="record-chat-button"
-            (onRecordChat)="onRecordChat()"
-            (onStopRecording)="onStopRecording()"
-          ></app-record-chat>
+          <app-record-chat *ngIf="isUserStreamer && streamerView && isInPreExpansionSeason"
+            data-testid="record-chat-button" (onRecordChat)="onRecordChat()"
+            (onStopRecording)="onStopRecording()"></app-record-chat>
         </div>
       </form>
       <div class="grid">
         <div *ngFor="let extraCard of card.extraCards" class="col">
-          <img
-            [alt]="extraCard.name"
-            [src]="extraCard.imageURL"
-            width="150"
-            (mouseover)="onExtraCardHover(extraCard)"
-            (mouseleave)="onExtraCardLeave()"
-          />
+          <img [alt]="extraCard.name" [src]="extraCard.imageURL" width="150" (mouseover)="onExtraCardHover(extraCard)"
+            (mouseleave)="onExtraCardLeave()" />
         </div>
         <ul *ngIf="card.name === 'Carress, Cabaret Star'" class="font-bold">
           <li>Arcane: Draw 2 cards.</li>
@@ -151,11 +74,7 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <span
-      class="pi pi-question-circle"
-      pTooltip="Use keyboard arrows to navigate between cards"
-      tooltipPosition="left"
-      style="font-size: 1.5rem"
-    ></span>
+    <span class="pi pi-question-circle" pTooltip="Use keyboard arrows to navigate between cards" tooltipPosition="left"
+      style="font-size: 1.5rem"></span>
   </ng-template>
 </p-dialog>

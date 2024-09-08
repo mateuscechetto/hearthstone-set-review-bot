@@ -90,18 +90,21 @@ export class CardViewModalComponent implements OnChanges {
   hsrIconURL =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvw2ri47mehC08Q5LKf4SamN5ayk7Fzof00j2O2yCbHw&s';
 
-  tourists: Record<HearthstoneClass, HearthstoneClass | null> = {
-    [HearthstoneClass.ROGUE]: HearthstoneClass.PALADIN,
-    [HearthstoneClass.WARLOCK]: HearthstoneClass.ROGUE,
-    [HearthstoneClass.DEATH_KNIGHT]: HearthstoneClass.WARLOCK,
-    [HearthstoneClass.SHAMAN]: HearthstoneClass.DEATH_KNIGHT,
-    [HearthstoneClass.DEMON_HUNTER]: HearthstoneClass.SHAMAN,
-    [HearthstoneClass.PRIEST]: HearthstoneClass.DEMON_HUNTER,
-    [HearthstoneClass.HUNTER]: HearthstoneClass.PRIEST,
-    [HearthstoneClass.WARRIOR]: HearthstoneClass.HUNTER,
-    [HearthstoneClass.DRUID]: HearthstoneClass.WARRIOR,
-    [HearthstoneClass.MAGE]: HearthstoneClass.DRUID,
-    [HearthstoneClass.PALADIN]: HearthstoneClass.MAGE,
+  tourists: Record<HearthstoneClass, HearthstoneClass[] | null> = {
+    [HearthstoneClass.ROGUE]: [HearthstoneClass.PALADIN, HearthstoneClass.MAGE],
+    [HearthstoneClass.WARLOCK]: [HearthstoneClass.ROGUE],
+    [HearthstoneClass.DEATH_KNIGHT]: [HearthstoneClass.WARLOCK],
+    [HearthstoneClass.SHAMAN]: [HearthstoneClass.DEATH_KNIGHT],
+    [HearthstoneClass.DEMON_HUNTER]: [HearthstoneClass.SHAMAN],
+    [HearthstoneClass.PRIEST]: [HearthstoneClass.DEMON_HUNTER],
+    [HearthstoneClass.HUNTER]: [
+      HearthstoneClass.PRIEST,
+      HearthstoneClass.SHAMAN,
+    ],
+    [HearthstoneClass.WARRIOR]: [HearthstoneClass.HUNTER],
+    [HearthstoneClass.DRUID]: [HearthstoneClass.WARRIOR],
+    [HearthstoneClass.MAGE]: [HearthstoneClass.DRUID],
+    [HearthstoneClass.PALADIN]: [HearthstoneClass.MAGE],
     [HearthstoneClass.NEUTRAL]: null,
   };
 

@@ -8,9 +8,10 @@ import {
   map,
 } from 'rxjs';
 
-export const CURRENT_EXPANSION = 'Perils in Paradise';
+export const CURRENT_EXPANSION = 'The Traveling Travel Agency';
 
 export const EXPANSIONS = [
+  'The Traveling Travel Agency',
   'Perils in Paradise',
   "Dr. Boom's Incredible Inventions",
   "Whizbang's Workshop",
