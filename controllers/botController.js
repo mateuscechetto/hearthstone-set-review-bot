@@ -30,7 +30,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "The Traveling Travel Agency": false,
+    "The Traveling Travel Agency": true,
     "Perils in Paradise": true,
     'Dr. Boom\'s Incredible Inventions': true,
     "Whizbang\'s Workshop": true,
