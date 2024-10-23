@@ -34,7 +34,8 @@
           [multiple]="true" formControlName="reviewers" (completeMethod)="searchUser($event, users)"></p-autoComplete>
       </form>
     </ng-container>
-    <div *ngIf="context.activeExpansion == CURRENT_EXPANSION && loggedUser && pageUser?.name == loggedUser.name">
+    <div
+      *ngIf="context.activeExpansion == CURRENT_EXPANSION && loggedUser && pageUser?.name == loggedUser.name && false">
       <p-button (onClick)="shouldShowShareModal = true" label="Generate summary image"></p-button>
     </div>
   </div>

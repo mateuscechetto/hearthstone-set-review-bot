@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = 'The Traveling Travel Agency';
+const currentExpansion = 'The Great Dark Beyond';
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "The Great Dark Beyond": 145,
     "The Traveling Travel Agency": 38,
     "Perils in Paradise": 145,
     'Dr. Boom\'s Incredible Inventions': 38,
@@ -30,6 +31,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    "The Great Dark Beyond": false,
     "The Traveling Travel Agency": true,
     "Perils in Paradise": true,
     'Dr. Boom\'s Incredible Inventions': true,
