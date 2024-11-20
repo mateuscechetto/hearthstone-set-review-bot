@@ -31,7 +31,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "The Great Dark Beyond": false,
+    "The Great Dark Beyond": true,
     "The Traveling Travel Agency": true,
     "Perils in Paradise": true,
     'Dr. Boom\'s Incredible Inventions': true,
