@@ -27,7 +27,7 @@ const transformedData = {
     name: card.name,
     description: stripHtmlTags(card.text),
     imageURL: card.image,
-    expansion: 'The Great Dark Beyond',
+    expansion: 'Heroes of StarCraft',
     mana: card.manaCost,
     type: transformType(card.cardTypeId),
     hsClass: transformClass(card.classId),

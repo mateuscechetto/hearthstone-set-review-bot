@@ -21,6 +21,7 @@ const currentExpansion = 'The Great Dark Beyond';
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    'Heroes of StarCraft': 49,
     "The Great Dark Beyond": 145,
     "The Traveling Travel Agency": 38,
     "Perils in Paradise": 145,
@@ -31,6 +32,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    'Heroes of StarCraft': false,
     "The Great Dark Beyond": true,
     "The Traveling Travel Agency": true,
     "Perils in Paradise": true,
