@@ -80,6 +80,8 @@ const HearthstoneCardSchema = new mongoose.Schema({
   ],
 });
 
+HearthstoneCardSchema.index({ expansion: 1 });
+
 const HearthstoneCard = mongoose.model('HearthstoneCard', HearthstoneCardSchema);
 
 module.exports = HearthstoneCard;

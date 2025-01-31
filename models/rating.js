@@ -38,6 +38,10 @@ const RatingSchema = new mongoose.Schema({
   },
 });
 
+RatingSchema.index({ user: 1 });
+RatingSchema.index({ card: 1 });
+RatingSchema.index({ user: 1, card: 1 });
+
 const Rating = mongoose.model('Rating', RatingSchema);
 
 module.exports = Rating;
