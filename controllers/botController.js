@@ -32,7 +32,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    'Heroes of StarCraft': false,
+    'Heroes of StarCraft': true,
     "The Great Dark Beyond": true,
     "The Traveling Travel Agency": true,
     "Perils in Paradise": true,
