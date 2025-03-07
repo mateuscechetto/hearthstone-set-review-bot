@@ -5,3 +5,5 @@ credentials.json
 archive.json
 .env
 scripts/post-expansion/data
+scripts/pre-expansion/add-new-cards.js
+scripts/pre-expansion/transformed
