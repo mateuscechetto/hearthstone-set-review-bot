@@ -8,9 +8,10 @@ import {
   map,
 } from 'rxjs';
 
-export const CURRENT_EXPANSION = 'Heroes of StarCraft';
+export const CURRENT_EXPANSION = 'Into the Emerald Dream';
 
 export const EXPANSIONS = [
+  'Into the Emerald Dream',
   'Heroes of StarCraft',
   'The Great Dark Beyond',
   'The Traveling Travel Agency',

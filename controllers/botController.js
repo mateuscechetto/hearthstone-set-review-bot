@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = 'The Great Dark Beyond';
+const currentExpansion = 'Into the Emerald Dream';
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    'Into the Emerald Dream': 145,
     'Heroes of StarCraft': 49,
     "The Great Dark Beyond": 145,
     "The Traveling Travel Agency": 38,
