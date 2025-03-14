@@ -21,7 +21,7 @@ const currentExpansion = 'Into the Emerald Dream';
 const minRatings = 1;
 
 const cardsPerExpansion = {
-    'Into the Emerald Dream': 145,
+    'Into the Emerald Dream': 146, // Raptor Herald is not an expansion card but it is on the review
     'Heroes of StarCraft': 49,
     "The Great Dark Beyond": 145,
     "The Traveling Travel Agency": 38,
