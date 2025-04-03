@@ -33,6 +33,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    'Into the Emerald Dream': true,
     'Heroes of StarCraft': true,
     "The Great Dark Beyond": true,
     "The Traveling Travel Agency": true,
