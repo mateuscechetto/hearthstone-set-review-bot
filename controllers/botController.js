@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = 'Into the Emerald Dream';
+const currentExpansion = 'Embers of the World Tree';
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    'Embers of the World Tree': 38,
     'Into the Emerald Dream': 146, // Raptor Herald is not an expansion card but it is on the review
     'Heroes of StarCraft': 49,
     "The Great Dark Beyond": 145,
@@ -33,6 +34,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    'Embers of the World Tree': false,
     'Into the Emerald Dream': true,
     'Heroes of StarCraft': true,
     "The Great Dark Beyond": true,
