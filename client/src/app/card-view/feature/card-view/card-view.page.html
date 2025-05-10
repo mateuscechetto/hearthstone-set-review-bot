@@ -103,7 +103,7 @@
         </p-accordion>
       </p-accordionTab>
     </p-accordion>
-    <p-dataView #dv [value]="cards" [layout]="layout">
+    <p-dataView #dv [value]="cards" [layout]="layout" [lazy]="true">
       <ng-template let-card pTemplate="gridItem">
         <!-- make not show modal on mobile -->
         <app-card-grid-item class="hidden md:block" [showSkeleton]="!!(loadingCards$ | async)" [card]="card"

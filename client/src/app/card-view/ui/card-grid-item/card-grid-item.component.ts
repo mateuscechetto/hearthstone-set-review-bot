@@ -17,6 +17,7 @@ import {
 import { RecordChatComponent } from '@card-view/ui/record-chat/record-chat.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { CardGridSkeletonComponent } from '@card-view/ui/card-grid-skeleton/card-grid-skeleton.component';
+import { LazyLoadDirective } from '@app/shared/images/lazy-load.directive';
 
 @Component({
   selector: 'app-card-grid-item[card]',
@@ -34,6 +35,7 @@ import { CardGridSkeletonComponent } from '@card-view/ui/card-grid-skeleton/card
     TooltipModule,
     CardGridSkeletonComponent,
     DecimalPipe,
+    LazyLoadDirective,
   ],
 })
 export class CardGridItemComponent implements OnChanges {
