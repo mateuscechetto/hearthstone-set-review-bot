@@ -39,6 +39,7 @@ const statsCards = statsData.cards;
 const collectionFile = path.resolve(argv.collection);
 const collection = JSON.parse(fs.readFileSync(collectionFile, 'utf8'));
 
+// c.isMiniSet
 const expansionCards = collection.filter(c => c.set === argv.set);
 
 const filteredStats = statsCards.filter(card => expansionCards.find(c => c.dbfId == card.dbf_id));

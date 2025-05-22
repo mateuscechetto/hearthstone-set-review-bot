@@ -34,7 +34,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    'Embers of the World Tree': false,
+    'Embers of the World Tree': true,
     'Into the Emerald Dream': true,
     'Heroes of StarCraft': true,
     "The Great Dark Beyond": true,
