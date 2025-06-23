@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = 'Embers of the World Tree';
+const currentExpansion = "The Lost City of Un'Goro";
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "The Lost City of Un'Goro": 145,
     'Embers of the World Tree': 38,
     'Into the Emerald Dream': 146, // Raptor Herald is not an expansion card but it is on the review
     'Heroes of StarCraft': 49,
@@ -34,6 +35,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    "The Lost City of Un'Goro": false,
     'Embers of the World Tree': true,
     'Into the Emerald Dream': true,
     'Heroes of StarCraft': true,
