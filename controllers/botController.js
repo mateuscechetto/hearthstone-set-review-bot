@@ -35,7 +35,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "The Lost City of Un'Goro": false,
+    "The Lost City of Un'Goro": true,
     'Embers of the World Tree': true,
     'Into the Emerald Dream': true,
     'Heroes of StarCraft': true,
