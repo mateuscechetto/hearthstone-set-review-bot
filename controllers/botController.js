@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = "The Lost City of Un'Goro";
+const currentExpansion = "Day of Rebirth";
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "Day of Rebirth": 38,
     "The Lost City of Un'Goro": 145,
     'Embers of the World Tree': 38,
     'Into the Emerald Dream': 146, // Raptor Herald is not an expansion card but it is on the review
@@ -35,6 +36,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    "Day of Rebirth": false,
     "The Lost City of Un'Goro": true,
     'Embers of the World Tree': true,
     'Into the Emerald Dream': true,
