@@ -36,7 +36,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "Day of Rebirth": false,
+    "Day of Rebirth": true,
     "The Lost City of Un'Goro": true,
     'Embers of the World Tree': true,
     'Into the Emerald Dream': true,
