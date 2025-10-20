@@ -8,10 +8,11 @@ import {
   map,
 } from 'rxjs';
 
-export const CURRENT_EXPANSION = "Day of Rebirth";
+export const CURRENT_EXPANSION = 'Across the Timeways';
 
 export const EXPANSIONS = [
-  "Day of Rebirth",
+  'Across the Timeways',
+  'Day of Rebirth',
   "The Lost City of Un'Goro",
   'Embers of the World Tree',
   'Into the Emerald Dream',
