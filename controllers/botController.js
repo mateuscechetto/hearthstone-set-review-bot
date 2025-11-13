@@ -37,7 +37,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "Across the Timeways": false,
+    "Across the Timeways": true,
     "Day of Rebirth": true,
     "The Lost City of Un'Goro": true,
     'Embers of the World Tree': true,
