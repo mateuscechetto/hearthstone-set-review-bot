@@ -1,93 +1,95 @@
 .searchInput {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    box-sizing: border-box;
-    font-size: 1rem;
-    color: #495057;
-    background: #ffffff;
-    padding: 0.75rem 0.75rem;
-    border: 1px solid #ced4da;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    appearance: none;
-    border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  box-sizing: border-box;
+  font-size: 1rem;
+  color: #495057;
+  background: var(--secondary-color);
+  padding: 0.75rem 0.75rem;
+  border: 1px solid #ced4da;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  appearance: none;
+  border-radius: 6px;
 }
 
 .allCardsHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .listItem {
-    border: solid #dee2e6;
-    border-width: 0 0 1px 0;
-    color: inherit;
-    text-decoration: inherit;
+  border: solid #dee2e6;
+  border-width: 0 0 1px 0;
+  color: inherit;
+  text-decoration: inherit;
 
-    &:hover {
-        background: #dee2e6;
-        cursor: pointer;
-    }
+  &:hover {
+    background: var(--secondary-color);
+    cursor: pointer;
+  }
 }
 
 .banner {
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 tr {
-    td {
-        color: black;
-    }
+  td {
+    color: var(--secondary-color);
+  }
 
-    &.Death {
-        background-color: #42606d71;
-    }
+  &.Death {
+    background-color: #42606d71;
+  }
 
-    &.Druid {
-        background-color: #7036067a;
-    }
+  &.Druid {
+    background-color: #7036067a;
+  }
 
-    &.Hunter {
-        background-color: #016e0179;
-    }
+  &.Hunter {
+    background-color: #016e0179;
+  }
 
-    &.Mage {
-        background-color: #006fde6b;
-    }
+  &.Mage {
+    background-color: #006fde6b;
+  }
 
-    &.Paladin {
-        background-color: #aa8e0079;
-    }
+  &.Paladin {
+    background-color: #aa8e0079;
+  }
 
-    &.Priest {
-        background-color: #ffffff75;
-    }
+  &.Priest {
+    background-color: #ffffff75;
+  }
 
-    &.Rogue {
-        background-color: #4c4d48b0;
-    }
+  &.Rogue {
+    background-color: #4c4d48b0;
+  }
 
-    &.Shaman {
-        background-color: #00008071;
-    }
+  &.Shaman {
+    background-color: #00008071;
+  }
 
-    &.Warlock {
-        background-color: #7624ad6e;
-    }
+  &.Warlock {
+    background-color: #7624ad6e;
+  }
 
-    &.Warrior {
-        background-color: #8e10025b;
-    }
+  &.Warrior {
+    background-color: #8e10025b;
+  }
 
-    &.Neutral {
-        background-color: #80808063;
-    }
+  &.Neutral {
+    background-color: #80808063;
+  }
 
-    &.Demon {
-        background-color: #105e26b9;
-    }
+  &.Demon {
+    background-color: #105e26b9;
+  }
 }
 
 // DEMON_HUNTER = '#105E26',

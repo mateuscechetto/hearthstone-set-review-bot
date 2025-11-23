@@ -1,41 +1,25 @@
-<header class="grid p-2 sticky top-0 z-5 bg-white" style="border-bottom: 1px solid #ccc;">
+<header class="grid p-2 sticky top-0 z-5">
   <div class="col-2 md:col-4">
     <a routerLink="/" queryParamsHandling="merge">
-      <img
-        src="../../../assets/images/logo badlands.png"
-        width="36px"
-        height="36px"
-      />
+      <img src="../../../assets/images/logo badlands.png" width="36px" height="36px" />
       <span class="title ml-2 hidden md:inline-block"> HS Set Review</span>
     </a>
   </div>
-  <div class="col-12 flex-order-1 md:col-4 md:flex-order-0" *ngIf="options | async as users">
-    <p-autoComplete
-      [suggestions]="suggestions"
-      [showClear]="true"
-      placeholder="Find a Reviewer"
-      [style]="{ width: '100%' }"
-      [inputStyle]="{ width: '100%' }"
-      (completeMethod)="searchUser($event, users)"
-      (onSelect)="selectUser($event)"
-    ></p-autoComplete>
+
+  <div class="col-12 flex-order-1 md:col-3 md:flex-order-0" *ngIf="options | async as users">
+    <p-autoComplete [suggestions]="suggestions" [showClear]="true" placeholder="Find a Reviewer"
+      [style]="{ width: '100%' }" [inputStyle]="{ width: '100%' }" (completeMethod)="searchUser($event, users)"
+      (onSelect)="selectUser($event)"></p-autoComplete>
   </div>
 
   <div class="col-7 md:col-2 md:col-offset-1">
-    <p-dropdown
-      [options]="expansions"
-      [style]="{ width: '100%' }"
-      [ngModel]="selectedExpansion | async"
-      (onChange)="changeExpansion($event)"
-    ></p-dropdown>
+    <p-dropdown [options]="expansions" [style]="{ width: '100%' }" [ngModel]="selectedExpansion | async"
+      (onChange)="changeExpansion($event)"></p-dropdown>
   </div>
 
-  <p-button
-    *ngIf="loggedUser | async; else loginButton"
-    class="col-1"
-    label="Logout"
-    (onClick)="logout()"
-  ></p-button>
+  <p-dropdown class="col-1" [options]="themeOptions" [ngModel]="theme" (onChange)="toggleTheme($event)"></p-dropdown>
+
+  <p-button *ngIf="loggedUser | async; else loginButton" class="col-1" label="Logout" (onClick)="logout()"></p-button>
   <ng-template #loginButton>
     <p-button class="col-1" label="Login" (onClick)="login()"></p-button>
   </ng-template>

@@ -1,9 +1,14 @@
 .title {
-    padding: 5px 0;
-    display: inline-block;
-    font-size: 1.4em;
-    color: black;
-    vertical-align: top;
-    text-decoration: none;
-    font-weight: 700;
+  padding: 5px 0;
+  display: inline-block;
+  font-size: 1.4em;
+  color: var(--text-color);
+  vertical-align: top;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+header {
+  background-color: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
 }

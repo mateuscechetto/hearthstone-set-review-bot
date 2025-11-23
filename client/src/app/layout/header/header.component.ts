@@ -15,6 +15,7 @@ import {
   ExpansionService,
 } from '@shared/data-access/expansion/expansion.service';
 import { AnalyticsService } from '@shared/analytics/analytics.service';
+import { Theme, ThemeService } from '../themes/themes.service';
 
 @Component({
   selector: 'app-header',
@@ -36,7 +37,8 @@ export class HeaderComponent {
   router = inject(Router);
   expansionService = inject(ExpansionService);
   userService = inject(UserService);
-  analyticsService = inject(AnalyticsService)
+  analyticsService = inject(AnalyticsService);
+  themeService = inject(ThemeService);
 
   expansions = EXPANSIONS;
   selectedExpansion = this.expansionService.activeExpansion;
@@ -46,8 +48,16 @@ export class HeaderComponent {
   options = this.userService.users.pipe();
   suggestions: string[] = [];
 
+  themeOptions: Theme[] = ['Dark', 'Light'];
+  theme: Theme = 'Dark';
+
   ngOnInit() {
-    this.analyticsService.trackEvent('User entered', 'Header component loaded to the view', 'USER_ENTER')
+    this.analyticsService.trackEvent(
+      'User entered',
+      'Header component loaded to the view',
+      'USER_ENTER'
+    );
+    this.theme = this.themeService.initTheme();
   }
 
   searchUser(event: AutoCompleteCompleteEvent, users: User[]) {
@@ -59,7 +69,9 @@ export class HeaderComponent {
   }
 
   selectUser(streamer: string) {
-    this.router.navigate(['review', streamer], { queryParamsHandling: 'merge' });
+    this.router.navigate(['review', streamer], {
+      queryParamsHandling: 'merge',
+    });
   }
 
   changeExpansion(event: DropdownChangeEvent) {
@@ -72,5 +84,11 @@ export class HeaderComponent {
 
   logout() {
     this.userService.logout();
+  }
+
+  toggleTheme(event: DropdownChangeEvent) {
+    var isDark = event.value == 'Dark';
+    console.log(event.value);
+    this.themeService.setTheme(isDark ? 'arya-blue' : 'lara-light-blue');
   }
 }
