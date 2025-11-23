@@ -44,13 +44,13 @@ Install backend dependencies:
 
 ---
 
-You may need to create a [MongoDB Atlas Database](https://www.mongodb.com/atlas/database). 
+You may need to create a [MongoDB Atlas Database](https://www.mongodb.com/atlas/database).
 
 ---
 
 Create a .env file and fill it with the content of [template.env](https://github.com/mateuscechetto/hearthstone-set-review-bot/blob/master/template.env).
 
-JWT_SECRET and SESSION_SECRET can be filled with any string. Same for USERNAME and PASSWORD, that for now are not being used. 
+JWT_SECRET and SESSION_SECRET can be filled with any string. Same for USERNAME and PASSWORD, that for now are not being used.
 TWITCH_CLIENT_ID and TWITCH_SECRET are obtained from [twitch developers](https://dev.twitch.tv/console/apps).
 
 ---
@@ -65,11 +65,12 @@ Install frontend dependencies:
 
     cd client
     npm install
+    npm run copy-themes
 
 ---
 
 Run the backend:
-    
+
     cd ..
     npm start
 
