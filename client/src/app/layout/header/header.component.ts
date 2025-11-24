@@ -1,3 +1,4 @@
+import { map, tap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -49,7 +50,15 @@ export class HeaderComponent {
   suggestions: string[] = [];
 
   themeOptions: Theme[] = ['Dark', 'Light'];
-  theme: Theme = 'Dark';
+  theme = this.themeService.activeTheme;
+
+  logoSrc = this.theme.pipe(
+    map((t) =>
+      t == 'Dark'
+        ? '../../../assets/images/logo-dark.png'
+        : '../../../assets/images/logo.png'
+    )
+  );
 
   ngOnInit() {
     this.analyticsService.trackEvent(
@@ -57,7 +66,7 @@ export class HeaderComponent {
       'Header component loaded to the view',
       'USER_ENTER'
     );
-    this.theme = this.themeService.initTheme();
+    this.themeService.initTheme();
   }
 
   searchUser(event: AutoCompleteCompleteEvent, users: User[]) {
@@ -88,7 +97,6 @@ export class HeaderComponent {
 
   toggleTheme(event: DropdownChangeEvent) {
     var isDark = event.value == 'Dark';
-    console.log(event.value);
     this.themeService.setTheme(isDark ? 'arya-blue' : 'lara-light-blue');
   }
 }

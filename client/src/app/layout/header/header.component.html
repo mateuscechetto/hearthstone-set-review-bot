@@ -1,7 +1,7 @@
 <header class="grid p-2 sticky top-0 z-5">
   <div class="col-2 md:col-4">
     <a routerLink="/" queryParamsHandling="merge">
-      <img src="../../../assets/images/logo badlands.png" width="36px" height="36px" />
+      <img [src]="logoSrc | async" width="36px" height="36px" />
       <span class="title ml-2 hidden md:inline-block"> HS Set Review</span>
     </a>
   </div>
@@ -17,7 +17,8 @@
       (onChange)="changeExpansion($event)"></p-dropdown>
   </div>
 
-  <p-dropdown class="col-1" [options]="themeOptions" [ngModel]="theme" (onChange)="toggleTheme($event)"></p-dropdown>
+  <p-dropdown class="col-1" [options]="themeOptions" [ngModel]="theme | async"
+    (onChange)="toggleTheme($event)"></p-dropdown>
 
   <p-button *ngIf="loggedUser | async; else loginButton" class="col-1" label="Logout" (onClick)="logout()"></p-button>
   <ng-template #loginButton>
