@@ -36,7 +36,7 @@ const HearthstoneCardSchema = new mongoose.Schema({
   },
   hsClass: {
     type: String,
-    enum: ['Death Knight', 'Demon Hunter', 'Druid', 'Hunter', 'Mage', 'Paladin', 'Priest', 'Rogue', 'Shaman', 'Warlock', 'Warrior', 'Neutral'],
+    enum: ['Death Knight', 'Demon Hunter', 'Druid', 'Hunter', 'Mage', 'Paladin', 'Priest', 'Rogue', 'Shaman', 'Warlock', 'Warrior', 'Neutral', 'Death Knight/Demon Hunter', 'Death Knight/Rogue', 'Druid/Demon Hunter', 'Druid/Paladin', 'Hunter/Warlock', 'Hunter/Paladin', 'Mage/Warrior', 'Mage/Priest', 'Priest/Shaman', 'Rogue/Shaman', 'Warlock/Warrior'],
     required: true,
   },
   attack: {
@@ -68,7 +68,7 @@ const HearthstoneCardSchema = new mongoose.Schema({
       },
       hsClass: {
         type: String,
-        enum: ['Death Knight', 'Demon Hunter', 'Druid', 'Hunter', 'Mage', 'Paladin', 'Priest', 'Rogue', 'Shaman', 'Warlock', 'Warrior', 'Neutral'],
+        enum: ['Death Knight', 'Demon Hunter', 'Druid', 'Hunter', 'Mage', 'Paladin', 'Priest', 'Rogue', 'Shaman', 'Warlock', 'Warrior', 'Neutral', 'Death Knight/Demon Hunter', 'Death Knight/Rogue', 'Druid/Demon Hunter', 'Druid/Paladin', 'Hunter/Warlock', 'Hunter/Paladin', 'Mage/Warrior', 'Mage/Priest', 'Priest/Shaman', 'Rogue/Shaman', 'Warlock/Warrior'],
         required: true,
       },
       rarity: {
