@@ -47,10 +47,11 @@ export class AvgRatingTableComponent {
     };
 
     cards.forEach((card) => {
-      const { hsClass } = card;
-      dict[hsClass][0] += card[field] ?? 0;
-      dict[hsClass][1]++;
-
+      const hsClasses = this.getCardClasses(card.hsClass);
+      hsClasses.forEach((hsClass) => {
+        dict[hsClass][0] += card[field] ?? 0;
+        dict[hsClass][1]++;
+      });
       dict['All'][0] += card[field] ?? 0;
       dict['All'][1]++;
     });
@@ -70,5 +71,10 @@ export class AvgRatingTableComponent {
     });
 
     return [...avgByClass];
+  }
+
+  private getCardClasses(hsClass: string): HearthstoneClass[] {
+    if (!hsClass) return [HearthstoneClass.NEUTRAL];
+    return hsClass.split('/') as HearthstoneClass[];
   }
 }

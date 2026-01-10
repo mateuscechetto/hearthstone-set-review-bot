@@ -16,7 +16,7 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { AccordionModule } from 'primeng/accordion';
 import { tap } from 'rxjs';
-import { HotCards } from '../../shared/models/hs-card';
+import { HearthstoneClass, HotCards } from '../../shared/models/hs-card';
 import {
   AverageRatingByClass,
   StatsService,
@@ -109,11 +109,18 @@ export class StatsPage {
   setClassesCards(cards: HotCards[]) {
     this.cardsByClass = {};
     cards.forEach((card) => {
-      const hsClass = card.hsClass || 'Neutral';
-      if (!this.cardsByClass[hsClass]) {
-        this.cardsByClass[hsClass] = [];
-      }
-      this.cardsByClass[hsClass].push(card);
+      const hsClasses = this.getCardClasses(card.hsClass);
+      hsClasses.forEach((hsClass) => {
+        if (!this.cardsByClass[hsClass]) {
+          this.cardsByClass[hsClass] = [];
+        }
+        this.cardsByClass[hsClass].push(card);
+      });
     });
+  }
+
+  private getCardClasses(hsClass: string): HearthstoneClass[] {
+    if (!hsClass) return [HearthstoneClass.NEUTRAL];
+    return hsClass.split('/') as HearthstoneClass[];
   }
 }

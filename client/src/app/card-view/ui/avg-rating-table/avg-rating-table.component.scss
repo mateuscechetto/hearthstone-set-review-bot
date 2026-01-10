@@ -50,4 +50,52 @@ tr {
   &.Demon {
     background-color: #105e26b9;
   }
+
+  &.Knight\/Demon {
+    &.Hunter {
+      background: linear-gradient(to right, #42606d71 50%, #105e26b9 50%);
+    }
+  }
+
+  &.Druid\/Demon {
+    &.Hunter {
+      background: linear-gradient(to right, #7036067a 50%, #105e26b9 50%);
+    }
+  }
+
+  &.Knight\/Rogue {
+    background: linear-gradient(to right, #42606d71 50%, #4c4d48b0 50%);
+  }
+
+  &.Druid\/Paladin {
+    background: linear-gradient(to right, #7036067a 50%, #aa8e0079 50%);
+  }
+
+  &.Hunter\/Warlock {
+    background: linear-gradient(to right, #016e0179 50%, #7624ad6e 50%);
+  }
+
+  &.Hunter\/Paladin {
+    background: linear-gradient(to right, #016e0179 50%, #aa8e0079 50%);
+  }
+
+  &.Mage\/Warrior {
+    background: linear-gradient(to right, #006fde6b 50%, #8e10025b 50%);
+  }
+
+  &.Mage\/Priest {
+    background: linear-gradient(to right, #006fde6b 50%, #ffffff75 50%);
+  }
+
+  &.Priest\/Shaman {
+    background: linear-gradient(to right, #ffffff75 50%, #00008071 50%);
+  }
+
+  &.Rogue\/Shaman {
+    background: linear-gradient(to right, #4c4d48b0 50%, #00008071 50%);
+  }
+
+  &.Warlock\/Warrior {
+    background: linear-gradient(to right, #7624ad6e 50%, #8e10025b 50%);
+  }
 }

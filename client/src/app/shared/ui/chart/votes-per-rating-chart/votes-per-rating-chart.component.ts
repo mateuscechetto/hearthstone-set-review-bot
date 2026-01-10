@@ -147,17 +147,31 @@ export class VotesPerRatingChartComponent {
 
     if (field === 'ratings') {
       return cards.reduce((acc, card) => {
-        if (field in card)
-          card.ratings!.forEach((rating) => {
-            acc[card.hsClass].counts[rating - 1]++;
+        if (field in card) {
+          const hsClasses = this.getCardClasses(card.hsClass);
+          hsClasses.forEach((hsClass) => {
+            card.ratings!.forEach((rating) => {
+              acc[hsClass].counts[rating - 1]++;
+            });
           });
+        }
         return acc;
       }, result);
     } else {
       return cards.reduce((acc, card) => {
-        if (field in card) acc[card.hsClass].counts[(card[field] ?? 1) - 1]++;
+        if (field in card) {
+          const hsClasses = this.getCardClasses(card.hsClass);
+          hsClasses.forEach((hsClass) => {
+            acc[hsClass].counts[(card[field] ?? 1) - 1]++;
+          });
+        }
         return acc;
       }, result);
     }
+  }
+
+  private getCardClasses(hsClass: string): HearthstoneClass[] {
+    if (!hsClass) return [HearthstoneClass.NEUTRAL];
+    return hsClass.split('/') as HearthstoneClass[];
   }
 }
