@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = "Across the Timeways";
+const currentExpansion = "Echoes of the Infinite";
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "Echoes of the Infinite": 38,
     "Across the Timeways": 145,
     "Day of Rebirth": 38,
     "The Lost City of Un'Goro": 145,
@@ -37,6 +38,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    "Echoes of the Infinite": false,
     "Across the Timeways": true,
     "Day of Rebirth": true,
     "The Lost City of Un'Goro": true,
