@@ -38,7 +38,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "Echoes of the Infinite": false,
+    "Echoes of the Infinite": true,
     "Across the Timeways": true,
     "Day of Rebirth": true,
     "The Lost City of Un'Goro": true,
