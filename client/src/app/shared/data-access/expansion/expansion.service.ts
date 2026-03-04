@@ -8,9 +8,10 @@ import {
   map,
 } from 'rxjs';
 
-export const CURRENT_EXPANSION = 'Echoes of the Infinite';
+export const CURRENT_EXPANSION = 'CATACLYSM';
 
 export const EXPANSIONS = [
+  'CATACLYSM',
   'Echoes of the Infinite',
   'Across the Timeways',
   'Day of Rebirth',

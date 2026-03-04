@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = "Echoes of the Infinite";
+const currentExpansion = "CATACLYSM";
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "CATACLYSM": 135,
     "Echoes of the Infinite": 38,
     "Across the Timeways": 145,
     "Day of Rebirth": 38,
@@ -38,6 +39,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    "CATACLYSM": false,
     "Echoes of the Infinite": true,
     "Across the Timeways": true,
     "Day of Rebirth": true,
