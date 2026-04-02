@@ -39,7 +39,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "CATACLYSM": false,
+    "CATACLYSM": true,
     "Echoes of the Infinite": true,
     "Across the Timeways": true,
     "Day of Rebirth": true,
