@@ -8,9 +8,10 @@ import {
   map,
 } from 'rxjs';
 
-export const CURRENT_EXPANSION = 'CATACLYSM';
+export const CURRENT_EXPANSION = 'Escape from Violet Hold';
 
 export const EXPANSIONS = [
+  'Escape from Violet Hold',
   'CATACLYSM',
   'Echoes of the Infinite',
   'Across the Timeways',

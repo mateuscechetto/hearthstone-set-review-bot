@@ -17,10 +17,11 @@ const isMessageRatingValid = (messageRating) => {
     return messageRating && messageRating > 0 && messageRating < 5;
 }
 
-const currentExpansion = "CATACLYSM";
+const currentExpansion = "Escape from Violet Hold";
 const minRatings = 1;
 
 const cardsPerExpansion = {
+    "Escape from Violet Hold": 135,
     "CATACLYSM": 135,
     "Echoes of the Infinite": 38,
     "Across the Timeways": 145,
@@ -39,6 +40,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
+    "Escape from Violet Hold": false,
     "CATACLYSM": true,
     "Echoes of the Infinite": true,
     "Across the Timeways": true,
