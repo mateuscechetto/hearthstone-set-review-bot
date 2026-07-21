@@ -40,7 +40,7 @@ const cardsPerExpansion = {
 };
 
 const hasExpansionBeingRated = {
-    "Escape from Violet Hold": false,
+    "Escape from Violet Hold": true,
     "CATACLYSM": true,
     "Echoes of the Infinite": true,
     "Across the Timeways": true,
